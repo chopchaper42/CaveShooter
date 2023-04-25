@@ -1,9 +1,11 @@
 package Utility;
 
 import Engine.Entity.Entity;
+import Engine.Entity.Items.Item;
 import Engine.Entity.Tiles.Wall;
 import javafx.geometry.Rectangle2D;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Collisions
@@ -15,7 +17,7 @@ public class Collisions
      * @param <T> a type which extends the Entity class
      * @return {@code true} if object intersects, otherwise {@code false}
      */
-    public static <T extends Entity> boolean checkCollision(List<T> entities, Rectangle2D object) {
+    public static <T extends Entity> boolean checkWallCollision(List<T> entities, Rectangle2D object) {
         boolean intersects = false;
         boolean isWall = false;
         boolean collides = false;
@@ -30,5 +32,17 @@ public class Collisions
 
         }
         return collides;
+    }
+
+    public static <T extends Item> List<Item> checkItemCollision(List<T> items, Rectangle2D object) {
+        List<Item> intersected = new ArrayList<>();
+        for (T item : items) {
+            if (object.intersects(((Item) item).getBoundaries())) {
+                intersected.add(item);
+                System.out.println("intersection");
+            }
+
+        }
+        return intersected;
     }
 }

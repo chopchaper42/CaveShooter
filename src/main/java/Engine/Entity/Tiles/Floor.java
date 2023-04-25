@@ -1,7 +1,6 @@
 package Engine.Entity.Tiles;
 
-import Engine.Item;
-import javafx.geometry.Point2D;
+import Engine.Entity.Items.Item;
 import javafx.scene.image.Image;
 
 import java.io.File;

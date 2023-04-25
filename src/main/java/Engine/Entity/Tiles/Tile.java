@@ -1,8 +1,7 @@
 package Engine.Entity.Tiles;
 
 import Engine.Entity.Entity;
-import Engine.Item;
-import javafx.geometry.Point2D;
+import Engine.Entity.Items.Item;
 import javafx.scene.image.Image;
 
 public abstract class Tile extends Entity

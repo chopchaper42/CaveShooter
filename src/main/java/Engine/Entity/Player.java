@@ -1,7 +1,8 @@
 package Engine.Entity;
 
+import Engine.Entity.Items.Ammo;
 import Engine.Game;
-import Engine.Item;
+import Engine.Entity.Items.Item;
 import Utility.Collisions;
 import Utility.Pythagoras;
 import javafx.geometry.Point2D;
@@ -18,6 +19,7 @@ public class Player extends LivingEntity
 {
     private final int SPEED_PER_SECOND = 1000;
     private List<Item> inventory;
+    private int ammunition = 30;
     private final static Image image = new Image(new File("./src/main/assets/player.png").toURI().toString(), 30, 30, false, false);
 
     /**
@@ -29,7 +31,6 @@ public class Player extends LivingEntity
     {
         super(image, x, y, 100);
         setBoundaries(getX(), getY(), image.getWidth(), image.getHeight());
-
     }
 
     /**
@@ -100,15 +101,15 @@ public class Player extends LivingEntity
 
         Rectangle2D newBoundariesX = new Rectangle2D(getX() + dx, getY(), image.getWidth(), image.getHeight());
         Rectangle2D newBoundariesY = new Rectangle2D(getX(), getY() + dy, image.getWidth(), image.getHeight());
-        if (!Collisions.checkCollision(Game.getLevel().getTiles(), newBoundariesX)) {
+        if (!Collisions.checkWallCollision(Game.getLevel().getTiles(), newBoundariesX)) {
             moveX(dx);
-
         }
-        if (!Collisions.checkCollision(Game.getLevel().getTiles(), newBoundariesY)) {
+        if (!Collisions.checkWallCollision(Game.getLevel().getTiles(), newBoundariesY)) {
             moveY(dy);
 
         }
 
+        setBoundaries(getX(), getY(), image.getWidth(), image.getHeight());
     }
 
     /**
@@ -125,5 +126,24 @@ public class Player extends LivingEntity
     public List<Item> getInventory()
     {
         return inventory;
+    }
+
+    public int getAmmo() {
+        return ammunition;
+    }
+    public void decreaseAmmo() {
+        ammunition--;
+    }
+    private void increaseAmmo(int x) {
+        ammunition += x;
+    }
+
+    public void takeItems(List<Item> items) {
+        items.forEach(item -> {
+            if (item instanceof Ammo) {
+                increaseAmmo(30);
+            }
+            //expand
+        });
     }
 }
