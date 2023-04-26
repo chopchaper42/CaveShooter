@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import java.io.File;
 import java.util.List;
 
-public class Bullet extends Entity
+public class Bullet extends MovingEntity
 {
     private static Image image = new Image(new File("./src/main/assets/bullet.png").toURI().toString());
     private final double SPEED = 4000;

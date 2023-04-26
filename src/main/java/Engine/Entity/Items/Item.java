@@ -5,8 +5,6 @@ import javafx.scene.image.Image;
 
 public abstract class Item extends Entity
 {
-    private Image image;
-
     /**
      * Creates an entity
      *

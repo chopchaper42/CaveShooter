@@ -13,7 +13,6 @@ import java.util.List;
 
 public final class Level
 {
-    private final GraphicsContext graphics = Graphics.getGraphics();
     private LevelInfo level = null;
 
     /**
@@ -22,9 +21,7 @@ public final class Level
      */
     public Level(File file) {
         level = LevelReader.readLevel(file);
-        Canvas canvas = graphics.getCanvas();
-        canvas.setWidth(level.width());
-        canvas.setHeight(level.height());
+        setCanvasWidthAndHeight(level.width(), level.height());
     }
 
     /**
@@ -45,5 +42,11 @@ public final class Level
                 return tile.getPosition();
         }
         return null;
+    }
+
+    private void setCanvasWidthAndHeight(double width, double height) {
+        Canvas canvas = Graphics.getCanvas();
+        canvas.setWidth(width);
+        canvas.setHeight(height);
     }
 }

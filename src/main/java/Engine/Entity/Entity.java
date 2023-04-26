@@ -35,6 +35,10 @@ public abstract class Entity
     public double getX() {
         return x;
     }
+    void setX(double x) {
+        this.x = x;
+    }
+
     /**
      * Returns the y coordinate
      * @return y coordiante
@@ -42,20 +46,16 @@ public abstract class Entity
     public double getY() {
         return y;
     }
+    void setY(double y) {
+        this.y = y;
+    }
+
     /**
      * Returns the entity's position
      * @return position
      */
     public Point2D getPosition() {
         return new Point2D(x, y);
-    }
-
-    void moveX(double x) {
-        this.x += x;
-    }
-
-    void moveY(double y) {
-        this.y += y;
     }
 
     /**
@@ -83,7 +83,7 @@ public abstract class Entity
      * Returns the central point of an entity
      * @return the central point
      */
-    public Point2D getCenter() {
+    Point2D getCenter() {
         double x = getX() + (image.getWidth() / 2);
         double y = getY() + (image.getHeight() / 2);
         return new Point2D(x, y);

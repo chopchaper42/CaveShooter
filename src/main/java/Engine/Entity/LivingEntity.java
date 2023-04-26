@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 /**
  * Represents an entity that has health
  */
-public abstract class LivingEntity extends Entity
+public abstract class LivingEntity extends MovingEntity
 {
     private int health;
 
