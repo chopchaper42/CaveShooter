@@ -31,4 +31,7 @@ public abstract class LivingEntity extends Entity
     {
         return health;
     }
+    void increaseHealth(int x) {
+        health += x;
+    }
 }

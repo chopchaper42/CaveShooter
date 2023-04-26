@@ -3,6 +3,7 @@ package Engine;
 import Engine.Entity.Bullet;
 import Engine.Entity.Entity;
 import Engine.Entity.Items.Ammo;
+import Engine.Entity.Items.Heal;
 import Engine.Entity.Items.Item;
 import Engine.Level.Level;
 import Engine.Entity.Player;
@@ -113,7 +114,9 @@ public class Game
         });
 
 
-        Graphics.getGraphics().fillText(String.valueOf(player.getAmmo()), 10, 45);
+        Graphics.getGraphics().fillText("HP: " + player.getHealth(), 10, 45);
+        Graphics.getGraphics().fillText(String.valueOf(player.getAmmo()), 10, 85);
+
     }
 
     private void spawnPlayer()
@@ -127,17 +130,8 @@ public class Game
         Group group = new Group(Graphics.getCanvas());
         Scene scene = new Scene(group);
 
-//        Text ammoCount = new Text();
-//        ammoCount.setX(0);
-//        ammoCount.setY(0);
-//        ammoCount.setText(String.valueOf(player.getAmmo()));
-//        ammoCount.setFill(Color.WHITE);
-//        ammoCount.setFont(new Font(48));
-//        group.getChildren().add(ammoCount);
-
         Graphics.getGraphics().setFill(Color.WHITE);
         Graphics.getGraphics().setFont(new Font("Arial Sans", 50));
-//        Graphics.getGraphics().fillText(String.valueOf(player.getAmmo()), 0, 0);
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, this::press);
         scene.addEventHandler(KeyEvent.KEY_RELEASED, this::release);
@@ -145,6 +139,8 @@ public class Game
 
         Ammo testAmmo = new Ammo(400, 200); // think how to generate it or idk
         items.add(testAmmo);
+        Heal heal = new Heal(800, 200);
+        items.add(heal);
 
         stage.setScene(scene);
         stage.show();

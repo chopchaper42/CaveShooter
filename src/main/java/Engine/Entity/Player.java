@@ -1,6 +1,7 @@
 package Engine.Entity;
 
 import Engine.Entity.Items.Ammo;
+import Engine.Entity.Items.Heal;
 import Engine.Game;
 import Engine.Entity.Items.Item;
 import Utility.Collisions;
@@ -142,6 +143,10 @@ public class Player extends LivingEntity
         items.forEach(item -> {
             if (item instanceof Ammo) {
                 increaseAmmo(30);
+            }
+
+            if (item instanceof Heal) {
+                increaseHealth(20);
             }
             //expand
         });
