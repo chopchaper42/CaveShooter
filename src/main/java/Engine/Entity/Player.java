@@ -1,7 +1,11 @@
 package Engine.Entity;
 
+//import Engine.Entity.Items.Ammo;
 import Engine.Entity.Items.Ammo;
 import Engine.Entity.Items.Heal;
+import Engine.Entity.Items.Key;
+import Engine.Entity.Tile.Door;
+import Engine.Entity.Tile.Tile;
 import Engine.Game;
 import Engine.Entity.Items.Item;
 import Utility.Collisions;
@@ -11,6 +15,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +24,7 @@ import java.util.List;
 public class Player extends LivingEntity
 {
     private final int SPEED_PER_SECOND = 1000;
-    private List<Item> inventory;
+    private List<Item> inventory = new ArrayList<>();
     private int ammunition = 30;
     private final static Image image = new Image(new File("./src/main/assets/player.png").toURI().toString(), 30, 30, false, false);
 
@@ -141,14 +146,41 @@ public class Player extends LivingEntity
 
     public void takeItems(List<Item> items) {
         items.forEach(item -> {
-            if (item instanceof Ammo) {
-                increaseAmmo(30);
+            if (item instanceof Ammo ammo) {
+                increaseAmmo(ammo.getAmount());
             }
 
-            if (item instanceof Heal) {
-                increaseHealth(20);
+            if (item instanceof Heal heal) {
+                increaseHealth(heal.getAmount());
+            }
+
+            if (item instanceof Key key) {
+                inventory.add(key);
             }
             //expand
+        });
+    }
+
+    public void useKey() {
+        if (inventory.size() == 0) {
+            return;
+        }
+        System.out.println("key used, but not deleted: " + inventory.size());
+        Game.getLevel().getTiles().forEach(tile -> {
+            if (tile instanceof Door door) {
+                double actionZoneLength = 20;
+                Rectangle2D interactionArea = new Rectangle2D(
+                        getX() - actionZoneLength,
+                        getY() - actionZoneLength,
+                        image.getWidth() + 2 * actionZoneLength,
+                        image.getHeight() + 2 * actionZoneLength);
+                System.out.println("Door detected");
+                if (interactionArea.intersects(tile.getBoundaries())) {
+                    System.out.println("tile changed");
+                    door.open();
+                    inventory.remove(inventory.size() - 1);
+                }
+            }
         });
     }
 }

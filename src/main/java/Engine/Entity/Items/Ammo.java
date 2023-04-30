@@ -1,5 +1,6 @@
 package Engine.Entity.Items;
 
+import Engine.Entity.Entity;
 import javafx.scene.image.Image;
 
 import java.io.File;
@@ -14,7 +15,7 @@ public class Ammo extends Item {
      * @param x     x coordinate
      * @param y     y coordinate
      */
-    public Ammo(double x, double y) {
-        super(image, x, y);
+    public Ammo(double x, double y, int amount) {
+        super(image, x, y, amount);
     }
 }

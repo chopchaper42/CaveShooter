@@ -5,11 +5,15 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
+import java.io.File;
+
 /**
  * Represents an entity
  */
 public abstract class Entity
 {
+
+
     private Image image;
     private double x;
     private double y;
@@ -87,5 +91,9 @@ public abstract class Entity
         double x = getX() + (image.getWidth() / 2);
         double y = getY() + (image.getHeight() / 2);
         return new Point2D(x, y);
+    }
+
+    protected void changeImage(Image image) {
+        this.image = image;
     }
 }

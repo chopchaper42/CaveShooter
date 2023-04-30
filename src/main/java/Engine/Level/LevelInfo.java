@@ -1,6 +1,6 @@
 package Engine.Level;
 
-import Engine.Entity.Tiles.Tile;
+import Engine.Entity.Tile.Tile;
 
 import java.util.List;
 

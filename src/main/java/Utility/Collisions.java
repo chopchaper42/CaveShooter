@@ -1,8 +1,8 @@
 package Utility;
 
-import Engine.Entity.Entity;
 import Engine.Entity.Items.Item;
-import Engine.Entity.Tiles.Wall;
+import Engine.Entity.Tile.Tile;
+import Logs.Logger;
 import javafx.geometry.Rectangle2D;
 
 import java.util.ArrayList;
@@ -12,21 +12,18 @@ public class Collisions
 {
     /**
      * Checks if the given object intersects with any object from the given list
-     * @param entities list of objects to check the intersection with
+     * @param tiles list of objects to check the intersection with
      * @param object an object
      * @param <T> a type which extends the Entity class
      * @return {@code true} if object intersects, otherwise {@code false}
      */
-    public static <T extends Entity> boolean checkWallCollision(List<T> entities, Rectangle2D object) {
-        boolean intersects = false;
-        boolean isWall = false;
+    public static boolean checkWallCollision(List<Tile> tiles, Rectangle2D object) {
         boolean collides = false;
 
-        for (T entity : entities) {
+        for (Tile tile : tiles) {
             if (!collides) {
-                intersects = object.intersects(((Entity) entity).getBoundaries());//.intersects(object);
-                isWall = entity instanceof Wall;
-                collides = intersects && isWall;
+                boolean intersects = object.intersects(tile.getBoundaries());
+                collides = intersects && tile.solid();
 
             }
 
@@ -39,7 +36,7 @@ public class Collisions
         for (T item : items) {
             if (object.intersects(((Item) item).getBoundaries())) {
                 intersected.add(item);
-                System.out.println("intersection");
+                Logger.log("intersection with " + item);
             }
 
         }

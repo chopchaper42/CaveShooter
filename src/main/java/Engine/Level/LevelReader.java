@@ -1,8 +1,9 @@
 package Engine.Level;
 
-import Engine.Entity.Tiles.Tile;
-import Engine.Entity.Tiles.Floor;
-import Engine.Entity.Tiles.Wall;
+import Engine.Entity.Tile.Door;
+import Engine.Entity.Tile.Floor;
+import Engine.Entity.Tile.Tile;
+import Engine.Entity.Tile.Wall;
 import Logs.Logger;
 
 import java.io.*;
@@ -57,12 +58,9 @@ public class LevelReader
             for (String s : levelRow) {
 
                 switch (s) {
-                    case "2":
-                        tiles.add(new Floor(posX, posY));
-                        break;
-                    default:
-                        tiles.add(new Wall(posX, posY));
-                        break;
+                    case "2" -> tiles.add(new Floor(posX, posY));
+                    case "3" -> tiles.add(new Door(posX, posY));
+                    default -> tiles.add(new Wall(posX, posY));
                 }
 
                 posX += Tile.TILE_SIZE;

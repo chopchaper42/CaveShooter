@@ -1,0 +1,21 @@
+package Engine.Entity.Tile;
+
+import Engine.Entity.Items.Key;
+import javafx.scene.image.Image;
+
+import java.io.File;
+
+public class Door extends Tile {
+    private static final Image CLOSED_DOOR_IMG = new Image(new File("./src/main/assets/door.png").toURI().toString());
+    private static final Image OPENED_DOOR_IMG = new Image(new File("./src/main/assets/floor.png").toURI().toString());
+
+
+    public Door(double x, double y) {
+        super(CLOSED_DOOR_IMG, x, y, true);
+    }
+
+    public void open() {
+        solid = false;
+        changeImage(OPENED_DOOR_IMG);
+    }
+}

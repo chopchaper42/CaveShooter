@@ -7,8 +7,6 @@ import javafx.stage.Stage;
 
 public class CaveShooter extends Application
 {
-    private Canvas canvas;
-
     public static void main(String[] args)
     {
         launch(args);

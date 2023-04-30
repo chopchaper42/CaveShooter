@@ -11,7 +11,7 @@ import java.util.List;
 public class Bullet extends MovingEntity
 {
     private static Image image = new Image(new File("./src/main/assets/bullet.png").toURI().toString());
-    private final double SPEED = 4000;
+    private final double SPEED = 8000;
     private double deltaX;
     private double deltaY;
 
