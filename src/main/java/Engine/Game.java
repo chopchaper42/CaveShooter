@@ -128,15 +128,10 @@ public class Game
         Group group = new Group(Graphics.getCanvas());
         Scene scene = new Scene(group);
 
-        Graphics.getGraphics().setFill(Color.WHITE);
-        Graphics.getGraphics().setFont(new Font("Arial Sans", 50));
+        configureUIFont();
+        addEventListeners(scene);
 
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, inputManager::press);
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, inputManager::release);
-        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-            inputManager.shoot(event, bullets);
-        });
-
+        // spawn items
         Ammo testAmmo = new Ammo(400, 200, 30); // think how to generate it or idk
         items.add(testAmmo);
         Heal heal = new Heal(800, 200, 20);
@@ -155,5 +150,18 @@ public class Game
     public static Level getLevel()
     {
         return level;
+    }
+
+    private void addEventListeners(Scene scene) {
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, inputManager::press);
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, inputManager::release);
+        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+            inputManager.shoot(event, bullets);
+        });
+    }
+
+    private void configureUIFont() {
+        Graphics.getGraphics().setFill(Color.WHITE);
+        Graphics.getGraphics().setFont(new Font("Arial Sans", 50));
     }
 }

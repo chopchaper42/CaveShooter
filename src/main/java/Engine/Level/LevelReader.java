@@ -58,9 +58,9 @@ public class LevelReader
             for (String s : levelRow) {
 
                 switch (s) {
-                    case "2" -> tiles.add(new Floor(posX, posY));
-                    case "3" -> tiles.add(new Door(posX, posY));
-                    default -> tiles.add(new Wall(posX, posY));
+                    case "w" -> tiles.add(new Wall(posX, posY));
+                    case "d" -> tiles.add(new Door(posX, posY));
+                    default -> tiles.add(new Floor(posX, posY));
                 }
 
                 posX += Tile.TILE_SIZE;

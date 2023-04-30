@@ -80,8 +80,8 @@ public class InputManager {
                 player.getImage().getHeight()
         );
         Rectangle2D newBoundariesY = new Rectangle2D(
-                player.getX() + dy,
-                player.getY(),
+                player.getX(),
+                player.getY() + dy,
                 player.getImage().getWidth(),
                 player.getImage().getHeight()
         );

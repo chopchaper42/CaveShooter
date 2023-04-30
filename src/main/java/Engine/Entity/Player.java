@@ -1,15 +1,11 @@
 package Engine.Entity;
 
-//import Engine.Entity.Items.Ammo;
 import Engine.Entity.Items.Ammo;
 import Engine.Entity.Items.Heal;
 import Engine.Entity.Items.Key;
 import Engine.Entity.Tile.Door;
-import Engine.Entity.Tile.Tile;
 import Engine.Game;
 import Engine.Entity.Items.Item;
-import Utility.Collisions;
-import Utility.Pythagoras;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -46,16 +42,6 @@ public class Player extends LivingEntity
     public Player(Point2D point) {
         this(point.getX(), point.getY());
     }
-
-    /**
-     * handles the input
-     * @param W_pressed if W key is pressed
-     * @param A_pressed if A key is pressed
-     * @param S_pressed if S key is pressed
-     * @param D_pressed if D key is pressed
-     * @param dt elapsed time from the last frame
-     */
-
 
     /**
      * @return the player's speed per second
