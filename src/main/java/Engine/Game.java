@@ -47,9 +47,9 @@ public class Game
     /**
      * Constructs a new Game object with a stage and a level
      */
-    public Game(Stage stage) {
+    public Game(Stage stage, File level) {
         this.stage = stage;
-        level = new Level(new File("./src/main/levels/level1.txt"));
+        this.level = new Level(level);
     }
 
 
