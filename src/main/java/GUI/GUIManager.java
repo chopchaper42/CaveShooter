@@ -23,20 +23,21 @@ public class GUIManager {
     public GUIManager(Stage stage, LevelManager levelManager) {
         if (stage == null) {
             throw new IllegalArgumentException("Null stage was given.");
+
         }
+
         this.stage = stage;
         this.levelManager = levelManager;
     }
 
     public void renderMainWindow() {
         VBox pane = new VBox();
+
         Button singlePlayerButton = new Button("Single Player");
         Button multiPlayerButton = new Button("Multiplayer");
-
         singlePlayerButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
             renderLevels();
         });
-
         multiPlayerButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
             //connect to server
         });

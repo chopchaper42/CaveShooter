@@ -38,10 +38,7 @@ public class Game
     private static Level level;
     private static Player player;
     private final Stage stage;
-    private boolean W_pressed = false;
-    private boolean A_pressed = false;
-    private boolean S_pressed = false;
-    private boolean D_pressed = false;
+    private final InputManager inputManager;
 
 
     /**
@@ -50,6 +47,8 @@ public class Game
     public Game(Stage stage, File level) {
         this.stage = stage;
         this.level = new Level(level);
+        this.player = new Player(400, 100);
+        this.inputManager = new InputManager(player);
     }
 
 
@@ -57,7 +56,7 @@ public class Game
      * Runs the game
      */
     public void run() {
-        spawnPlayer();
+        //spawnPlayer();
         startGame();
         AnimationTimer loop = new AnimationTimer()
         {
@@ -68,7 +67,7 @@ public class Game
                 double dt = (now - lastFrame) / 10e9;
                 //receiveData();
                 update(dt);
-                player.handleInput(W_pressed, A_pressed, S_pressed, D_pressed, dt);
+                inputManager.handleInput(dt);
                 lastFrame = now;
                 //sendData();
             }
@@ -120,10 +119,10 @@ public class Game
 
     }
 
-    private void spawnPlayer()
+    /*private void spawnPlayer()
     {
         Game.player = new Player(level.getFirstFloorTile());
-    }
+    }*/
 
     private void startGame() {
         Group group = new Group(Graphics.getCanvas());
@@ -132,9 +131,11 @@ public class Game
         Graphics.getGraphics().setFill(Color.WHITE);
         Graphics.getGraphics().setFont(new Font("Arial Sans", 50));
 
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, this::press);
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, this::release);
-        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, this::shoot);
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, inputManager::press);
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, inputManager::release);
+        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+            inputManager.shoot(event, bullets);
+        });
 
         Ammo testAmmo = new Ammo(400, 200, 30); // think how to generate it or idk
         items.add(testAmmo);
@@ -146,36 +147,6 @@ public class Game
         stage.setScene(scene);
         stage.show();
     }
-
-    private void shoot(MouseEvent event)
-    {
-        if (player.getAmmo() > 0) {
-            Point2D direction = new Point2D(event.getX(), event.getY());
-            Bullet bullet = new Bullet(player, direction);
-            bullets.add(bullet);
-            player.decreaseAmmo();
-        }
-    }
-
-    private void release(KeyEvent event)
-    {
-        handle(event.getCode(), false);
-    }
-
-    private void press(KeyEvent event) {
-        handle(event.getCode(), true);
-    }
-
-    private void handle(KeyCode code, boolean pressed) {
-        switch (code) {
-            case W -> W_pressed = pressed;
-            case A -> A_pressed = pressed;
-            case S -> S_pressed = pressed;
-            case D -> D_pressed = pressed;
-            case SPACE -> player.useKey();
-        }
-    }
-
 
     /**
      * Return the currently loaded level

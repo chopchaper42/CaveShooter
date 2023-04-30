@@ -1,6 +1,5 @@
 package Engine.Entity.Tile;
 
-import Engine.Entity.Items.Key;
 import javafx.scene.image.Image;
 
 import java.io.File;
@@ -16,6 +15,6 @@ public class Door extends Tile {
 
     public void open() {
         solid = false;
-        changeImage(OPENED_DOOR_IMG);
+        setImage(OPENED_DOOR_IMG);
     }
 }

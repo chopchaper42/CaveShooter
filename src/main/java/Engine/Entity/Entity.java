@@ -5,8 +5,6 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
-import java.io.File;
-
 /**
  * Represents an entity
  */
@@ -79,7 +77,7 @@ public abstract class Entity
         return boundaries;
     }
 
-    void setBoundaries(double x, double y, double width, double height) {
+    public void setBoundaries(double x, double y, double width, double height) {
         this.boundaries = new Rectangle2D(x, y, width, height);
     }
 
@@ -93,7 +91,10 @@ public abstract class Entity
         return new Point2D(x, y);
     }
 
-    protected void changeImage(Image image) {
+    protected void setImage(Image image) {
         this.image = image;
+    }
+    public Image getImage() {
+        return this.image;
     }
 }

@@ -15,11 +15,11 @@ public abstract class MovingEntity extends Entity{
         super(image, x, y);
     }
 
-    void moveX(double x) {
+    public void moveX(double x) {
         setX(getX() + x);
     }
 
-    void moveY(double y) {
+    public void moveY(double y) {
         setY(getY() + y);
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 public final class Level
 {
     private LevelInfo level = null;
+    private Point2D defaultPosition;
 
     /**
      * Creates a new level
