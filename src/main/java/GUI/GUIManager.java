@@ -3,6 +3,7 @@ package GUI;
 import Engine.Game;
 import Engine.Level.LevelManager;
 import Logs.Logger;
+import Utility.Window;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,15 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GUIManager {
+    private Window window;
     private Stage stage;
     private LevelManager levelManager;
 
-    public GUIManager(Stage stage, LevelManager levelManager) {
+    public GUIManager(Window window, Stage stage, LevelManager levelManager) {
         if (stage == null) {
             throw new IllegalArgumentException("Null stage was given.");
 
         }
-
+        this.window = window;
         this.stage = stage;
         this.levelManager = levelManager;
     }
@@ -57,7 +59,7 @@ public class GUIManager {
         levels.forEach((level) -> {
             Button levelButton = new Button(level.getName());
             levelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-                new Game(stage, level).run();
+                new Game(window, stage, level).run();
             });
             levelsBox.getChildren().add(levelButton);
         });

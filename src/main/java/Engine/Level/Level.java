@@ -1,8 +1,11 @@
 package Engine.Level;
 
-import Engine.Graphics;
+import Engine.Entity.Player;
 import Engine.Entity.Tile.Tile;
+import Logs.Logger;
+import Utility.Window;
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 
 import java.io.File;
@@ -10,16 +13,21 @@ import java.util.List;
 
 public final class Level
 {
-    private LevelInfo level = null;
-    private Point2D defaultPosition;
+    private LevelInfo level;
+    private Point2D initialPosition;
+    private Canvas canvas;
+    private Window window;
+
 
     /**
      * Creates a new level
      * @param file
      */
-    public Level(File file) {
+    public Level(Window window, File file) {
+        this.window = window;
         level = LevelReader.readLevel(file);
-        setCanvasWidthAndHeight(level.width(), level.height());
+        initialPosition = getInitialPosition();
+        canvas = createCanvas(level.width(), level.height());
     }
 
     /**
@@ -34,7 +42,7 @@ public final class Level
     /**
      * @return the {@code Point2D} position of the first top-left floor tile, or {@code null} if there is no tiles
      */
-    public Point2D getFirstFloorTile() {
+    public Point2D getFirstFloorTilePosition() {
         for (Tile tile : level.tiles()) {
             if (!tile.solid())
                 return tile.getPosition();
@@ -42,9 +50,43 @@ public final class Level
         return getTiles().get(0).getPosition();
     }
 
-    private void setCanvasWidthAndHeight(double width, double height) {
-        Canvas canvas = Graphics.getCanvas();
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public void moveCanvasX(double dx) {
+        initialPosition = new Point2D(
+                initialPosition.getX() - dx,
+                initialPosition.getY()
+        );
+        canvas.setTranslateX(initialPosition.getX());
+//        Logger.log(initialPosition.toString());
+    }
+    public void moveCanvasY(double dy) {
+        initialPosition = new Point2D(
+                initialPosition.getX(),
+                initialPosition.getY() - dy
+        );
+        canvas.setTranslateY(initialPosition.getY());
+//        Logger.log(initialPosition.toString());
+    }
+
+    private Canvas createCanvas(double width, double height) {
+        Point2D position = getInitialPosition();
+        Canvas canvas = new Canvas();
+        canvas.setTranslateX(position.getX());
+        canvas.setTranslateY(position.getY());
         canvas.setWidth(width);
         canvas.setHeight(height);
+        return canvas;
+    }
+
+    public Point2D getInitialPosition() {
+        Point2D firstTile = getFirstFloorTilePosition();
+        Point2D position = new Point2D(
+                window.getCenter(Player.getPLAYER_SIZE()).getX() - firstTile.getX() - 17,
+                window.getCenter(Player.getPLAYER_SIZE()).getY() - firstTile.getY() - 17
+        );
+        return position;
     }
 }

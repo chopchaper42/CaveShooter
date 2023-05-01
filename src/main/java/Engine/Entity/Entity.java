@@ -1,8 +1,10 @@
 package Engine.Entity;
 
 import Engine.Graphics;
+import Logs.Logger;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 
 /**
@@ -63,9 +65,9 @@ public abstract class Entity
     /**
      * Draws the entity on canvas
      */
-    public void draw()
+    public void draw(Canvas canvas)
     {
-        Graphics.getGraphics().drawImage(image, getX(), getY());
+        canvas.getGraphicsContext2D().drawImage(image, x, y);
     }
 
     /**
@@ -96,5 +98,9 @@ public abstract class Entity
     }
     public Image getImage() {
         return this.image;
+    }
+    public void logCoordinates() {
+        Logger.log("\n" + toString() + "\n\tX: " + getX() + "\n\tY:" + getY() + "\n\tbounds X: "
+                + boundaries.getMinX() + "\n\tbounds Y:" + boundaries.getMinY());
     }
 }

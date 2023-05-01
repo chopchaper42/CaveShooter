@@ -1,3 +1,6 @@
+package Utility;
+
+import javafx.geometry.Point2D;
 import javafx.stage.Stage;
 
 public class Window
@@ -14,10 +17,10 @@ public class Window
      * @param height the height of the window
      * @param resizable is resizable
      */
-    public Window(String title, double width, double height, boolean resizable) {
+    public Window(String title, double w, double h, boolean resizable) {
         this.title = title;
-        this.width = width;
-        this.height = height;
+        width = w;
+        height = h;
         this.resizable = resizable;
     }
 
@@ -30,5 +33,20 @@ public class Window
         stage.setWidth(width);
         stage.setHeight(height);
         stage.setResizable(resizable);
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+    public Point2D getCenter(double d) {
+        Point2D position = new Point2D(
+                (width - d)/2,
+                (height - d)/2
+        );
+        return position;
     }
 }

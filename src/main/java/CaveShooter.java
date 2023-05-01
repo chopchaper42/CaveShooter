@@ -1,6 +1,7 @@
 import Engine.Level.LevelManager;
 import GUI.GUIManager;
 import Logs.Logger;
+import Utility.Window;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -35,7 +36,7 @@ public class CaveShooter extends Application
         window.init(stage);
 
         LevelManager levelManager = new LevelManager(new File("./src/main/levels"));
-        GUIManager guiManager = new GUIManager(stage, levelManager);
+        GUIManager guiManager = new GUIManager(window, stage, levelManager);
 
         guiManager.renderMainWindow();
 

@@ -10,12 +10,12 @@ import Engine.Entity.Items.Key;
 import Engine.Level.Level;
 import Engine.Entity.Player;
 import Engine.Entity.Tile.Tile;
+import Logs.Logger;
 import Utility.Collisions;
+import Utility.Window;
 import javafx.animation.AnimationTimer;
-import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -32,11 +32,12 @@ import java.util.List;
  */
 public class Game
 {
-    private List<Item> items = new ArrayList<>();
-    private List<Bullet> bullets = new ArrayList<>();
-    private List<Tile> tiles = new ArrayList<>();
-    private static Level level;
-    private static Player player;
+    private Window window;
+    private final List<Item> items = new ArrayList<>();
+    private final List<Bullet> bullets = new ArrayList<>();
+    private final List<Tile> tiles = new ArrayList<>(); // ?
+    private final Level level;
+    private final Player player;
     private final Stage stage;
     private final InputManager inputManager;
 
@@ -44,11 +45,16 @@ public class Game
     /**
      * Constructs a new Game object with a stage and a level
      */
-    public Game(Stage stage, File level) {
+    public Game(Window window, Stage stage, File level) {
+        this.window = window;
         this.stage = stage;
-        this.level = new Level(level);
-        this.player = new Player(400, 100);
-        this.inputManager = new InputManager(player);
+        this.level = new Level(window, level);
+        this.player = new Player(window, this.level,
+//                401, 81);
+                this.level.getFirstFloorTilePosition().getX() + Player.getPLAYER_SIZE() / 2f,
+                this.level.getFirstFloorTilePosition().getY() + Player.getPLAYER_SIZE() / 2f);
+
+        this.inputManager = new InputManager(player, this.level);
     }
 
 
@@ -56,7 +62,6 @@ public class Game
      * Runs the game
      */
     public void run() {
-        //spawnPlayer();
         startGame();
         AnimationTimer loop = new AnimationTimer()
         {
@@ -67,6 +72,7 @@ public class Game
                 double dt = (now - lastFrame) / 10e9;
                 //receiveData();
                 update(dt);
+
                 inputManager.handleInput(dt);
                 lastFrame = now;
                 //sendData();
@@ -79,20 +85,10 @@ public class Game
     private void update(double dt) {
         List<Entity> toRemove = new ArrayList<>();
 
-        // draw tiles
-        level.getTiles().forEach(Tile::draw);
-
-        // draw player
-        player.draw();
-
-        //draw bullets
-        bullets.forEach(Bullet::draw);
-
-        // draw items
-        items.forEach(Entity::draw);
+        redraw();
 
         // mark bullets "to remove" if they intersect with a wall
-        bullets.forEach(bullet -> {
+        bullets.forEach(bullet -> { // override draw() in bullet to move on each call
             if (Collisions.checkWallCollision(level.getTiles(), bullet.getBoundaries())) {
                 toRemove.add(bullet);
             }
@@ -119,17 +115,17 @@ public class Game
 
     }
 
-    /*private void spawnPlayer()
-    {
-        Game.player = new Player(level.getFirstFloorTile());
-    }*/
-
     private void startGame() {
-        Group group = new Group(Graphics.getCanvas());
+        Group group = new Group(
+                level.getCanvas(),
+                player.getCanvas()
+        );
         Scene scene = new Scene(group);
 
         configureUIFont();
         addEventListeners(scene);
+
+        player.draw(player.getCanvas());
 
         // spawn items
         Ammo testAmmo = new Ammo(400, 200, 30); // think how to generate it or idk
@@ -147,7 +143,7 @@ public class Game
      * Return the currently loaded level
      * @return currently loaded level
      */
-    public static Level getLevel()
+    public Level getLevel()
     {
         return level;
     }
@@ -163,5 +159,19 @@ public class Game
     private void configureUIFont() {
         Graphics.getGraphics().setFill(Color.WHITE);
         Graphics.getGraphics().setFont(new Font("Arial Sans", 50));
+    }
+
+    private void redraw() {
+        // draw tiles
+        level.getTiles().forEach(tile -> tile.draw(level.getCanvas()));
+
+        // draw player
+//        Logger.log("X: " + player.getX() + "\nY: ");
+
+        //draw bullets
+        bullets.forEach(bullet -> bullet.draw(level.getCanvas()));
+
+        // draw items
+        items.forEach(item -> item.draw(level.getCanvas()));
     }
 }

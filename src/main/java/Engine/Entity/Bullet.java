@@ -1,5 +1,6 @@
 package Engine.Entity;
 
+import Logs.Logger;
 import Utility.Collisions;
 import Utility.Pythagoras;
 import javafx.geometry.Point2D;
@@ -27,6 +28,8 @@ public class Bullet extends MovingEntity
         double dX = source.getCenter().getX() - target.getX();
         double dY = source.getCenter().getY() - target.getY();
         double diagonal = Pythagoras.diagonal(dX, dY);
+
+        Logger.log(target.toString());
 
         double cosA = dX / diagonal;
         double sinA = dY / diagonal;

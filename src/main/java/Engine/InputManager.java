@@ -2,6 +2,8 @@ package Engine;
 
 import Engine.Entity.Bullet;
 import Engine.Entity.Player;
+import Engine.Level.Level;
+import Logs.Logger;
 import Utility.Collisions;
 import Utility.Pythagoras;
 import javafx.geometry.Point2D;
@@ -14,13 +16,15 @@ import java.util.List;
 
 public class InputManager {
     Player player;
+    Level level;
     boolean W_pressed = false;
     boolean A_pressed = false;
     boolean S_pressed = false;
     boolean D_pressed = false;
 
-    public InputManager(Player player) {
+    public InputManager(Player player, Level level) {
         this.player = player;
+        this.level = level;
     }
 
     public void handleInput(double dt) {
@@ -86,11 +90,21 @@ public class InputManager {
                 player.getImage().getHeight()
         );
 
-        if (!Collisions.checkWallCollision(Game.getLevel().getTiles(), newBoundariesX)) {
+//        Logger.log();
+//        player.logCoordinates();
+
+        if (dx != 0 && !Collisions.checkWallCollision(level.getTiles(), newBoundariesX)) {
+//            Logger.log("movin' x");
             player.moveX(dx);
+            level.moveCanvasX(dx);
         }
-        if (!Collisions.checkWallCollision(Game.getLevel().getTiles(), newBoundariesY)) {
+        if (dy != 0 && !Collisions.checkWallCollision(level.getTiles(), newBoundariesY)) {
+//            Logger.log("movin' y");
             player.moveY(dy);
+            level.moveCanvasY(dy);
+            player.logCoordinates();
+//            double newPlayerY = player.getY() + dy;
+//            level.getCanvas().setTranslateY(level.getCanvas().getHeight() + newPlayerY);
         }
 
         player.setBoundaries(
@@ -103,7 +117,10 @@ public class InputManager {
 
     public void shoot(MouseEvent event, List<Bullet> bullets) {
         if (player.getAmmo() > 0) {
-            Point2D direction = new Point2D(event.getX(), event.getY());
+            Point2D direction = new Point2D(
+                    player.getX() - (player.getOnCanvasX() - event.getX()),
+                    player.getY() - (player.getOnCanvasY() - event.getY())
+            );
             Bullet bullet = new Bullet(player, direction);
             bullets.add(bullet);
             player.decreaseAmmo();
