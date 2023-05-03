@@ -3,14 +3,10 @@ package Engine;
 import Engine.Entity.Bullet;
 import Engine.Entity.Entity;
 //import Engine.Entity.Items.Ammo;
-import Engine.Entity.Items.Ammo;
-import Engine.Entity.Items.Heal;
-import Engine.Entity.Items.Item;
-import Engine.Entity.Items.Key;
+import Engine.Entity.Items.*;
 import Engine.Level.Level;
 import Engine.Entity.Player;
 import Engine.Entity.Tile.Tile;
-import Logs.Logger;
 import Utility.Collisions;
 import Utility.Window;
 import javafx.animation.AnimationTimer;
@@ -50,9 +46,9 @@ public class Game
         this.stage = stage;
         this.level = new Level(window, level);
         this.player = new Player(window, this.level,
-//                401, 81);
                 this.level.getFirstFloorTilePosition().getX() + Player.getPLAYER_SIZE() / 2f,
-                this.level.getFirstFloorTilePosition().getY() + Player.getPLAYER_SIZE() / 2f);
+                this.level.getFirstFloorTilePosition().getY() + Player.getPLAYER_SIZE() / 2f,
+                new Inventory());
 
         this.inputManager = new InputManager(player, this.level);
     }
@@ -109,9 +105,8 @@ public class Game
             }
         });
 
-
-        Graphics.getGraphics().fillText("HP: " + player.getHealth(), 10, 45);
-        Graphics.getGraphics().fillText("Ammo: " + player.getAmmo(), 10, 85);
+        player.getCanvas().getGraphicsContext2D().fillText("HP: " + player.getHealth(), 10, 45);
+        player.getCanvas().getGraphicsContext2D().fillText("Ammo: " + player.getItemAmount(Type.AMMO), 10, 85);
 
     }
 

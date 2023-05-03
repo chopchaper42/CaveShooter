@@ -16,6 +16,6 @@ public class Ammo extends Item {
      * @param y     y coordinate
      */
     public Ammo(double x, double y, int amount) {
-        super(image, x, y, amount);
+        super(image, x, y, amount, Type.AMMO);
     }
 }

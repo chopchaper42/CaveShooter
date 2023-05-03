@@ -60,7 +60,6 @@ public final class Level
                 initialPosition.getY()
         );
         canvas.setTranslateX(initialPosition.getX());
-//        Logger.log(initialPosition.toString());
     }
     public void moveCanvasY(double dy) {
         initialPosition = new Point2D(
@@ -68,7 +67,6 @@ public final class Level
                 initialPosition.getY() - dy
         );
         canvas.setTranslateY(initialPosition.getY());
-//        Logger.log(initialPosition.toString());
     }
 
     private Canvas createCanvas(double width, double height) {
@@ -89,4 +87,13 @@ public final class Level
         );
         return position;
     }
+
+    public double getWidth() {
+        return level.width();
+    }
+
+    public double getHeight() {
+        return level.height();
+    }
+
 }

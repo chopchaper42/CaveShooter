@@ -7,7 +7,9 @@ import java.io.File;
 
 public class Item extends Entity
 {
-    protected int amount;
+    private int amount;
+    private final Type type;
+
     /**
      * Creates an entity
      *
@@ -15,12 +17,16 @@ public class Item extends Entity
      * @param x     x coordinate
      * @param y     y coordinate
      */
-    protected Item(Image image, double x, double y, int amount) {
+    protected Item(Image image, double x, double y, int amount, Type type) {
         super(image, x, y);
         this.amount = amount;
+        this.type = type;
     }
 
     public int getAmount() {
         return amount;
+    }
+    public Type getType() {
+        return type;
     }
 }
