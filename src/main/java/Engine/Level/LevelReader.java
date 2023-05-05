@@ -1,10 +1,16 @@
 package Engine.Level;
 
+import Engine.Entity.Enemy;
+import Engine.Entity.Items.Ammo;
+import Engine.Entity.Items.Heal;
+import Engine.Entity.Items.Item;
+import Engine.Entity.Items.Key;
 import Engine.Entity.Tile.Door;
 import Engine.Entity.Tile.Floor;
 import Engine.Entity.Tile.Tile;
 import Engine.Entity.Tile.Wall;
 import Logs.Logger;
+import javafx.geometry.Point2D;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -42,6 +48,9 @@ public class LevelReader
     {
         String currentLine;
         List<Tile> tiles = new ArrayList<>();
+        List<Item> items = new ArrayList<>();
+        List<Enemy> enemies = new ArrayList<>();
+        Point2D playerPosition = null;
         int levelWidth = 0;
         int levelHeight = 0;
         int rowNumber = 0;
@@ -58,9 +67,33 @@ public class LevelReader
             for (String s : levelRow) {
 
                 switch (s) {
-                    case "w" -> tiles.add(new Wall(posX, posY));
-                    case "d" -> tiles.add(new Door(posX, posY));
-                    default -> tiles.add(new Floor(posX, posY));
+                    case "W" -> tiles.add(new Wall(posX, posY));
+                    case "D" -> tiles.add(new Door(posX, posY));
+                    case "A" -> {
+                        tiles.add(new Floor(posX, posY));
+                        items.add(new Ammo(Item.getCoordinatesForCenter(posX, posY), Ammo.DEFAULT_AMOUNT));
+                    }
+                    case "H" -> {
+                        tiles.add(new Floor(posX, posY));
+                        items.add(new Heal(Item.getCoordinatesForCenter(posX, posY), Heal.DEFAULT_AMOUNT));
+                    }
+                    case "K" -> {
+                        tiles.add(new Floor(posX, posY));
+                        items.add(new Key(Item.getCoordinatesForCenter(posX, posY), Key.DEFAULT_AMOUNT));
+                    }
+                    case "E" -> {
+                        tiles.add(new Floor(posX, posY));
+                        enemies.add(new Enemy(posX, posY));
+                    }
+                    case "P" -> {
+                        tiles.add(new Floor(posX, posY));
+                        playerPosition = new Point2D(posX, posY);
+                    }
+                    default -> {
+                        tiles.add(new Floor(posX, posY));
+                        if (playerPosition == null)
+                            playerPosition = new Point2D(posX, posY);
+                    }
                 }
 
                 posX += Tile.TILE_SIZE;
@@ -68,6 +101,6 @@ public class LevelReader
             }
             rowNumber++;
         }
-        return new LevelInfo(tiles, levelHeight, levelWidth);
+        return new LevelInfo(tiles, items, enemies, playerPosition, levelHeight, levelWidth);
     }
 }

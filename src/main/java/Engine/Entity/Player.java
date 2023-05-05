@@ -2,8 +2,9 @@ package Engine.Entity;
 
 import Engine.Entity.Items.*;
 import Engine.Entity.Tile.Door;
+import Engine.Entity.Tile.Tile;
 import Engine.Inventory;
-import Engine.Level.Level;
+import Logs.Logger;
 import Utility.Window;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
@@ -21,10 +22,9 @@ public class Player extends LivingEntity
     private final int ACTION_ZONE_LENGTH = 20;
     private static final int PLAYER_SIZE = 30;
     private final Inventory inventory; // init in constructor, read from file in future
-    private final double onCanvasX;
-    private final double onCanvasY;
+    private final double screenPositionX;
+    private final double screenPositionY;
     private final Canvas canvas;
-    private Level level;
     private Rectangle2D interactionArea;
     private final static Image image = new Image(
             new File("./src/main/assets/player.png").toURI().toString(),
@@ -37,13 +37,12 @@ public class Player extends LivingEntity
      * @param x x coordinate
      * @param y y coordinate
      */
-    public Player(Window window, Level level, double x, double y, Inventory inventory) {
+    public Player(Window window, double x, double y, Inventory inventory) { //
         super(image, x, y, 100);
         canvas = new Canvas(window.getWidth(), window.getHeight());
         setBoundaries(getX(), getY(), image.getWidth(), image.getHeight());
-        onCanvasX = (canvas.getWidth() - PLAYER_SIZE) / 2;
-        onCanvasY = (canvas.getHeight() - PLAYER_SIZE) / 2;
-        this.level = level;
+        screenPositionX = (window.getWidth() - PLAYER_SIZE) / 2;
+        screenPositionY = (window.getHeight() - PLAYER_SIZE) / 2;
         this.inventory = inventory;
     }
 
@@ -75,43 +74,49 @@ public class Player extends LivingEntity
 
     public void takeItems(List<Item> items) {
         items.forEach(item -> {
-            increaseItem(item.getType(), item.getAmount());
-        });
-    }
-
-    public void useKey() {
-        updateInteractionArea();
-        if (inventory.getAmount(Type.KEY) == 0) {
-            return;
-        }
-        level.getTiles().forEach(tile -> { // move this somewhere. Don't like level in player.
-            if (tile instanceof Door door) {
-                if (interactionArea.intersects(tile.getBoundaries())) {
-                    inventory.use(Type.KEY);
-                    door.open();
-                }
+            if (item.getType() != Type.HEAL) {
+                increaseItem(item.getType(), item.getAmount());
+                Logger.log("+" + item.getAmount() + " " + item.getType().name() + ". Total: " + inventory.getAmount(item.getType()));
+            } else {
+                increaseHealth(item.getAmount());
+                Logger.log("+" + item.getAmount() + " " + item.getType().name() + ". Health: " + getHealth());
             }
         });
     }
 
-    public void draw(Canvas canvas) {
-        canvas.getGraphicsContext2D().drawImage(image, onCanvasX, onCanvasY);
+    public void tryOpenDoor(List<Tile> tiles) {
+        updateInteractionArea();
+        if (inventory.getAmount(Type.KEY) == 0) {
+            Logger.log("No keys in inventory");
+            return;
+        }
+        for (Tile tile : tiles) {
+            if (tile instanceof Door door) {
+                if (interactionArea.intersects(door.getBoundaries())) {
+                    inventory.use(Type.KEY);
+                    door.open();
+                }
+            }
+        }
     }
 
-    public Canvas getCanvas() {
-        return canvas;
+    public void draw() {
+        canvas.getGraphicsContext2D().drawImage(image, screenPositionX, screenPositionY);
     }
 
     public static int getPLAYER_SIZE() {
         return PLAYER_SIZE;
     }
 
-    public double getOnCanvasX() {
-        return onCanvasX;
+    public double positionOnCanvasX() {
+        return screenPositionX;
     }
 
-    public double getOnCanvasY() {
-        return onCanvasY;
+    public double positionOnCanvasY() {
+        return screenPositionY;
+    }
+    public Canvas canvas() {
+        return canvas;
     }
 
     private void updateInteractionArea() {

@@ -82,13 +82,13 @@ public class InputManager {
                 player.getImage().getHeight()
         );
 
-        if (dx != 0 && !Collisions.checkWallCollision(level.getTiles(), newBoundariesX)) {
+        if (dx != 0 && !Collisions.checkWallCollision(newBoundariesX, level.tiles())) {
             player.moveX(dx);
-            level.moveCanvasX(dx);
+            level.moveCanvas(dx, 0);
         }
-        if (dy != 0 && !Collisions.checkWallCollision(level.getTiles(), newBoundariesY)) {
+        if (dy != 0 && !Collisions.checkWallCollision(newBoundariesY, level.tiles())) {
             player.moveY(dy);
-            level.moveCanvasY(dy);
+            level.moveCanvas(0, dy);
         }
 
         player.setBoundaries(
@@ -102,8 +102,8 @@ public class InputManager {
     public void shoot(MouseEvent event, List<Bullet> bullets) {
         if (player.getItemAmount(Type.AMMO) > 0) {
             Point2D direction = new Point2D(
-                    player.getX() - (player.getOnCanvasX() - event.getX()),
-                    player.getY() - (player.getOnCanvasY() - event.getY())
+                    player.getX() - (player.positionOnCanvasX() - event.getX()),
+                    player.getY() - (player.positionOnCanvasY() - event.getY())
             );
             Bullet bullet = new Bullet(player, direction);
             bullets.add(bullet);
@@ -126,7 +126,10 @@ public class InputManager {
             case A -> LEFT = pressed;
             case S -> DOWN = pressed;
             case D -> RIGHT = pressed;
-            case SPACE -> player.useKey();
+            case SPACE -> {
+                if (pressed)
+                    player.tryOpenDoor(level.tiles());
+            }
         }
     }
 }

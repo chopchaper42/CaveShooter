@@ -1,5 +1,6 @@
 package Engine.Entity.Tile;
 
+import Engine.Entity.Items.Item;
 import javafx.scene.image.Image;
 
 import java.io.File;

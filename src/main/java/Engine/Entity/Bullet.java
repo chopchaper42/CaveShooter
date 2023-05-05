@@ -13,6 +13,7 @@ public class Bullet extends MovingEntity
 {
     private static Image image = new Image(new File("./src/main/assets/bullet.png").toURI().toString());
     private final double SPEED = 8000;
+    private final int DAMAGE = 25;
     private double deltaX;
     private double deltaY;
 
@@ -29,8 +30,6 @@ public class Bullet extends MovingEntity
         double dY = source.getCenter().getY() - target.getY();
         double diagonal = Pythagoras.diagonal(dX, dY);
 
-        Logger.log(target.toString());
-
         double cosA = dX / diagonal;
         double sinA = dY / diagonal;
 
@@ -46,5 +45,9 @@ public class Bullet extends MovingEntity
         moveX(deltaX * dt);
         moveY(deltaY * dt);
         setBoundaries(getX(), getY(), image.getWidth(), image.getHeight());
+    }
+
+    public int DAMAGE() {
+        return DAMAGE;
     }
 }

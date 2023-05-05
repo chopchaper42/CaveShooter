@@ -1,6 +1,7 @@
 package Engine.Entity.Tile;
 
 import Engine.Entity.Entity;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
 import java.io.File;
@@ -22,5 +23,7 @@ public class Tile extends Entity
     public boolean solid() {
         return solid;
     }
+
+
 
 }

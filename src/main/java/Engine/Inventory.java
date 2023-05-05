@@ -21,15 +21,12 @@ public class Inventory {
         });
     }
 
-    public boolean use(Type type) {
+    public void use(Type type) {
         int amountInInventory = inventory.get(type);
         if (amountInInventory > 0) {
-            Logger.log("Amount of keys: " + inventory.get(type));
             decrease(type, amountInInventory - 1);
-            Logger.log("Amount of keys now: " + inventory.get(type));
-            return true;
+            Logger.log("1 " + type.name() + " used. " + (amountInInventory - 1) + " remains.");
         }
-        return false;
     }
 
     public int getAmount(Type type) {
@@ -37,7 +34,7 @@ public class Inventory {
     }
 
     public void add(Type type, int amount) {
-        var amountInInventory = inventory.get(type) == null ? 0 : inventory.get(type);
+        int amountInInventory = inventory.get(type) == null ? 0 : inventory.get(type);
         inventory.put(type, amountInInventory + amount);
     }
 

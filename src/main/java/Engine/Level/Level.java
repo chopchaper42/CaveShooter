@@ -1,76 +1,55 @@
 package Engine.Level;
 
+import Engine.Entity.Bullet;
+import Engine.Entity.Enemy;
+import Engine.Entity.Items.Item;
 import Engine.Entity.Player;
 import Engine.Entity.Tile.Tile;
-import Logs.Logger;
 import Utility.Window;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Level
 {
-    private LevelInfo level;
-    private Point2D initialPosition;
+    private LevelInfo map;
+    private Point2D initialCanvasPosition;
+    private Point2D initialPlayerPosition;
+    private final List<Item> items;
+    private final List<Bullet> bullets = new ArrayList<>();
+    private final List<Enemy> enemies;
     private Canvas canvas;
     private Window window;
-
 
     /**
      * Creates a new level
      * @param file
      */
     public Level(Window window, File file) {
+        map = LevelReader.readLevel(file);
         this.window = window;
-        level = LevelReader.readLevel(file);
-        initialPosition = getInitialPosition();
-        canvas = createCanvas(level.width(), level.height());
+        this.items = map.items();
+        this.enemies = map.enemies();
+        this.initialPlayerPosition = map.playerPosition();
+        this.initialCanvasPosition = canvasPosition();
+        this.canvas = createCanvas(map.width(), map.height());
     }
 
-    /**
-     * Returns the tiles that level contains
-     * @return tiles that level contains
-     */
-    public List<Tile> getTiles()
-    {
-        return level.tiles();
-    }
-
-    /**
-     * @return the {@code Point2D} position of the first top-left floor tile, or {@code null} if there is no tiles
-     */
-    public Point2D getFirstFloorTilePosition() {
-        for (Tile tile : level.tiles()) {
-            if (!tile.solid())
-                return tile.getPosition();
-        }
-        return getTiles().get(0).getPosition();
-    }
-
-    public Canvas getCanvas() {
-        return canvas;
-    }
-
-    public void moveCanvasX(double dx) {
-        initialPosition = new Point2D(
-                initialPosition.getX() - dx,
-                initialPosition.getY()
+    public void moveCanvas(double dx, double dy) {
+        initialCanvasPosition = new Point2D(
+                initialCanvasPosition.getX() - dx,
+                initialCanvasPosition.getY() - dy
         );
-        canvas.setTranslateX(initialPosition.getX());
-    }
-    public void moveCanvasY(double dy) {
-        initialPosition = new Point2D(
-                initialPosition.getX(),
-                initialPosition.getY() - dy
-        );
-        canvas.setTranslateY(initialPosition.getY());
+        canvas.setTranslateX(initialCanvasPosition.getX());
+        canvas.setTranslateY(initialCanvasPosition.getY());
+
     }
 
     private Canvas createCanvas(double width, double height) {
-        Point2D position = getInitialPosition();
+        Point2D position = canvasPosition();
         Canvas canvas = new Canvas();
         canvas.setTranslateX(position.getX());
         canvas.setTranslateY(position.getY());
@@ -79,21 +58,43 @@ public final class Level
         return canvas;
     }
 
-    public Point2D getInitialPosition() {
-        Point2D firstTile = getFirstFloorTilePosition();
-        Point2D position = new Point2D(
-                window.getCenter(Player.getPLAYER_SIZE()).getX() - firstTile.getX() - 17,
-                window.getCenter(Player.getPLAYER_SIZE()).getY() - firstTile.getY() - 17
+    public Point2D canvasPosition() {
+        Point2D playerPosition = initialPlayerPosition();
+        Point2D canvasPosition = new Point2D(
+                window.getCenter(Player.getPLAYER_SIZE()).getX() - playerPosition.getX(),
+                window.getCenter(Player.getPLAYER_SIZE()).getY() - playerPosition.getY()
         );
-        return position;
+        return canvasPosition;
+    }
+    /**
+     * @return the {@code Point2D} position of the first top-left floor tile, or {@code null} if there is no tiles
+     */
+    public Point2D initialPlayerPosition() { // DON'T LIKE IT!
+        return initialPlayerPosition;
     }
 
-    public double getWidth() {
-        return level.width();
+    /**
+     * Returns the tiles that level contains
+     * @return tiles that level contains
+     */
+    public List<Tile> tiles()
+    {
+        return map.tiles();
     }
 
-    public double getHeight() {
-        return level.height();
+    public Canvas canvas() {
+        return canvas;
     }
 
+    public List<Bullet> bullets() {
+        return bullets;
+    }
+
+    public List<Item> items() {
+        return items;
+    }
+
+    public List<Enemy> enemies() {
+        return enemies;
+    }
 }

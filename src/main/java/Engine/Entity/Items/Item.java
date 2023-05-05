@@ -1,12 +1,15 @@
 package Engine.Entity.Items;
 
 import Engine.Entity.Entity;
+import Engine.Entity.Tile.Tile;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
 import java.io.File;
 
 public class Item extends Entity
 {
+    protected static final int ITEM_SIZE = 48;
     private int amount;
     private final Type type;
 
@@ -23,10 +26,18 @@ public class Item extends Entity
         this.type = type;
     }
 
+
     public int getAmount() {
         return amount;
     }
     public Type getType() {
         return type;
+    }
+
+    public static Point2D getCoordinatesForCenter(double x, double y) {
+        return new Point2D(
+                x + (Tile.TILE_SIZE - ITEM_SIZE) / 2f,
+                y + (Tile.TILE_SIZE - ITEM_SIZE) / 2f
+                );
     }
 }
