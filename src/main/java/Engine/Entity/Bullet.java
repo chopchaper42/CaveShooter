@@ -1,18 +1,17 @@
 package Engine.Entity;
 
 import Logs.Logger;
-import Utility.Collisions;
 import Utility.Pythagoras;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
 import java.io.File;
-import java.util.List;
 
 public class Bullet extends MovingEntity
 {
     private static Image image = new Image(new File("./src/main/assets/bullet.png").toURI().toString());
-    private final double SPEED = 8000;
+    private double speed;
+    private Entity source;
     private final int DAMAGE = 25;
     private double deltaX;
     private double deltaY;
@@ -22,9 +21,11 @@ public class Bullet extends MovingEntity
      * @param source from where the bullet flies
      * @param target to where the bullet flies
      */
-    public Bullet(Entity source, Point2D target)
+    public Bullet(Entity source, Point2D target, double speed)
     {
         super(image, source.getCenter().getX(), source.getCenter().getY());
+
+        this.source = source;
 
         double dX = source.getCenter().getX() - target.getX();
         double dY = source.getCenter().getY() - target.getY();
@@ -33,8 +34,9 @@ public class Bullet extends MovingEntity
         double cosA = dX / diagonal;
         double sinA = dY / diagonal;
 
-        deltaX = SPEED * -cosA;
-        deltaY = SPEED * -sinA;
+        deltaX = speed * -cosA;
+        deltaY = speed * -sinA;
+
     }
 
     /**
@@ -49,5 +51,8 @@ public class Bullet extends MovingEntity
 
     public int DAMAGE() {
         return DAMAGE;
+    }
+    public Entity source() {
+        return source;
     }
 }

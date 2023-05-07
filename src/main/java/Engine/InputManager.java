@@ -105,7 +105,7 @@ public class InputManager {
                     player.getX() - (player.positionOnCanvasX() - event.getX()),
                     player.getY() - (player.positionOnCanvasY() - event.getY())
             );
-            Bullet bullet = new Bullet(player, direction);
+            Bullet bullet = new Bullet(player, direction, 6500);
             bullets.add(bullet);
             player.decreaseItem(Type.AMMO);
         }

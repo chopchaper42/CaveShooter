@@ -31,6 +31,9 @@ public abstract class LivingEntity extends MovingEntity
     {
         return health;
     }
+    public void decreaseHealth(int x) {
+        health -= x;
+    }
     void increaseHealth(int x) {
         health += x;
     }
