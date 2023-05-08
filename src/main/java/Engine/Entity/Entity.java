@@ -82,6 +82,9 @@ public abstract class Entity
     public void setBoundaries(double x, double y, double width, double height) {
         this.boundaries = new Rectangle2D(x, y, width, height);
     }
+    public void setBoundaries(Rectangle2D bounds) {
+        this.boundaries = bounds;
+    }
 
     /**
      * Returns the central point of an entity

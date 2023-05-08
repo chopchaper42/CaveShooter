@@ -34,6 +34,9 @@ public class Updater {
         //enemies shoot
         level.enemies().forEach(enemy -> enemy.shoot(player, level.bullets(), dt));
 
+        level.enemies().forEach(enemy -> enemy.move(level.tiles(), dt));
+
+
         // mark bullets "to remove" if they intersect with a wall
         level.bullets().forEach(bullet -> { // override draw() in bullet to move on each call
             if (Collisions.checkWallCollision(bullet, level.tiles())) {
