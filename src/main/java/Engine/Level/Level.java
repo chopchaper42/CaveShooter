@@ -23,6 +23,7 @@ public final class Level
     private final List<Enemy> enemies;
     private Canvas canvas;
     private Window window;
+    private boolean completed = false;
 
     /**
      * Creates a new level
@@ -96,5 +97,8 @@ public final class Level
 
     public List<Enemy> enemies() {
         return enemies;
+    }
+    public boolean completed() {
+        return enemies.isEmpty();
     }
 }

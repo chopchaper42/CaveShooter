@@ -31,6 +31,10 @@ public class Updater {
     public void update(double dt) {
         redrawEntities(level, level.canvas());
 
+
+
+
+
         //redraw UI
         uiManager.update();
 
@@ -79,13 +83,6 @@ public class Updater {
             bullet.move(dt);
         });
 
-
-        if (player.getHealth() <= 0) {
-            Logger.log("DEAD");
-            toRemove.add(player);
-            guiManager.renderLevels();
-        }
-
         // remove entities to remove
         toRemove.forEach(entity -> {
             if (entity instanceof Item) {
@@ -98,6 +95,17 @@ public class Updater {
                 player.kill();
             }
         });
+
+        if (level.completed()) {
+            Logger.log("Level completed. All enemies are dead.");
+            guiManager.renderWin();
+        }
+
+        if (player.getHealth() <= 0) {
+            Logger.log("DEAD");
+            toRemove.add(player);
+            guiManager.renderLose();
+        }
     }
 
     private void redrawEntities(Level level, Canvas canvas) {

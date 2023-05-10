@@ -10,10 +10,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -105,5 +102,35 @@ public class GUIManager {
         });
 
         stage.setScene(levelsScene);
+    }
+
+    public void renderWin() {
+        VBox pane = new VBox();
+        pane.setAlignment(Pos.CENTER);
+
+        Label text = new Label("You won! All enemies are dead.");
+        Button goToLevels = new Button("Go to Levels");
+
+        goToLevels.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            renderLevels();
+        });
+
+        pane.getChildren().addAll(text, goToLevels);
+        stage.setScene(new Scene(pane));
+    }
+
+    public void renderLose() {
+        VBox pane = new VBox();
+        pane.setAlignment(Pos.CENTER);
+
+        Label text = new Label("You lose! Try again next time.");
+        Button goToLevels = new Button("Go to Levels");
+
+        goToLevels.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            renderLevels();
+        });
+
+        pane.getChildren().addAll(text, goToLevels);
+        stage.setScene(new Scene(pane));
     }
 }

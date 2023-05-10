@@ -30,6 +30,7 @@ public class Game
     private final UIManager uiManager;
     private final GUIManager guiManager;
     private final Updater updater;
+    private boolean running = true;
 
 
     /**
@@ -75,8 +76,9 @@ public class Game
                 inputManager.handleInput(dt);
                 lastFrame = now;
 
-                if (!player.alive())
+                if (!player.alive() || level.completed()) {
                     this.stop();
+                }
 
                 //sendData();
             }
