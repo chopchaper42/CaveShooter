@@ -25,11 +25,11 @@ public class Collisions
 
     public static void checkEnemiesVisionZoneIntersection(Player player, List<Enemy> enemies) {
         enemies.forEach(enemy -> {
-            if (enemy.visionField().intersects(player.getBoundaries()) && !enemy.seeingPlayer()) {
+            if (enemy.visionField().bounds().intersects(player.getBoundaries()) && !enemy.seeingPlayer()) {
                 Logger.log(enemy + ": has visual with player!");
                 enemy.setSeeingPlayer(true);
             } else {
-                if (enemy.seeingPlayer() && !enemy.visionField().intersects(player.getBoundaries())) {
+                if (enemy.seeingPlayer() && !enemy.visionField().bounds().intersects(player.getBoundaries())) {
                     Logger.log(enemy + " lost visual with player.");
                     enemy.setSeeingPlayer(false);
                 }

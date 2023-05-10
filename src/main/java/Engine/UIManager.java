@@ -14,7 +14,7 @@ public class UIManager {
 
     public UIManager(Window window, Player player, Color color, Font font) {
         this.player = player;
-        this.canvas = new Canvas(window.getWidth(), window.getHeight());
+        this.canvas = new Canvas(window.width(), window.height());
         this.canvas.getGraphicsContext2D().setFill(color);
         this.canvas.getGraphicsContext2D().setFont(font);
     }

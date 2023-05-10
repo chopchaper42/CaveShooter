@@ -3,7 +3,8 @@ package Engine;
 //import Engine.Entity.Items.Ammo;
 import Engine.Level.Level;
 import Engine.Entity.Player;
-        import Utility.Window;
+import GUI.GUIManager;
+import Utility.Window;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -27,20 +28,23 @@ public class Game
     private final Player player;
     private final InputManager inputManager;
     private final UIManager uiManager;
+    private final GUIManager guiManager;
     private final Updater updater;
 
 
     /**
      * Constructs a new Game object with a stage and a level
      */
-    public Game(Window window, Stage stage, File level) {
+    public Game(Window window, GUIManager guiManager, Stage stage, File level) {
         this.window = window;
         this.stage = stage;
         this.level = new Level(window, level);
-        this.player = new Player(window,
+        this.player = new Player(
+                this.window,
                 this.level.initialPlayerPosition().getX(),
                 this.level.initialPlayerPosition().getY(),
-                new Inventory());
+                new Inventory()
+        );
         this.inputManager = new InputManager(this.player, this.level);
         this.uiManager = new UIManager(
                 this.window,
@@ -48,7 +52,8 @@ public class Game
                 Color.YELLOWGREEN,
                 new Font("Verdana", 40)
         );
-        this.updater = new Updater(this.level, this.player, this.uiManager);
+        this.guiManager = guiManager;
+        this.updater = new Updater(this.level, this.player, this.uiManager, this.guiManager);
     }
 
 
@@ -69,6 +74,10 @@ public class Game
                 updater.update(dt);
                 inputManager.handleInput(dt);
                 lastFrame = now;
+
+                if (!player.alive())
+                    this.stop();
+
                 //sendData();
             }
         };
@@ -81,7 +90,7 @@ public class Game
 
         addEventListeners(scene);
 
-        player.draw();
+        player.draw(player.getImage());
 
         stage.setScene(scene);
         stage.show();
@@ -91,7 +100,7 @@ public class Game
         scene.addEventHandler(KeyEvent.KEY_PRESSED, inputManager::press);
         scene.addEventHandler(KeyEvent.KEY_RELEASED, inputManager::release);
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-            inputManager.shoot(event, level.bullets());
+            player.shoot(event, level.bullets());
         });
     }
 

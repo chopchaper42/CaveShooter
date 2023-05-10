@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public class CaveShooter extends Application
@@ -29,18 +30,16 @@ public class CaveShooter extends Application
     private void startGame(Stage stage) {
         Window window = new Window(
                 "Cave Shooter",
+                stage,
                 1080,
                 720,
                 false
         );
-        window.init(stage);
 
         LevelManager levelManager = new LevelManager(new File("./src/main/levels"));
         GUIManager guiManager = new GUIManager(window, stage, levelManager);
 
         guiManager.renderMainWindow();
-
-
         stage.show();
     }
 }

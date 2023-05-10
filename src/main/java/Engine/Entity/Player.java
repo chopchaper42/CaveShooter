@@ -1,14 +1,16 @@
 package Engine.Entity;
 
+import Engine.ActionField;
 import Engine.Entity.Items.*;
 import Engine.Entity.Tile.Door;
 import Engine.Entity.Tile.Tile;
 import Engine.Inventory;
 import Logs.Logger;
 import Utility.Window;
-import javafx.geometry.Rectangle2D;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 
 import java.io.File;
 import java.util.List;
@@ -18,17 +20,22 @@ import java.util.List;
  */
 public class Player extends LivingEntity
 {
-    private final int SPEED_PER_SECOND = 1000;
-    private final int ACTION_ZONE_LENGTH = 20;
-    private static final int PLAYER_SIZE = 30;
-    private final Inventory inventory; // init in constructor, read from file in future
+    private final int SPEED_PER_SECOND = 1500;
+    public static final double SIZE = 30;
+    private final Inventory inventory;
     private final double screenPositionX;
     private final double screenPositionY;
     private final Canvas canvas;
-    private Rectangle2D interactionArea;
-    private final static Image image = new Image(
+    private final ActionField actionField;
+    private boolean alive = true;
+    private final static Image alivePlayer = new Image(
             new File("./src/main/assets/player.png").toURI().toString(),
-            PLAYER_SIZE, PLAYER_SIZE,
+            SIZE, SIZE,
+            false,
+            false);
+    private final static Image deadPlayer = new Image(
+            new File("./src/main/assets/dead_player.png").toURI().toString(),
+            SIZE, SIZE,
             false,
             false);
 
@@ -38,12 +45,13 @@ public class Player extends LivingEntity
      * @param y y coordinate
      */
     public Player(Window window, double x, double y, Inventory inventory) { //
-        super(image, x, y, 100);
-        canvas = new Canvas(window.getWidth(), window.getHeight());
-        setBoundaries(getX(), getY(), image.getWidth(), image.getHeight());
-        screenPositionX = (window.getWidth() - PLAYER_SIZE) / 2;
-        screenPositionY = (window.getHeight() - PLAYER_SIZE) / 2;
+        super(alivePlayer, x, y, 100);
+        canvas = new Canvas(window.width(), window.height());
+        setBoundaries(getX(), getY(), alivePlayer.getWidth(), alivePlayer.getHeight());
+        screenPositionX = (window.width() - SIZE) / 2;
+        screenPositionY = (window.height() - SIZE) / 2;
         this.inventory = inventory;
+        this.actionField = new ActionField(0.5, this);
     }
 
     /**
@@ -85,14 +93,16 @@ public class Player extends LivingEntity
     }
 
     public void tryOpenDoor(List<Tile> tiles) {
-        updateInteractionArea();
+        actionField.updateToMatchCoordinates();
+
         if (inventory.getAmount(Type.KEY) == 0) {
             Logger.log("No keys in inventory");
             return;
+
         }
         for (Tile tile : tiles) {
             if (tile instanceof Door door) {
-                if (interactionArea.intersects(door.getBoundaries())) {
+                if (actionField.bounds().intersects(door.getBoundaries())) {
                     inventory.use(Type.KEY);
                     door.open();
                 }
@@ -100,12 +110,20 @@ public class Player extends LivingEntity
         }
     }
 
-    public void draw() {
-        canvas.getGraphicsContext2D().drawImage(image, screenPositionX, screenPositionY);
+    public void shoot(MouseEvent event, List<Bullet> bullets) {
+        if (getItemAmount(Type.AMMO) > 0) {
+            Point2D direction = new Point2D(
+                    getX() - (positionOnCanvasX() - event.getX()),
+                    getY() - (positionOnCanvasY() - event.getY())
+            );
+            Bullet bullet = new Bullet(this, direction, 6500);
+            bullets.add(bullet);
+            decreaseItem(Type.AMMO);
+        }
     }
 
-    public static int getPLAYER_SIZE() {
-        return PLAYER_SIZE;
+    public void draw(Image image) {
+        canvas.getGraphicsContext2D().drawImage(image, screenPositionX, screenPositionY);
     }
 
     public double positionOnCanvasX() {
@@ -119,11 +137,14 @@ public class Player extends LivingEntity
         return canvas;
     }
 
-    private void updateInteractionArea() {
-        interactionArea = new Rectangle2D(
-                getX() - ACTION_ZONE_LENGTH,
-                getY() - ACTION_ZONE_LENGTH,
-                image.getWidth() + 2 * ACTION_ZONE_LENGTH,
-                image.getHeight() + 2 * ACTION_ZONE_LENGTH);
+    public boolean alive() {
+        return alive;
+    }
+
+    public void kill() {
+        alive = false;
+        setImage(deadPlayer);
+        draw(getImage());
+        decreaseHealth(1000);
     }
 }

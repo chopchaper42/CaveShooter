@@ -61,8 +61,8 @@ public final class Level
     public Point2D canvasPosition() {
         Point2D playerPosition = initialPlayerPosition();
         Point2D canvasPosition = new Point2D(
-                window.getCenter(Player.getPLAYER_SIZE()).getX() - playerPosition.getX(),
-                window.getCenter(Player.getPLAYER_SIZE()).getY() - playerPosition.getY()
+                window.getCenter(Player.SIZE).getX() - playerPosition.getX(),
+                window.getCenter(Player.SIZE).getY() - playerPosition.getY()
         );
         return canvasPosition;
     }

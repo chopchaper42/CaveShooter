@@ -68,47 +68,19 @@ public class InputManager {
             dx = distance;
         }
 
-
-        Rectangle2D newBoundariesX = new Rectangle2D(
-                player.getX() + dx,
-                player.getY(),
-                player.getImage().getWidth(),
-                player.getImage().getHeight()
-        );
-        Rectangle2D newBoundariesY = new Rectangle2D(
-                player.getX(),
-                player.getY() + dy,
-                player.getImage().getWidth(),
-                player.getImage().getHeight()
-        );
+        Rectangle2D newBoundariesX = new SquareBoundaries(player.getX()+ dx, player.getY(), Player.SIZE);
+        Rectangle2D newBoundariesY =  new SquareBoundaries(player.getX(), player.getY() + dy, Player.SIZE);
 
         if (dx != 0 && !Collisions.checkWallCollision(newBoundariesX, level.tiles())) {
-            player.moveX(dx);
+            player.move(dx, 0);
             level.moveCanvas(dx, 0);
         }
         if (dy != 0 && !Collisions.checkWallCollision(newBoundariesY, level.tiles())) {
-            player.moveY(dy);
+            player.move(0, dy);
             level.moveCanvas(0, dy);
         }
 
-        player.setBoundaries(
-                player.getX(),
-                player.getY(),
-                player.getImage().getWidth(),
-                player.getImage().getHeight()
-        );
-    }
-
-    public void shoot(MouseEvent event, List<Bullet> bullets) {
-        if (player.getItemAmount(Type.AMMO) > 0) {
-            Point2D direction = new Point2D(
-                    player.getX() - (player.positionOnCanvasX() - event.getX()),
-                    player.getY() - (player.positionOnCanvasY() - event.getY())
-            );
-            Bullet bullet = new Bullet(player, direction, 6500);
-            bullets.add(bullet);
-            player.decreaseItem(Type.AMMO);
-        }
+        player.setBoundaries(player.getX(), player.getY(), Player.SIZE);
     }
 
     public void release(KeyEvent event)
@@ -129,6 +101,9 @@ public class InputManager {
             case SPACE -> {
                 if (pressed)
                     player.tryOpenDoor(level.tiles());
+            }
+            case K -> {
+                player.kill();
             }
         }
     }

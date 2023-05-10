@@ -1,6 +1,6 @@
 package Engine.Entity;
 
-import Engine.Graphics;
+import Engine.SquareBoundaries;
 import Logs.Logger;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -82,6 +82,9 @@ public abstract class Entity
     public void setBoundaries(double x, double y, double width, double height) {
         this.boundaries = new Rectangle2D(x, y, width, height);
     }
+    public void setBoundaries(double x, double y, double size) {
+        this.boundaries = new SquareBoundaries(x, y, size);
+    }
     public void setBoundaries(Rectangle2D bounds) {
         this.boundaries = bounds;
     }
@@ -90,7 +93,7 @@ public abstract class Entity
      * Returns the central point of an entity
      * @return the central point
      */
-    Point2D getCenter() {
+    public Point2D center() {
         double x = getX() + (image.getWidth() / 2);
         double y = getY() + (image.getHeight() / 2);
         return new Point2D(x, y);
@@ -105,5 +108,12 @@ public abstract class Entity
     public void logCoordinates() {
         Logger.log("\n" + toString() + "\n\tX: " + getX() + "\n\tY:" + getY() + "\n\tbounds X: "
                 + boundaries.getMinX() + "\n\tbounds Y:" + boundaries.getMinY());
+    }
+
+    public double width() {
+        return boundaries.getWidth();
+    }
+    public double height() {
+        return boundaries.getHeight();
     }
 }

@@ -6,6 +6,7 @@ import Engine.Entity.Entity;
 import Engine.Entity.Items.Item;
 import Engine.Entity.Player;
 import Engine.Level.Level;
+import GUI.GUIManager;
 import Logs.Logger;
 import Utility.Collisions;
 import javafx.scene.canvas.Canvas;
@@ -18,11 +19,13 @@ public class Updater {
     private Level level;
     private Player player;
     private UIManager uiManager;
+    private GUIManager guiManager;
 
-    public Updater(Level level, Player player, UIManager uiManager) {
+    public Updater(Level level, Player player, UIManager uiManager, GUIManager guiManager) {
         this.level = level;
         this.player = player;
         this.uiManager = uiManager;
+        this.guiManager = guiManager;
     }
 
     public void update(double dt) {
@@ -31,10 +34,23 @@ public class Updater {
         //redraw UI
         uiManager.update();
 
-        //enemies shoot
-        level.enemies().forEach(enemy -> enemy.shoot(player, level.bullets(), dt));
+        if (player.alive()) {
+            //enemies shoot
+            level.enemies().forEach(enemy -> enemy.shoot(player, level.bullets(), dt));
 
-        level.enemies().forEach(enemy -> enemy.move(level.tiles(), dt));
+            // check for items in player's range
+            List<Item> itemsInRange = Collisions.checkItemCollision(player, level.items());
+            player.takeItems(itemsInRange);
+            toRemove.addAll(itemsInRange);
+
+            // check if player is in enemies vision zone
+            Collisions.checkEnemiesVisionZoneIntersection(player, level.enemies());
+        }
+
+        level.enemies().forEach(enemy -> {
+            enemy.move(level.tiles(), dt);
+            enemy.visionField().draw(level.canvas());
+        });
 
 
         // mark bullets "to remove" if they intersect with a wall
@@ -42,23 +58,21 @@ public class Updater {
             if (Collisions.checkWallCollision(bullet, level.tiles())) {
                 toRemove.add(bullet);
             }
-            if (bullet.source() != player && player.getBoundaries().intersects(bullet.getBoundaries())) { // may be add source to bullet to except friendly fire
-                if (player.getHealth() - bullet.DAMAGE() <= 0) {
-                    Logger.log("DEAD");
-//                    toRemove.add(player);
-                } else {
-                    player.decreaseHealth(bullet.DAMAGE());
-                    toRemove.add(bullet);
-                }
+            if (player.alive() && bullet.source() != player && player.getBoundaries().intersects(bullet.getBoundaries())) { // may be add source to bullet to except friendly fire
+                player.decreaseHealth(bullet.damage());
+                toRemove.add(bullet);
             }
+
+
+
             Enemy intersectedEntity = Collisions.checkBulletCollision(bullet, level.enemies());
             if (intersectedEntity != null) {
                 Logger.log(intersectedEntity + "'s been hit. Now he has " + intersectedEntity.getHealth() + " HP.");
-                if ((intersectedEntity.getHealth() - bullet.DAMAGE()) <= 0) {
+                if ((intersectedEntity.getHealth() - bullet.damage()) <= 0) {
                     Logger.log(intersectedEntity + " added to REMOVE");
                     toRemove.add(intersectedEntity);
                 }
-                intersectedEntity.decreaseHealth(bullet.DAMAGE());
+                intersectedEntity.decreaseHealth(bullet.damage());
                 toRemove.add(bullet);
             }
 
@@ -66,13 +80,11 @@ public class Updater {
         });
 
 
-        // check if player is in enemies vision zone
-        Collisions.checkEnemiesVisionZoneIntersection(player, level.enemies());
-
-        // check for items in player's range
-        List<Item> itemsInRange = Collisions.checkItemCollision(player, level.items());
-        player.takeItems(itemsInRange);
-        toRemove.addAll(itemsInRange);
+        if (player.getHealth() <= 0) {
+            Logger.log("DEAD");
+            toRemove.add(player);
+            guiManager.renderLevels();
+        }
 
         // remove entities to remove
         toRemove.forEach(entity -> {
@@ -82,6 +94,8 @@ public class Updater {
                 level.bullets().remove(entity);
             } else if (entity instanceof Enemy) {
                 level.enemies().remove(entity);
+            } else if (entity instanceof Player) {
+                player.kill();
             }
         });
     }
