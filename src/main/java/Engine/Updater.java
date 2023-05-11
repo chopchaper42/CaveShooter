@@ -98,6 +98,7 @@ public class Updater {
         });
 
         if (level.completed()) {
+            InventoryManager.saveInventory();
             Logger.log("Level completed. All enemies are dead.");
             guiManager.renderWin();
         }

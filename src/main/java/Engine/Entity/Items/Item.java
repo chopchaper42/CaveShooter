@@ -26,6 +26,11 @@ public class Item extends Entity
         this.type = type;
     }
 
+    public Item(Type type, int amount) {
+        super(null, 0, 0);
+        this.type = type;
+        this.amount = amount;
+    }
 
     public int getAmount() {
         return amount;

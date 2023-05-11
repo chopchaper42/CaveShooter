@@ -38,7 +38,7 @@ public class Game
     /**
      * Constructs a new Game object with a stage and a level
      */
-    public Game(Window window, GUIManager guiManager, Stage stage, File level) {
+    public Game(Window window, GUIManager guiManager, Stage stage, File level, Inventory inventory) {
         this.window = window;
         this.stage = stage;
         this.level = new Level(window, level);
@@ -46,7 +46,7 @@ public class Game
                 this.window,
                 this.level.initialPlayerPosition().getX(),
                 this.level.initialPlayerPosition().getY(),
-                new Inventory()
+                inventory
         );
         this.inputManager = new InputManager(this.player, this.level);
         this.uiManager = new UIManager(
@@ -65,6 +65,7 @@ public class Game
      */
     public void run() {
         startGame();
+        Logger.log(player.getInventory().toString());
 
         AnimationTimer loop = new AnimationTimer()
         {
@@ -80,14 +81,14 @@ public class Game
 
                 if (!player.alive() || level.completed()) {
                     this.stop();
+
+                    Logger.log("Game ended.");
                 }
 
                 //sendData();
             }
         };
         loop.start();
-
-        Logger.log("Game ended.");
     }
 
     private void startGame() {

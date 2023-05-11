@@ -17,4 +17,7 @@ public class Key extends Item {
     public Key(Point2D position, int amount) {
         this(position.getX(), position.getY(), amount);
     }
+    public Key(int amount) {
+        super(Type.KEY, amount);
+    }
 }

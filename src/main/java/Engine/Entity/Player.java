@@ -63,7 +63,7 @@ public class Player extends LivingEntity
     }
 
     /**
-     * @return the player's inventory
+     * @return the player's inventory.txt
      */
     public Inventory getInventory()
     {
@@ -96,7 +96,7 @@ public class Player extends LivingEntity
         actionField.updateToMatchCoordinates();
 
         if (inventory.getAmount(Type.KEY) == 0) {
-            Logger.log("No keys in inventory");
+            Logger.log("No keys in inventory.txt");
             return;
 
         }

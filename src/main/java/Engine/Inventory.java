@@ -41,4 +41,16 @@ public class Inventory {
     private void decrease(Type type, int newAmount) {
         inventory.replace(type, newAmount);
     }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Player's inventory.txt:\n\t" + inventory.size() + " items:\n");
+        inventory.forEach((key, value) -> {
+            sb.append("\t\t").append(key.name()).append(" AMOUNT: ").append(value);
+        });
+        return sb.toString();
+    }
+
+    public HashMap<Type, Integer> getInventory() {
+        return inventory;
+    }
 }

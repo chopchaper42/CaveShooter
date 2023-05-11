@@ -24,4 +24,7 @@ public class Heal extends Item {
     public Heal(Point2D position, int amount) {
         this(position.getX(), position.getY(), amount);
     }
+    public Heal(int amount) {
+        super(Type.HEAL, amount);
+    }
 }

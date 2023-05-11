@@ -24,4 +24,7 @@ public class Ammo extends Item {
     public Ammo(Point2D position, int amount) {
         this(position.getX(), position.getY(), amount);
     }
+    public Ammo(int amount) {
+        super(Type.AMMO, amount);
+    }
 }

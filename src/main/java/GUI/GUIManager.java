@@ -2,29 +2,25 @@ package GUI;
 
 import Engine.Game;
 import Engine.GameSettings;
+import Engine.InventoryManager;
 import Engine.Level.LevelManager;
 import Logs.LogTo;
 import Logs.Logger;
 import Utility.Window;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.net.URL;
 import java.util.List;
 
 public class GUIManager {
@@ -65,6 +61,7 @@ public class GUIManager {
         CheckBox enableLogging = new CheckBox("Enable logger");
         ToggleGroup logGroup = new ToggleGroup();
         RadioButton logToConsole = new RadioButton("Log to console");
+        logToConsole.setSelected(true);
         logToConsole.setId(LogTo.CONSOLE.name());
         RadioButton logToFile = new RadioButton("Log to file");
         logToFile.setId(LogTo.FILE.name());
@@ -72,16 +69,6 @@ public class GUIManager {
         logToFile.setToggleGroup(logGroup);
 
         logBox.getChildren().addAll(enableLogging, logToConsole, logToFile);
-
-        /*if (enableLogging.isSelected()) {
-            System.out.println("Logger selected");
-            Logger.setEnabled(true);
-
-            if (logGroup.getSelectedToggle().getProperties().get("id") == LogTo.FILE.name()) {
-                System.out.println("Log to file selected");
-                Logger.setOutput();
-            }
-        }*/
 
         enableLogging.addEventHandler(ActionEvent.ACTION, (ActionEvent e) -> {
             Logger.setEnabled(enableLogging.isSelected());
@@ -135,7 +122,7 @@ public class GUIManager {
         levels.forEach((level) -> {
             Button levelButton = new Button(level.getName());
             levelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-                new Game(window, this, stage, level).run();
+                new Game(window, this, stage, level, InventoryManager.getInventory()).run();
             });
             levelsPane.getChildren().add(levelButton);
         });

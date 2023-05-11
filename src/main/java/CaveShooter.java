@@ -1,12 +1,11 @@
+import Engine.InventoryManager;
 import Engine.Level.LevelManager;
 import GUI.GUIManager;
-import Logs.Logger;
 import Utility.Window;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
@@ -23,12 +22,12 @@ public class CaveShooter extends Application
             startGame(stage);
 
         } catch (Exception exception) {
-            Logger.log("FATAL: " + exception.getMessage());
+            System.out.println(exception.getMessage());
             System.exit(-1);
         }
     }
 
-    private void startGame(Stage stage) throws FileNotFoundException {
+    private void startGame(Stage stage) throws IOException {
         Window window = new Window(
                 "Cave Shooter",
                 stage,
@@ -38,6 +37,7 @@ public class CaveShooter extends Application
         );
 
         LevelManager levelManager = new LevelManager(new File("./src/main/levels"));
+        InventoryManager.readInventory("./src/main/inventory/inventory.txt");
         GUIManager guiManager = new GUIManager(window, stage, levelManager);
 
         guiManager.renderMainWindow();
