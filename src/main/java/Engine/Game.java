@@ -1,30 +1,22 @@
 package Engine;
 
-import Engine.Entity.Bullet;
-import Engine.Entity.Entity;
-import Engine.Entity.Items.Ammo;
-import Engine.Entity.Items.Heal;
-import Engine.Entity.Items.Item;
+//import Engine.Entity.Items.Ammo;
 import Engine.Level.Level;
 import Engine.Entity.Player;
-import Engine.Entity.Tiles.Tile;
-import Utility.Collisions;
-import com.sun.javafx.scene.control.LabeledText;
+import GUI.GUIManager;
+import Logs.Logger;
+import Utility.Window;
 import javafx.animation.AnimationTimer;
-import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URISyntaxException;
 
 
 /**
@@ -32,23 +24,39 @@ import java.util.List;
  */
 public class Game
 {
-    private List<Entity> entities = new ArrayList<>();
-    private List<Item> items = new ArrayList<>();
-    private static Level level;
-    private static Player player;
+    private final Window window;
+    private final Level level;
     private final Stage stage;
-    private boolean W_pressed = false;
-    private boolean A_pressed = false;
-    private boolean S_pressed = false;
-    private boolean D_pressed = false;
+    private final Player player;
+    private final InputManager inputManager;
+    private final UIManager uiManager;
+    private final GUIManager guiManager;
+    private final Updater updater;
+    private boolean running = true;
 
 
     /**
      * Constructs a new Game object with a stage and a level
      */
-    public Game(Stage stage) {
+    public Game(Window window, GUIManager guiManager, Stage stage, File level, Inventory inventory) {
+        this.window = window;
         this.stage = stage;
-        level = new Level(new File("./src/main/levels/level1.txt"));
+        this.level = new Level(window, level);
+        this.player = new Player(
+                this.window,
+                this.level.initialPlayerPosition().getX(),
+                this.level.initialPlayerPosition().getY(),
+                inventory
+        );
+        this.inputManager = new InputManager(this.player, this.level);
+        this.uiManager = new UIManager(
+                this.window,
+                this.player,
+                Color.YELLOWGREEN,
+                new Font("Verdana", 40)
+        );
+        this.guiManager = guiManager;
+        this.updater = new Updater(this.level, this.player, this.uiManager, this.guiManager);
     }
 
 
@@ -56,8 +64,9 @@ public class Game
      * Runs the game
      */
     public void run() {
-        spawnPlayer();
         startGame();
+        Logger.log(player.getInventory().toString());
+
         AnimationTimer loop = new AnimationTimer()
         {
             long lastFrame;
@@ -66,121 +75,41 @@ public class Game
             {
                 double dt = (now - lastFrame) / 10e9;
                 //receiveData();
-                update(dt);
-                player.handleInput(W_pressed, A_pressed, S_pressed, D_pressed, dt);
+                updater.update(dt);
+                inputManager.handleInput(dt);
                 lastFrame = now;
+
+                if (!player.alive() || level.completed()) {
+                    this.stop();
+
+                    Logger.log("Game ended.");
+                }
+
                 //sendData();
             }
         };
         loop.start();
     }
 
-
-    private void update(double dt) {
-        List<Entity> toRemove = new ArrayList<>();
-
-        // draw tiles
-        level.getTiles().forEach(Tile::draw);
-
-        // draw entities
-        entities.forEach(Entity::draw);
-
-        // draw items
-        items.forEach(Entity::draw);
-
-        // mark bullets "to remove" if they intersect with a wall
-        entities.forEach(entity -> {
-            if (entity instanceof Bullet) {
-                if (Collisions.checkWallCollision(level.getTiles(), entity.getBoundaries())) {
-                    toRemove.add(entity);
-                }
-                ((Bullet) entity).move(dt);
-            }
-        });
-
-        // check for items in player's range
-        List<Item> itemsInRange = Collisions.checkItemCollision(items, player.getBoundaries());
-        player.takeItems(itemsInRange);
-        toRemove.addAll(itemsInRange);
-
-        // remove entities to remove
-        toRemove.forEach(entity -> {
-            if (entity instanceof Item) {
-                items.remove(entity);
-            }
-            else {
-                entities.remove(entity);
-            }
-        });
-
-
-        Graphics.getGraphics().fillText("HP: " + player.getHealth(), 10, 45);
-        Graphics.getGraphics().fillText(String.valueOf(player.getAmmo()), 10, 85);
-
-    }
-
-    private void spawnPlayer()
-    {
-        Player player = new Player(level.getFirstFloorTile());
-        entities.add(player);
-        Game.player = player;
-    }
-
     private void startGame() {
-        Group group = new Group(Graphics.getCanvas());
+        Group group = new Group(level.canvas(), player.canvas(), uiManager.canvas());
         Scene scene = new Scene(group);
 
-        Graphics.getGraphics().setFill(Color.WHITE);
-        Graphics.getGraphics().setFont(new Font("Arial Sans", 50));
+        addEventListeners(scene);
 
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, this::press);
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, this::release);
-        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, this::shoot);
-
-        Ammo testAmmo = new Ammo(400, 200); // think how to generate it or idk
-        items.add(testAmmo);
-        Heal heal = new Heal(800, 200);
-        items.add(heal);
+        player.draw(player.getImage());
 
         stage.setScene(scene);
         stage.show();
     }
 
-    private void shoot(MouseEvent event)
-    {
-        if (player.getAmmo() > 0) {
-            Point2D direction = new Point2D(event.getX(), event.getY());
-            Bullet bullet = new Bullet(player, direction);
-            entities.add(bullet);
-            player.decreaseAmmo();
-        }
-    }
-
-    private void release(KeyEvent event)
-    {
-        handle(event.getCode(), false);
-    }
-
-    private void press(KeyEvent event) {
-        handle(event.getCode(), true);
-    }
-
-    private void handle(KeyCode code, boolean pressed) {
-        switch (code) {
-            case W -> W_pressed = pressed;
-            case A -> A_pressed = pressed;
-            case S -> S_pressed = pressed;
-            case D -> D_pressed = pressed;
-        }
+    private void addEventListeners(Scene scene) {
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, inputManager::press);
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, inputManager::release);
+        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+            player.shoot(event, level.bullets());
+        });
     }
 
 
-    /**
-     * Return the currently loaded level
-     * @return currently loaded level
-     */
-    public static Level getLevel()
-    {
-        return level;
-    }
 }
