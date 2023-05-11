@@ -10,7 +10,9 @@ import GUI.GUIManager;
 import Logs.Logger;
 import Utility.Collisions;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.paint.Color;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +33,6 @@ public class Updater {
     public void update(double dt) {
         redrawEntities(level, level.canvas());
 
-
-
-
-
         //redraw UI
         uiManager.update();
 
@@ -51,10 +49,13 @@ public class Updater {
             Collisions.checkEnemiesVisionZoneIntersection(player, level.enemies());
         }
 
-        level.enemies().forEach(enemy -> {
-            enemy.move(level.tiles(), dt);
-            enemy.visionField().draw(level.canvas());
-        });
+        // show vision fields
+        if (GameSettings.getShowFields()) {
+            level.enemies().forEach(enemy -> {
+                enemy.move(level.tiles(), dt);
+                enemy.visionField().draw(level.canvas(), Color.YELLOWGREEN);
+            });
+        }
 
 
         // mark bullets "to remove" if they intersect with a wall

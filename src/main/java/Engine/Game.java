@@ -4,6 +4,7 @@ package Engine;
 import Engine.Level.Level;
 import Engine.Entity.Player;
 import GUI.GUIManager;
+import Logs.Logger;
 import Utility.Window;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
@@ -15,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
 
 /**
@@ -84,6 +86,8 @@ public class Game
             }
         };
         loop.start();
+
+        Logger.log("Game ended.");
     }
 
     private void startGame() {

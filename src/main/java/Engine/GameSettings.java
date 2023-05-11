@@ -1,9 +1,21 @@
 package Engine;
 
-import Logs.LogTo;
+import Logs.Logger;
 
 public class GameSettings {
-    private boolean showFields = false;
-    private boolean enableLogger = false;
-    private LogTo logTo = LogTo.CONSOLE;
+    private static boolean showFields = false;
+
+    public static boolean getShowFields() {
+        return showFields;
+    }
+
+    public static void toggleShowFields() {
+        if (showFields) {
+            showFields = false;
+            Logger.log("Fields are visible.");
+        } else {
+            showFields = true;
+            Logger.log("Fields are invisible.");
+        }
+    }
 }

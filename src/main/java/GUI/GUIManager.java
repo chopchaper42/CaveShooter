@@ -3,7 +3,10 @@ package GUI;
 import Engine.Game;
 import Engine.GameSettings;
 import Engine.Level.LevelManager;
+import Logs.LogTo;
+import Logs.Logger;
 import Utility.Window;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -18,7 +21,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
 import java.util.List;
 
@@ -39,7 +44,7 @@ public class GUIManager {
         this.settings = new GameSettings();
     }
 
-    public void renderMainWindow() {
+    public void renderMainWindow() throws FileNotFoundException {
         VBox pane = new VBox();
         pane.setSpacing(5);
         pane.setAlignment(Pos.CENTER);
@@ -60,13 +65,35 @@ public class GUIManager {
         CheckBox enableLogging = new CheckBox("Enable logger");
         ToggleGroup logGroup = new ToggleGroup();
         RadioButton logToConsole = new RadioButton("Log to console");
+        logToConsole.setId(LogTo.CONSOLE.name());
         RadioButton logToFile = new RadioButton("Log to file");
+        logToFile.setId(LogTo.FILE.name());
         logToConsole.setToggleGroup(logGroup);
         logToFile.setToggleGroup(logGroup);
 
         logBox.getChildren().addAll(enableLogging, logToConsole, logToFile);
 
+        /*if (enableLogging.isSelected()) {
+            System.out.println("Logger selected");
+            Logger.setEnabled(true);
 
+            if (logGroup.getSelectedToggle().getProperties().get("id") == LogTo.FILE.name()) {
+                System.out.println("Log to file selected");
+                Logger.setOutput();
+            }
+        }*/
+
+        enableLogging.addEventHandler(ActionEvent.ACTION, (ActionEvent e) -> {
+            Logger.setEnabled(enableLogging.isSelected());
+        });
+
+        logToFile.addEventHandler(ActionEvent.ACTION, (ActionEvent e) -> {
+            try {
+                Logger.setOutput(new PrintStream("./src/main/logs/log.txt"));
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         singlePlayerButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
             renderLevels();
@@ -93,6 +120,18 @@ public class GUIManager {
         Scene levelsScene = new Scene(levelsPane);
         List<File> levels = levelManager.getLevels();
 
+        Button backToMenu = new Button("<- Back");
+        backToMenu.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+            try {
+                renderMainWindow();
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        levelsPane.getChildren().add(
+                backToMenu
+        );
+
         levels.forEach((level) -> {
             Button levelButton = new Button(level.getName());
             levelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
@@ -106,6 +145,7 @@ public class GUIManager {
 
     public void renderWin() {
         VBox pane = new VBox();
+        pane.setSpacing(10);
         pane.setAlignment(Pos.CENTER);
 
         Label text = new Label("You won! All enemies are dead.");
@@ -121,6 +161,7 @@ public class GUIManager {
 
     public void renderLose() {
         VBox pane = new VBox();
+        pane.setSpacing(10);
         pane.setAlignment(Pos.CENTER);
 
         Label text = new Label("You lose! Try again next time.");

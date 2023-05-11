@@ -102,9 +102,12 @@ public class InputManager {
                 if (pressed)
                     player.tryOpenDoor(level.tiles());
             }
-            case K -> {
-                player.kill();
+            case K -> player.kill();
+            case Q -> {
+                if (pressed)
+                    GameSettings.toggleShowFields();
             }
+
         }
     }
 }

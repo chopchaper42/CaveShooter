@@ -1,16 +1,14 @@
 package Logs;
 
-import javax.swing.text.DateFormatter;
 import java.io.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 
 //import static Engine.Parameters.LOGS_STREAM;
 
 public class Logger
 {
-    private static final PrintStream outStream = System.out;
+    private static boolean enabled = false;
+    private static PrintStream stream = System.out;
 
     /**
      * Logs the given text to the specified output
@@ -18,7 +16,17 @@ public class Logger
      */
     public static void log(String text)
     {
+        if (enabled) {
             LocalDateTime now = LocalDateTime.now();
-            outStream.println(now + ": " + text);
+            stream.println(now + ": " + text);
+        }
+    }
+
+    public static void setEnabled(boolean enabled) {
+        Logger.enabled = enabled;
+        log("Logger enabled.");
+    }
+    public static void setOutput(PrintStream stream) {
+        Logger.stream = stream;
     }
 }

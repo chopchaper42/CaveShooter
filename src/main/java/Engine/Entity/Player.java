@@ -140,6 +140,9 @@ public class Player extends LivingEntity
     public boolean alive() {
         return alive;
     }
+    public ActionField actionField() {
+        return actionField;
+    }
 
     public void kill() {
         alive = false;

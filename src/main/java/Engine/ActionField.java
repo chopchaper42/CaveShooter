@@ -32,8 +32,8 @@ public class ActionField {
         );
     }
 
-    public void draw(Canvas canvas) {
-        canvas.getGraphicsContext2D().setStroke(Color.YELLOWGREEN);
+    public void draw(Canvas canvas, Color color) {
+        canvas.getGraphicsContext2D().setStroke(color);
         canvas.getGraphicsContext2D().strokeRect(
                 bounds.getMinX(),
                 bounds.getMinY(),

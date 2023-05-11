@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
@@ -27,7 +28,7 @@ public class CaveShooter extends Application
         }
     }
 
-    private void startGame(Stage stage) {
+    private void startGame(Stage stage) throws FileNotFoundException {
         Window window = new Window(
                 "Cave Shooter",
                 stage,
