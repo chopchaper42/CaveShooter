@@ -1,12 +1,15 @@
 package network.udp.server;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.util.Scanner;
 
+import Engine.InventoryManager;
+import Engine.Level.LevelManager;
 import network.udp.IPManager;
 
-public class ServerPlayersConnections
+public class ServerPlayersConnection
 {
     /**
      * The number of players in the game.
@@ -17,9 +20,8 @@ public class ServerPlayersConnections
      * The packet that is received from the client.
      */
     DatagramPacket receivePacket;
-//    DatagramPacket sendingPacket;
 
-    public ServerPlayersConnections() throws UnknownHostException
+    public ServerPlayersConnection() throws UnknownHostException
     {
     }
 
@@ -77,5 +79,13 @@ public class ServerPlayersConnections
             }
         }
         this.numOfConnectingPlayers = players;
+    }
+
+    private void initTheGame() throws IOException
+    {
+
+        LevelManager levelManager = new LevelManager(new File("./src/main/levels"));
+        InventoryManager.readInventory("./src/main/inventory/inventory.txt");
+//        GUIManager guiManager = new GUIManager(window, stage, levelManager);
     }
 }

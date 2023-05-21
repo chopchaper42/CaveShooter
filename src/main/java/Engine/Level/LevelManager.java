@@ -31,5 +31,4 @@ public class LevelManager {
                 levels.add(file);
         }
     }
-
 }

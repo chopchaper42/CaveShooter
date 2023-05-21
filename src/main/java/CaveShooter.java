@@ -28,6 +28,9 @@ public class CaveShooter extends Application
     }
 
     private void startGame(Stage stage) throws IOException {
+
+        // Client requests the server for the necessary parameters to start the game.
+
         Window window = new Window(
                 "Cave Shooter",
                 stage,

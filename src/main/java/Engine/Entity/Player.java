@@ -24,17 +24,17 @@ public class Player extends LivingEntity
     public static final double SIZE = 30;
     private final Inventory inventory;
     private final double screenPositionX;
-    private final double screenPositionY;
+    private final double screenPositionY;c
     private final Canvas canvas;
     private final ActionField actionField;
     private boolean alive = true;
     private final static Image alivePlayer = new Image(
-            new File("./src/main/assets/player.png").toURI().toString(),
+            new File("./src/main/assets/player1.png").toURI().toString(),
             SIZE, SIZE,
             false,
             false);
     private final static Image deadPlayer = new Image(
-            new File("./src/main/assets/dead_player.png").toURI().toString(),
+            new File("./src/main/assets/dead_player1.png").toURI().toString(),
             SIZE, SIZE,
             false,
             false);
