@@ -6,8 +6,10 @@ network/udp/client/ClientSocket.class
 Engine/Game$1.class
 Engine/Entity/Tile/Tile.class
 Engine/Entity/MovingEntity.class
+Logs/LogTo.class
 Engine/Level/Level.class
 Engine/Entity/Bullet.class
+Engine/Speed.class
 network/udp/server/OurServerSocket.class
 Engine/Game.class
 Engine/Entity/Tile/Floor.class
@@ -23,14 +25,17 @@ Engine/Entity/Enemy.class
 Utility/Pythagoras.class
 Engine/Entity/Tile/Wall.class
 Engine/UIManager.class
+Engine/InventoryManager.class
 Engine/Entity/Items/Heal.class
 Engine/Entity/Items/Key.class
 Utility/Window.class
 Engine/Level/LevelManager.class
 Engine/Entity/Entity.class
+Engine/SquareBoundaries.class
 network/udp/client/ClientUDP.class
 network/udp/client/ClientMain.class
 Engine/Entity/Items/Ammo.class
+Engine/GameSettings.class
 Engine/Level/LevelReader.class
 network/udp/server/ServerMain.class
 Engine/Entity/Tile/Door.class
@@ -39,3 +44,4 @@ Engine/Entity/Items/Item.class
 GUI/GUIManager.class
 Utility/Collisions.class
 Engine/Entity/LivingEntity.class
+Engine/ActionField.class

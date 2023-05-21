@@ -7,10 +7,10 @@ public class ServerMain
      */
     public static void main(String[] args)
     {
-        ServerUDP server = null;
+        ServerPlayersConnections server = null;
         try
         {
-            server = new ServerUDP();
+            server = new ServerPlayersConnections();
             server.start();
 
         }

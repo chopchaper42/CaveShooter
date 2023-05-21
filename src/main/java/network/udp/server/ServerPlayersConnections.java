@@ -2,17 +2,16 @@ package network.udp.server;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.Arrays;
 import java.util.Scanner;
 
 import network.udp.IPManager;
 
-public class ServerUDP
+public class ServerPlayersConnections
 {
     /**
      * The number of players in the game.
      */
-    private int players;
+    private int numOfConnectingPlayers;
 
     /**
      * The packet that is received from the client.
@@ -20,7 +19,7 @@ public class ServerUDP
     DatagramPacket receivePacket;
 //    DatagramPacket sendingPacket;
 
-    public ServerUDP() throws UnknownHostException
+    public ServerPlayersConnections() throws UnknownHostException
     {
     }
 
@@ -35,7 +34,7 @@ public class ServerUDP
 
         var serverSocket = new OurServerSocket(ipManager);
 
-        while (players > 0) {
+        while (numOfConnectingPlayers > 0) {
 
             receivePacket = serverSocket.listen();
             var ipOfNewPlayer = receivePacket.getAddress();
@@ -44,29 +43,19 @@ public class ServerUDP
             {
                 System.out.println("Another dead fellow has been found.. HA-HA-HA!");
                 System.out.println("--------------------\n");
-                players--;
+                numOfConnectingPlayers--;
                 serverSocket.addIPAddress(ipOfNewPlayer);
             }
         }
+        serverSocket.close();
 
         System.out.println("Server is running...");
         System.out.println("--------------------\n");
 
         System.out.println("The game is starting...");
 
-        // @TO-DO: redirect messages from the loop to the logger
-        while (true)
-        {
-            receivePacket = serverSocket.listen();
-            var ipOfSender = receivePacket.getAddress().toString();
-
-            String message = Arrays.toString(receivePacket.getData());
-
-            System.out.println("Message from client: " + message + "\nIP:" + ipOfSender);
-            System.out.println("--------------------\n");
-
-            // @TO-DO: validate the message and send the response
-        }
+        var serverController =  new ServerController(serverSocket);
+        serverController.start();
     }
 
     public void selectThePlayersNumber()
@@ -87,6 +76,6 @@ public class ServerUDP
                 System.out.println("--------------------\n");
             }
         }
-        this.players = players;
+        this.numOfConnectingPlayers = players;
     }
 }

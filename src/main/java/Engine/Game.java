@@ -110,6 +110,4 @@ public class Game
             player.shoot(event, level.bullets());
         });
     }
-
-
 }

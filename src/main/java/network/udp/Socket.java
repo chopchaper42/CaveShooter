@@ -18,6 +18,8 @@ public abstract class Socket
 
     /**
      * The targets that the socket will send data to.
+     * The two targets are used to send data from the server to the clients
+     * In the case of the client, only the first target is used.
      */
     protected InetAddress[] socketTargets = new InetAddress[2];
 
@@ -90,5 +92,10 @@ public abstract class Socket
         }
 
         return receivePacket;
+    }
+
+    public void close()
+    {
+        socket.close();
     }
 }
