@@ -1,15 +1,12 @@
 package network.udp.server;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.*;
 import java.util.Scanner;
 
-import Engine.InventoryManager;
-import Engine.Level.LevelManager;
 import network.udp.IPManager;
 
+import network.udp.server.ServerLogger;
 
 
 public class ServerPlayersConnection
@@ -48,15 +45,15 @@ public class ServerPlayersConnection
 
             if (ipManager.checkIP(ipOfNewPlayer.toString()))
             {
-                System.out.println("Another dead fellow has been found.. HA-HA-HA!");
-                System.out.println("--------------------\n");
+                ServerLogger.log("Another dead fellow has been found.. HA-HA-HA!");
+                ServerLogger.log("--------------------\n");
                 numOfConnectingPlayers--;
                 serverSocket.addIPAddress(ipOfNewPlayer);
             }
         }
 
-        System.out.println("Server is running...");
-        System.out.println("--------------------\n");
+        ServerLogger.log("Server is running...");
+        ServerLogger.log("--------------------\n");
 
 
         InetAddress[] targets = serverSocket.getTargets();
@@ -65,11 +62,16 @@ public class ServerPlayersConnection
         for (InetAddress target : targets)
         {
             serverSocket.send("start", target);
+            ServerLogger.log("start message sent to " + target);
         }
 
         serverSocket.close();
+        ServerLogger.log("Server is closed...");
+        ServerLogger.log("--------------------\n");
+
 
         System.out.println("The game is starting...");
+        ServerLogger.log("The game is starting...");
 
         var serverController =  new ServerController(serverSocket);
         serverController.start();
@@ -77,6 +79,8 @@ public class ServerPlayersConnection
 
     public void selectThePlayersNumber()
     {
+        ServerLogger.log("Selecting the number of players...");
+
         Scanner in = new Scanner(System.in);
 
         int players = 0;
@@ -84,15 +88,17 @@ public class ServerPlayersConnection
         while (players < 1 || players > 2)
         {
             System.out.println("How many dead fellows today?");
-            players = Integer.parseInt(in.nextLine());;
+            players = Integer.parseInt(in.nextLine());
             System.out.println("--------------------\n");
 
             if (players < 1 || players > 2)
             {
                 System.out.println("Either one dead fellow or two dead fellows is enough for today...");
                 System.out.println("--------------------\n");
+                ServerLogger.log("The number of players is not valid. Try again.");
             }
         }
         this.numOfConnectingPlayers = players;
+        ServerLogger.log("The number of players is " + players);
     }
 }

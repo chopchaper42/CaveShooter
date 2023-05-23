@@ -44,19 +44,23 @@ public class ServerController
 
             if (clientMessageFromID == -1)
             {
-                System.out.println("Error: client not found");
+
+                ServerLogger.log("Error: client not found");
                 continue;
             }
-            System.out.println("Player " + clientMessageFromID + " has sent a message"); // Logger
-            System.out.println("--------------------\n");                                // Logger
+            ServerLogger.log("Player " + clientMessageFromID + " has sent a message");
+
+            ServerLogger.log("--------------------\n");
 
             // If the message is "game over", then the other client is sent the same message and the server shuts down
             if (receivePacket.getData().toString().equals("game over"))
             {
                 gameStateSynchronizer.synchronizeGameBetweenClients("game over", clientMessageFromID);
-                System.out.println("Game is over...");                                  // Logger
-                System.out.println("Server is shutting down...");                       // Logger
-                System.out.println("--------------------\n");                           // Logger
+                ServerLogger.log("Player " + clientMessageFromID + " has lost the game");
+                ServerLogger.log("Game is over...");
+                ServerLogger.log("--------------------\n");                           // Logger
+                ServerLogger.log("Server is shutting down...");                         // Logger
+                ServerLogger.log("--------------------\n");                           // Logger
                 break;
             }
 
@@ -64,8 +68,9 @@ public class ServerController
             gameStateSynchronizer
                     .synchronizeGameBetweenClients(
                             jsonManager.parseJSONFromBytes(receivePacket.getData()), clientMessageFromID);
-                }
-            }
+            ServerLogger.log("Server sent the game state to another client");
+        }
+    }
 //            String jsonStr = jsonManager.parseJSONFromBytes(receivePacket.getData());
 //            Object jsonObject = jsonManager.createJSONObject(jsonStr);
 
