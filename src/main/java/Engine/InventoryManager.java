@@ -16,6 +16,7 @@ public class InventoryManager {
             File file = new File(path);
             BufferedReader reader = new BufferedReader(new FileReader(file));
             parseInventory(reader);
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             Logger.log(e.getMessage());
@@ -24,12 +25,13 @@ public class InventoryManager {
     }
 
     private static void parseInventory(BufferedReader reader) throws IOException {
-        System.out.println("parsing");
         String currentLine;
+
         while((currentLine = reader.readLine()) != null) {
             String[] parts = currentLine.split(" ");
-            if (parts.length != 2)
+            if (parts.length != 2) {
                 continue;
+            }
             try {
                 System.out.println("Trying to parse");
                 switch (parts[0]) {

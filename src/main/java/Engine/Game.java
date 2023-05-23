@@ -1,6 +1,5 @@
 package Engine;
 
-//import Engine.Entity.Items.Ammo;
 import Engine.Level.Level;
 import Engine.Entity.Player;
 import GUI.GUIManager;
@@ -16,7 +15,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.net.URISyntaxException;
 
 
 /**
