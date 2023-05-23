@@ -1,28 +1,22 @@
 package network.udp.server;
 
-import Engine.InventoryManager;
-import Engine.Level.LevelManager;
-import GUI.GUIManager;
-import Engine.InventoryManager;
+import network.udp.JSONManager;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.DatagramPacket;
 
 
 public class ServerController
 {
     /**
-     * Class to verify the game rules
-     */
-    private GameRulesVerifier gameRulesVerifier;
-
-    /**
      * Manages JSONs
      */
     private JSONManager jsonManager;
 
+    /**
+     * Synchronizes the game state among all clients
+     */
     private GameStateSynchronizer gameStateSynchronizer;
+
 
     /**
      * Server socket
@@ -37,7 +31,6 @@ public class ServerController
     ServerController(OurServerSocket serverSocket)
     {
         this.serverSocket = serverSocket;
-        gameRulesVerifier = new GameRulesVerifier();
         jsonManager = new JSONManager();
         gameStateSynchronizer = new GameStateSynchronizer(serverSocket);
     }
@@ -47,14 +40,35 @@ public class ServerController
         while (true)
         {
             receivePacket = serverSocket.listen();
-            String jsonStr = jsonManager.parseJSONFromBytes(receivePacket.getData());
-            Object jsonObject = jsonManager.createJSONObject(jsonStr);
+            int clientMessageFromID = serverSocket.getID(receivePacket.getAddress());
 
-            if (gameRulesVerifier.verifyGameRules(jsonObject))
+            if (clientMessageFromID == -1)
             {
-                String gameState = jsonManager.createJSON(jsonObject);
-                gameStateSynchronizer.synchronizeGameStateAmongAllClients(gameState);
+                System.out.println("Error: client not found");
+                continue;
             }
-        }
-    }
+            System.out.println("Player " + clientMessageFromID + " has sent a message"); // Logger
+            System.out.println("--------------------\n");                                // Logger
+
+            // If the message is "game over", then the other client is sent the same message and the server shuts down
+            if (receivePacket.getData().toString().equals("game over"))
+            {
+                gameStateSynchronizer.synchronizeGameBetweenClients("game over", clientMessageFromID);
+                System.out.println("Game is over...");                                  // Logger
+                System.out.println("Server is shutting down...");                       // Logger
+                System.out.println("--------------------\n");                           // Logger
+                break;
+            }
+
+            // If the message is not "game over", then the game state is synchronized among all clients
+            gameStateSynchronizer
+                    .synchronizeGameBetweenClients(
+                            jsonManager.parseJSONFromBytes(receivePacket.getData()), clientMessageFromID);
+                }
+            }
+//            String jsonStr = jsonManager.parseJSONFromBytes(receivePacket.getData());
+//            Object jsonObject = jsonManager.createJSONObject(jsonStr);
+
+//            String gameState = jsonManager.createJSON(jsonObject);
+//            gameStateSynchronizer.synchronizeGameStateAmongAllClients(gameState, );
 }

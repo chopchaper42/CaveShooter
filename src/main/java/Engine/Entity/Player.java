@@ -24,7 +24,7 @@ public class Player extends LivingEntity
     public static final double SIZE = 30;
     private final Inventory inventory;
     private final double screenPositionX;
-    private final double screenPositionY;c
+    private final double screenPositionY;
     private final Canvas canvas;
     private final ActionField actionField;
     private boolean alive = true;

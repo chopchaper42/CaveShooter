@@ -1,6 +1,7 @@
 package network.udp.server;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.*;
 import java.util.Scanner;
@@ -8,6 +9,8 @@ import java.util.Scanner;
 import Engine.InventoryManager;
 import Engine.Level.LevelManager;
 import network.udp.IPManager;
+
+
 
 public class ServerPlayersConnection
 {
@@ -19,7 +22,9 @@ public class ServerPlayersConnection
     /**
      * The packet that is received from the client.
      */
-    DatagramPacket receivePacket;
+    private DatagramPacket receivePacket;
+
+    private final String filePath = "./src/main/levels";
 
     public ServerPlayersConnection() throws UnknownHostException
     {
@@ -49,10 +54,20 @@ public class ServerPlayersConnection
                 serverSocket.addIPAddress(ipOfNewPlayer);
             }
         }
-        serverSocket.close();
 
         System.out.println("Server is running...");
         System.out.println("--------------------\n");
+
+
+        InetAddress[] targets = serverSocket.getTargets();
+
+        // send message to start the game to the clients
+        for (InetAddress target : targets)
+        {
+            serverSocket.send("start", target);
+        }
+
+        serverSocket.close();
 
         System.out.println("The game is starting...");
 
@@ -79,13 +94,5 @@ public class ServerPlayersConnection
             }
         }
         this.numOfConnectingPlayers = players;
-    }
-
-    private void initTheGame() throws IOException
-    {
-
-        LevelManager levelManager = new LevelManager(new File("./src/main/levels"));
-        InventoryManager.readInventory("./src/main/inventory/inventory.txt");
-//        GUIManager guiManager = new GUIManager(window, stage, levelManager);
     }
 }

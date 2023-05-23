@@ -9,8 +9,14 @@ public class GameStateSynchronizer
         this.ourServerSocket = ourServerSocket;
     }
 
-    public void synchronizeGameStateAmongAllClients(String gameState)
+    public void synchronizeGameBetweenClients(String gameState, int clientMessageFromID)
     {
-        ourServerSocket.send(gameState);
+        var targets = ourServerSocket.getTargets();
+        for (int i = 0; i < targets.length; i++)
+        {
+            if (i == clientMessageFromID)
+                continue;
+            ourServerSocket.send(gameState, targets[i]);
+        }
     }
 }

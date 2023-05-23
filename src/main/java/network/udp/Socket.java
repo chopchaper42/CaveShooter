@@ -46,12 +46,10 @@ public abstract class Socket
      * Sends a message to the targets.
      * @param message The message that is sent.
      */
-    public void send(String message)
+    public void send(String message, InetAddress target)
     {
         sendBuffer = message.getBytes(StandardCharsets.UTF_8);
 
-        for (InetAddress target : socketTargets)
-        {
             if (target != null)
             {
                 try
@@ -70,7 +68,24 @@ public abstract class Socket
                     e.printStackTrace();
                 }
             }
+    }
+
+    /**
+     * Returns the targets that the socket will send data to.
+     */
+    public InetAddress[] getTargets()
+    {
+        return socketTargets;
+    }
+
+    public int getID(InetAddress target)
+    {
+        for (int i = 0; i < socketTargets.length; i++)
+        {
+            if (socketTargets[i].equals(target))
+                return i;
         }
+        return -1;
     }
 
     /**

@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import network.udp.IPManager;
 
-public class ClientUDP
+public class ClientConnection
 {
     /**
      * Runs the client
@@ -32,19 +32,16 @@ public class ClientUDP
 
         var clientSocket = new ClientSocket(serverIP, ipManager);
 
-        clientSocket.send("Hello, server!");
+        clientSocket.send("Hello, server!", clientSocket.getTargets()[0]);
 
         System.out.println("Message sent");
         System.out.println("--------------------\n");
 
 
-        // @TO-DO: need to refactor a bit to make ClientUDP the start point
-        // CaveShooter.main() right now is the start point;
-
-
         while (true)
         {
-            String message = Arrays.toString(clientSocket.listen().getData());
+            //
+            String levelFromJson = Arrays.toString(clientSocket.listen().getData());
 
             if (message.equals("exit"))
             {
@@ -54,9 +51,6 @@ public class ClientUDP
 
             System.out.println("Message received: " + message);
             System.out.println("--------------------\n");
-
-            // Change the state according to the message
-            // @TO-DO: implement sending messages to the server
         }
     }
 }

@@ -107,7 +107,6 @@ public class InputManager {
                 if (pressed)
                     GameSettings.toggleShowFields();
             }
-
         }
     }
 }

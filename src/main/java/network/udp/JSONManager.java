@@ -1,4 +1,4 @@
-package network.udp.server;
+package network.udp;
 
 import com.google.gson.Gson;
 
@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 public class JSONManager
 {
 
-    JSONManager()
+    public JSONManager()
     {
     }
 
