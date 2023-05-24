@@ -1,8 +1,10 @@
 package Engine.Entity;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 
+import java.awt.*;
 import java.io.File;
 
 public class Friend extends LivingEntity{
@@ -22,6 +24,10 @@ public class Friend extends LivingEntity{
     public Friend(double x, double y, int health) {
         super(image, x, y, health);
     }
+    public Friend(Point2D position, int health) {
+        super(image, position.getX(), position.getY(), health);
+    }
+
 
     public void draw(Canvas canvas) {
         canvas.getGraphicsContext2D().drawImage(image, getX(), getY());
