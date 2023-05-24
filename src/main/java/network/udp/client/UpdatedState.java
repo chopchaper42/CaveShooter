@@ -2,35 +2,34 @@ package network.udp.client;
 
 public class UpdatedState
 {
-    private int[] playerPos;
-    private int[] bulletPos;
-    private int[] usedItem;
+    private String jsonProperty;
+    private int[] position;
 
-    // @TODO: add more fields
 
+    public UpdatedState(String jsonProperty, int x, int y)
+    {
+        this.jsonProperty = jsonProperty;
+        this.position = new int[] {x, y};
+    }
 
     // Getters and setters
-    public int[] getPlayerPos() {
-        return playerPos;
+    public int[] getJsonProperty()
+    {
+        return position;
     }
 
-    public void setPlayerPos(int[] playerPos) {
-        this.playerPos = playerPos;
+    public void setJsonProperty(String jsonProperty)
+    {
+        this.jsonProperty = jsonProperty;
     }
 
-    public int[] getBulletPos() {
-        return bulletPos;
+    public int[] getPosition()
+    {
+        return position;
     }
 
-    public void setBulletPos(int[] bulletPos) {
-        this.bulletPos = bulletPos;
-    }
-
-    public int[] getUsedItem() {
-        return usedItem;
-    }
-
-    public void setUsedItem(int[] usedItem) {
-        this.usedItem = usedItem;
+    public void setPosition(int[] position)
+    {
+        this.position = position;
     }
 }
