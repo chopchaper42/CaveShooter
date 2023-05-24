@@ -38,5 +38,15 @@ public class ClientController
         clientSocket.send(newState, clientSocket.getTargets()[0]);
     }
 
-//    public void checkQueue()
+    public UpdatedState checkUpdatesFromAnotherClient()
+    {
+        var queue = new ClientReceivedState();
+        if (queue.isEmpty())
+        {
+            return null;
+        }
+
+        var newStateJson = queue.dequeue();
+        return JSONManager.convertJsonToObject(newStateJson);
+    }
 }

@@ -74,7 +74,6 @@ public class Game
             public void handle(long now)
             {
                 double dt = (now - lastFrame) / 10e9;
-                //receiveData();
                 updater.update(dt);
                 inputManager.handleInput(dt);
                 lastFrame = now;
@@ -83,9 +82,8 @@ public class Game
                     this.stop();
 
                     Logger.log("Game ended.");
+                    // send to the serve "game over"
                 }
-
-                //sendData();
             }
         };
         loop.start();
