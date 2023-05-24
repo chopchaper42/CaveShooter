@@ -82,7 +82,7 @@ public class InputManager {
         }
 
         player.setBoundaries(player.getX(), player.getY(), Player.SIZE);
-        ClientControllerSingleton.getInstance().send("player: x, y");
+        ClientControllerSingleton.getInstance().send("playerPosition", player.getX(), player.getY());
     }
 
     public void release(KeyEvent event)

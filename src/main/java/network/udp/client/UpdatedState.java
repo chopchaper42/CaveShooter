@@ -3,19 +3,27 @@ package network.udp.client;
 public class UpdatedState
 {
     private String jsonProperty;
-    private int[] position;
+    private double[] position;
+    private double[] direction;
 
 
-    public UpdatedState(String jsonProperty, int x, int y)
+    public UpdatedState(String jsonProperty, double x, double y)
     {
         this.jsonProperty = jsonProperty;
-        this.position = new int[] {x, y};
+        this.position = new double[] {x, y};
+    }
+
+    public UpdatedState(String jsonProperty, double x, double y, double dx, double dy)
+    {
+        this.jsonProperty = jsonProperty;
+        this.position = new double[] {x, y};
+        this.direction = new double[] {dx, dy};
     }
 
     // Getters and setters
-    public int[] getJsonProperty()
+    public String getJsonProperty()
     {
-        return position;
+        return jsonProperty;
     }
 
     public void setJsonProperty(String jsonProperty)
@@ -23,13 +31,23 @@ public class UpdatedState
         this.jsonProperty = jsonProperty;
     }
 
-    public int[] getPosition()
+    public double[] getPosition()
     {
         return position;
     }
 
-    public void setPosition(int[] position)
+    public void setPosition(double[] position)
     {
         this.position = position;
+    }
+
+    public double[] getDirection()
+    {
+        return direction;
+    }
+
+    public void setDirection(double[] direction)
+    {
+        this.direction = direction;
     }
 }

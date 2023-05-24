@@ -136,6 +136,16 @@ public class Updater {
 
     private void updateAllNecessaryEntities(UpdatedState updatedState)
     {
+        switch (updatedState.getJsonProperty())
+        {
+//            case "player":
+//                player = updatedState.getPlayer();
+//                break;
+//            case "enemies":
+//
+//                break;
+
+        }
         // update all necessary entities
         // level.enemies() = updatedState.enemies();
         // level.items() = updatedState.items();
