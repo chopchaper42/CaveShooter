@@ -59,6 +59,7 @@ public class Enemy extends LivingEntity {
                 Point2D direction = new Point2D(player.center().getX(), player.center().getY());
                 Bullet bullet = new Bullet(this, direction, 2500);
                 bullets.add(bullet);
+                ClientControllerSingleton.getInstance().send("bullet: x, y");
                 Logger.log(this + "'s shot");
                 timeSinceLastShot = 0;
             }
@@ -91,6 +92,7 @@ public class Enemy extends LivingEntity {
             }
 
             move(speed.xComponent() * dt, speed.yComponent() * dt);
+            ClientControllerSingleton.getInstance().send("enemy: x, y");
             updateFields();
         } else {
             elapsedTime += dt;
