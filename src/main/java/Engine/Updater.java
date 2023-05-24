@@ -1,10 +1,8 @@
 package Engine;
 
-import Engine.Entity.Bullet;
-import Engine.Entity.Enemy;
-import Engine.Entity.Entity;
+import Engine.Entity.*;
 import Engine.Entity.Items.Item;
-import Engine.Entity.Player;
+import Engine.Entity.Tile.Door;
 import Engine.Level.Level;
 import GUI.GUIManager;
 import Logs.Logger;
@@ -53,6 +51,12 @@ public class Updater {
             // check for items in player's range
             List<Item> itemsInRange = Collisions.checkItemCollision(player, level.items());
             player.takeItems(itemsInRange);
+
+            controller.send("item",
+                    itemsInRange.get(0).getX(),
+                    itemsInRange.get(0).getY()
+            );
+
             toRemove.addAll(itemsInRange);
 
             // check if player is in enemies vision zone
@@ -98,6 +102,7 @@ public class Updater {
         toRemove.forEach(entity -> {
             if (entity instanceof Item) {
                 level.items().remove(entity);
+                controller.send("item", entity.getX(), entity.getY());
             } else if (entity instanceof Bullet) {
                 level.bullets().remove(entity);
             } else if (entity instanceof Enemy) {
@@ -110,6 +115,7 @@ public class Updater {
         if (level.completed()) {
             InventoryManager.saveInventory();
             Logger.log("Level completed. All enemies are dead.");
+            // TODO: send to server
             guiManager.renderWin();
         }
 
@@ -118,7 +124,6 @@ public class Updater {
             toRemove.add(player);
             guiManager.renderLose();
         }
-        // setPropertiesToUpdatedState --> UpdatedStateConvertToJson --> sendJsonToServer
     }
 
     private void redrawEntities(Level level, Canvas canvas) {
@@ -139,6 +144,10 @@ public class Updater {
         switch (updatedState.getJsonProperty())
         {
             case "playerPosition":
+                var friend = new Friend(
+                        updatedState.getPosX(), updatedState.getPosY(), 100
+                );
+                level.setFriend(friend);
                 break;
 
             case "bullet":
@@ -159,12 +168,32 @@ public class Updater {
                 );
                 level.enemies().add(enemy);
                 break;
+
+            case "item":
+
+                Item itemToRemove = null;
+
+                for (Item item : level.items())
+                {
+                    if (item.getX() == updatedState.getPosX() && item.getY() == updatedState.getPosY())
+                    {
+                        itemToRemove = item;
+                    }
+                }
+                level.items().remove(itemToRemove);
+                break;
+
+            case "door":
+                level.tiles().forEach(tile -> {
+                    if (tile instanceof Door &&
+                            tile.getX() == updatedState.getPosX() &&
+                            tile.getY() == updatedState.getPosY())
+                        ((Door) tile).open();
+                });
+                break;
+
+            default:
+                break;
         }
-        // update all necessary entities
-        // level.enemies() = updatedState.enemies();
-        // level.items() = updatedState.items();
-        // level.bullets() = updatedState.bullets();
-        // player = updatedState.player();
-        // level.tiles() = updatedState.tiles();
     }
 }

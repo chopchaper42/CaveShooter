@@ -23,7 +23,7 @@ public final class Level
     private final List<Item> items;
     private final List<Bullet> bullets = new ArrayList<>();
     private final List<Enemy> enemies;
-    private final Friend friend;
+    private Friend friend;
     private Canvas canvas;
     private Window window;
     private boolean completed = false;
@@ -39,7 +39,6 @@ public final class Level
         this.enemies = map.enemies();
         this.friend = new Friend(map.friendPosition(), 100);
         this.initialPlayerPosition = map.playerPosition();
-        this.initialFriendPosition = map.friendPosition();
         this.initialCanvasPosition = canvasPosition();
         this.canvas = createCanvas(map.width(), map.height());
     }
@@ -106,6 +105,11 @@ public final class Level
 
     public Friend getFriend() {
         return friend;
+    }
+
+    public void setFriend(Friend friend)
+    {
+        this.friend = friend;
     }
 
     public boolean completed() {

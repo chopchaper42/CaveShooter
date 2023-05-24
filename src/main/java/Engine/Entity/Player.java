@@ -106,6 +106,7 @@ public class Player extends LivingEntity
                 if (actionField.bounds().intersects(door.getBoundaries())) {
                     inventory.use(Type.KEY);
                     door.open();
+                    ClientControllerSingleton.getInstance().send("door", door.getX(), door.getY());
                 }
             }
         }
