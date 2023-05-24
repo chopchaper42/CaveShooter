@@ -12,8 +12,8 @@ import Utility.Collisions;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import network.udp.client.ClientController;
+import network.udp.client.UpdatedState;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,27 +23,30 @@ public class Updater {
     private Player player;
     private UIManager uiManager;
     private GUIManager guiManager;
-    private ClientController client;
+    private ClientController controller;
 
     public Updater(Level level, Player player, UIManager uiManager, GUIManager guiManager, ClientController controller) {
         this.level = level;
         this.player = player;
         this.uiManager = uiManager;
         this.guiManager = guiManager;
-        this.client = controller;
+        this.controller = controller;
     }
 
     public void update(double dt) {
-//        var client = new ClientController();
-//       res = client.checkQueue()
-//        controller  --> ClientReceivedState --> if any json --> jsonConvertToUpdatedState
-//        --> extractPropertiesFromUpdatedState --> change all necessary arrays (enemies, ...)
+
+        UpdatedState updatedState = controller.checkUpdatesFromAnotherClient();
+        if (updatedState != null)
+        {
+            updateAllNecessaryEntities(updatedState);
+        }
 
 
         redrawEntities(level, level.canvas());
 
         //redraw UI
         uiManager.update();
+
 
         if (player.alive()) {
             //enemies shoot
@@ -131,5 +134,15 @@ public class Updater {
         entities.forEach(entity -> {
             entity.draw(canvas);
         });
+    }
+
+    private void updateAllNecessaryEntities(UpdatedState updatedState)
+    {
+        // update all necessary entities
+        // level.enemies() = updatedState.enemies();
+        // level.items() = updatedState.items();
+        // level.bullets() = updatedState.bullets();
+        // player = updatedState.player();
+        // level.tiles() = updatedState.tiles();
     }
 }
