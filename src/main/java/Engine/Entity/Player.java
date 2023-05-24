@@ -90,6 +90,11 @@ public class Player extends LivingEntity
                 increaseHealth(item.getAmount());
                 Logger.log("+" + item.getAmount() + " " + item.getType().name() + ". Health: " + getHealth());
             }
+
+            ClientControllerSingleton.getInstance().send("item",
+                    item.getX(),
+                    item.getY()
+            );
         });
     }
 

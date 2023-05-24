@@ -53,11 +53,6 @@ public class Updater {
             List<Item> itemsInRange = Collisions.checkItemCollision(player, level.items());
             player.takeItems(itemsInRange);
 
-            controller.send("item",
-                    itemsInRange.get(0).getX(),
-                    itemsInRange.get(0).getY()
-            );
-
             toRemove.addAll(itemsInRange);
 
             // check if player is in enemies vision zone
