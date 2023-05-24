@@ -39,4 +39,11 @@ public class Bullet extends MovingEntity
     public Entity source() {
         return source;
     }
+
+    public double getSpeedX() {
+        return speed.xComponent();
+    }
+    public double getSpeedY() {
+        return speed.yComponent();
+    }
 }
