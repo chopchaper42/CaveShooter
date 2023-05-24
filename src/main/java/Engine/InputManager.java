@@ -11,6 +11,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import network.udp.client.ClientControllerSingleton;
 
 import java.util.List;
 
@@ -81,6 +82,7 @@ public class InputManager {
         }
 
         player.setBoundaries(player.getX(), player.getY(), Player.SIZE);
+        ClientControllerSingleton.getInstance().send("player: x, y");
     }
 
     public void release(KeyEvent event)

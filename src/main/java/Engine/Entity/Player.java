@@ -11,6 +11,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import network.udp.client.ClientControllerSingleton;
 
 import java.io.File;
 import java.util.List;
@@ -118,6 +119,7 @@ public class Player extends LivingEntity
             );
             Bullet bullet = new Bullet(this, direction, 6500);
             bullets.add(bullet);
+            ClientControllerSingleton.getInstance().send("bullet: x, y");
             decreaseItem(Type.AMMO);
         }
     }
