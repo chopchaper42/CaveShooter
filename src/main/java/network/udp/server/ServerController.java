@@ -3,6 +3,8 @@ package network.udp.server;
 import network.udp.client.JSONManager;
 
 import java.net.DatagramPacket;
+import java.net.ServerSocket;
+import java.util.Arrays;
 
 
 public class ServerController
@@ -55,25 +57,20 @@ public class ServerController
             // If the message is "game over", then the other client is sent the same message and the server shuts down
             if (receivePacket.getData().toString().equals("game over"))
             {
-                gameStateSynchronizer.synchronizeGameBetweenClients("game over", clientMessageFromID);
                 ServerLogger.log("Player " + clientMessageFromID + " has lost the game");
+                gameStateSynchronizer.endTheGame();
                 ServerLogger.log("Game is over...");
-                ServerLogger.log("--------------------\n");                           // Logger
-                ServerLogger.log("Server is shutting down...");                         // Logger
-                ServerLogger.log("--------------------\n");                           // Logger
+                ServerLogger.log("--------------------\n");
+                ServerLogger.log("Server is shutting down...");
+                ServerLogger.log("--------------------\n");
                 break;
             }
 
             // If the message is not "game over", then the game state is synchronized among all clients
             gameStateSynchronizer
-                    .synchronizeGameBetweenClients(
-                            jsonManager.parseJSONFromBytes(receivePacket.getData()), clientMessageFromID);
+                    .synchronizeGameBetweenClients(Arrays.toString(receivePacket.getData()),
+                            clientMessageFromID);
             ServerLogger.log("Server sent the game state to another client");
         }
     }
-//            String jsonStr = jsonManager.parseJSONFromBytes(receivePacket.getData());
-//            Object jsonObject = jsonManager.createJSONObject(jsonStr);
-
-//            String gameState = jsonManager.createJSON(jsonObject);
-//            gameStateSynchronizer.synchronizeGameStateAmongAllClients(gameState, );
 }

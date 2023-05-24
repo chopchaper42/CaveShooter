@@ -19,4 +19,11 @@ public class GameStateSynchronizer
             ourServerSocket.send(gameState, targets[i]);
         }
     }
+
+    public void endTheGame()
+    {
+        synchronizeGameBetweenClients("game over", 0);
+        synchronizeGameBetweenClients("game over", 1);
+        ourServerSocket.close();
+    }
 }

@@ -22,18 +22,14 @@ public class ClientController
             byte[] data = clientSocket.listen().getData();
             var clientReceivedState = new ClientReceivedState();
             clientReceivedState.enqueue(data);
-//            if (updateFromJson.equals("game over"))
-//            {
-//                Logger.log("Game over");
-//                Logger.log("--------------------\n");
-//                Logger.log("Client is closing...");
-//                break;
-//            }
 
-            // TODO: update the game with the received data
-
-//            System.out.println("Message received: " + message);
-//            System.out.println("--------------------\n");
+            if (Arrays.toString(data).equals("game over"))
+            {
+                Logger.log("Game over");
+                Logger.log("--------------------\n");
+                Logger.log("Client is closing...");
+                break;
+            }
         }
     }
 
