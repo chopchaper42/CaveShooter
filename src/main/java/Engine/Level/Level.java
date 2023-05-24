@@ -18,6 +18,7 @@ public final class Level
     private LevelInfo map;
     private Point2D initialCanvasPosition;
     private Point2D initialPlayerPosition;
+    private Point2D initialFriendPosition;
     private final List<Item> items;
     private final List<Bullet> bullets = new ArrayList<>();
     private final List<Enemy> enemies;
@@ -35,6 +36,7 @@ public final class Level
         this.items = map.items();
         this.enemies = map.enemies();
         this.initialPlayerPosition = map.playerPosition();
+        this.initialFriendPosition = map.friendPosition();
         this.initialCanvasPosition = canvasPosition();
         this.canvas = createCanvas(map.width(), map.height());
     }

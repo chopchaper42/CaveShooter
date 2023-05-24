@@ -38,7 +38,7 @@ public class Game
     /**
      * Constructs a new Game object with a stage and a level
      */
-    public Game(Window window, GUIManager guiManager, Stage stage, File level, Inventory inventory, ClientController controller) {
+    public Game(Window window, GUIManager guiManager, Stage stage, File level, Inventory inventory) {
         this.window = window;
         this.stage = stage;
         this.level = new Level(window, level);
@@ -56,7 +56,7 @@ public class Game
                 new Font("Verdana", 40)
         );
         this.guiManager = guiManager;
-        this.updater = new Updater(this.level, this.player, this.uiManager, this.guiManager, controller);
+        this.updater = new Updater(this.level, this.player, this.uiManager, this.guiManager);
     }
 
 

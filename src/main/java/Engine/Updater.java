@@ -25,12 +25,11 @@ public class Updater {
     private GUIManager guiManager;
     private ClientController controller;
 
-    public Updater(Level level, Player player, UIManager uiManager, GUIManager guiManager, ClientController controller) {
+    public Updater(Level level, Player player, UIManager uiManager, GUIManager guiManager) {
         this.level = level;
         this.player = player;
         this.uiManager = uiManager;
         this.guiManager = guiManager;
-        this.controller = controller;
     }
 
     public void update(double dt) {
@@ -40,7 +39,6 @@ public class Updater {
         {
             updateAllNecessaryEntities(updatedState);
         }
-
 
         redrawEntities(level, level.canvas());
 
