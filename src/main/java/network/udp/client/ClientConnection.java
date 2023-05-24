@@ -3,6 +3,7 @@ package network.udp.client;
 import java.net.*;
 import java.util.Scanner;
 
+import Engine.CaveShooter;
 import Logs.*;
 
 import network.udp.IPManager;
@@ -40,7 +41,7 @@ public class ClientConnection
 
         var clientController = new ClientController(clientSocket);
         clientController.run();
-        // clientController --> CaveShooter --> GUI --> Game -->  Updater --> Updater.update.. <
-
+        // clientConnection --> Engine.CaveShooter --> GUI --> Game -->  Updater --> Updater.update.. <
+        CaveShooter.main(new String[] {});
     }
 }
