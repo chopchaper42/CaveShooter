@@ -36,8 +36,10 @@ public class Updater {
     public void update(double dt) {
 //        var client = new ClientController();
 //       res = client.checkQueue()
-//        if (res)
-//            updateArrays
+//        controller  --> ClientReceivedState --> if any json --> jsonConvertToUpdatedState
+//        --> extractPropertiesFromUpdatedState --> change all necessary arrays (enemies, ...)
+
+
         redrawEntities(level, level.canvas());
 
         //redraw UI
@@ -115,8 +117,7 @@ public class Updater {
             toRemove.add(player);
             guiManager.renderLose();
         }
-        // makeObject --> make json
-//        client.send(json)
+        // setPropertiesToUpdatedState --> UpdatedStateConvertToJson --> sendJsonToServer
     }
 
     private void redrawEntities(Level level, Canvas canvas) {
