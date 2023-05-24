@@ -74,9 +74,6 @@ public class Game
             @Override
             public void handle(long now)
             {
-                var controller = ClientControllerSingleton.getInstance();
-                controller.run();
-
                 double dt = (now - lastFrame) / 10e9;
                 updater.update(dt);
                 inputManager.handleInput(dt);
@@ -88,6 +85,10 @@ public class Game
                     Logger.log("Game ended.");
                     // send to the serve "game over"
                 }
+
+                var controller = ClientControllerSingleton.getInstance();
+                controller.run();
+
             }
         };
         loop.start();

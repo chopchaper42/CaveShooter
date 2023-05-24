@@ -20,17 +20,17 @@ public class ClientController implements Runnable
         byte[] data = clientSocket.listen().getData();
         var clientReceivedState = new ClientReceivedState();
 
-        clientReceivedState.enqueue(data);
-
-        if (Arrays.toString(data).equals("game over"))
-        {
-            Logger.log("Game over");
-            Logger.log("--------------------\n");
-            Logger.log("Client is closing...");
-            send("game over", 0, 0);
-        }
+//        clientReceivedState.enqueue(data);
+//
+//        if (Arrays.toString(data).equals("game over"))
+//        {
+//            Logger.log("Game over");
+//            Logger.log("--------------------\n");
+//            Logger.log("Client is closing...");
+//            send("game over", 0, 0);
+//        }
     }
-
+//
     public void send(String jsonProperty, double x, double y)
     {
         var newState = new UpdatedState(jsonProperty, x, y);

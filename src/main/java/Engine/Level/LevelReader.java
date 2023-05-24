@@ -86,11 +86,11 @@ public class LevelReader
                         tiles.add(new Floor(posX, posY));
                         enemies.add(new Enemy(posX, posY));
                     }
-                    case "P1" -> {
+                    case "P" -> {
                         tiles.add(new Floor(posX, posY));
                         playerPosition = new Point2D(posX, posY);
                     }
-                    case "P2" -> {
+                    case "F" -> {
                         tiles.add(new Floor(posX, posY));
                         friendPosition = new Point2D(posX, posY);
                     }

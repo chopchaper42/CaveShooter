@@ -33,11 +33,14 @@ public class Updater {
 
     public void update(double dt) {
 
-        UpdatedState updatedState = ClientControllerSingleton.getInstance().checkUpdatesFromAnotherClient();
+        controller = ClientControllerSingleton.getInstance();
+
+        UpdatedState updatedState = controller.checkUpdatesFromAnotherClient();
         if (updatedState != null)
         {
             updateAllNecessaryEntities(updatedState);
         }
+
 
         redrawEntities(level, level.canvas());
 
