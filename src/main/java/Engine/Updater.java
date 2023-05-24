@@ -151,6 +151,14 @@ public class Updater {
 
                 break;
 
+            case "enemy":
+                level.enemies().clear();
+
+                var enemy = new Enemy(
+                        updatedState.getPosX(), updatedState.getPosY()
+                );
+                level.enemies().add(enemy);
+                break;
         }
         // update all necessary entities
         // level.enemies() = updatedState.enemies();

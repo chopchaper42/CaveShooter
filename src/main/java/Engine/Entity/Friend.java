@@ -13,7 +13,7 @@ public class Friend extends LivingEntity{
             false);
 
     /**
-     * Creates an living entity
+     * Creates a living entity
      *
      * @param x      x coordinate
      * @param y      y coordinate
