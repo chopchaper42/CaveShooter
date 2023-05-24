@@ -10,6 +10,7 @@ import Utility.Collisions;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import network.udp.client.ClientController;
+import network.udp.client.ClientControllerSingleton;
 import network.udp.client.UpdatedState;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class Updater {
 
     public void update(double dt) {
 
-        UpdatedState updatedState = controller.checkUpdatesFromAnotherClient();
+        UpdatedState updatedState = ClientControllerSingleton.getInstance().checkUpdatesFromAnotherClient();
         if (updatedState != null)
         {
             updateAllNecessaryEntities(updatedState);
