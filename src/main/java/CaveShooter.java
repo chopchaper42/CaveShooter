@@ -1,5 +1,3 @@
-package Engine;
-
 import Engine.InventoryManager;
 import Engine.Level.LevelManager;
 import GUI.GUIManager;
@@ -21,13 +19,14 @@ public class CaveShooter extends Application
         launch(args);
     }
 
-    public CaveShooter(ClientController controller) {
-        this.controller = controller;
-    }
     @Override
     public void start(Stage stage)
     {
         try {
+
+            var clientUDP = new ClientConnection();
+            clientUDP.run();
+//
             startGame(stage);
 
         } catch (Exception exception) {

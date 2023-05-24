@@ -3,7 +3,7 @@ package network.udp.client;
 import java.util.Arrays;
 import Logs.*;
 
-public class ClientController
+public class ClientController implements Runnable
 {
     private ClientSocket clientSocket;
 
@@ -17,19 +17,17 @@ public class ClientController
      */
     public void run()
     {
-        while (true)
-        {
-            byte[] data = clientSocket.listen().getData();
-            var clientReceivedState = new ClientReceivedState();
-            clientReceivedState.enqueue(data);
+        byte[] data = clientSocket.listen().getData();
+        var clientReceivedState = new ClientReceivedState();
 
-            if (Arrays.toString(data).equals("game over"))
-            {
-                Logger.log("Game over");
-                Logger.log("--------------------\n");
-                Logger.log("Client is closing...");
-                break;
-            }
+        clientReceivedState.enqueue(data);
+
+        if (Arrays.toString(data).equals("game over"))
+        {
+            Logger.log("Game over");
+            Logger.log("--------------------\n");
+            Logger.log("Client is closing...");
+            send("game over", 0, 0);
         }
     }
 

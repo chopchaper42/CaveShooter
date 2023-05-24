@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import network.udp.client.ClientController;
+import network.udp.client.ClientControllerSingleton;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -73,6 +74,9 @@ public class Game
             @Override
             public void handle(long now)
             {
+                var controller = ClientControllerSingleton.getInstance();
+                controller.run();
+
                 double dt = (now - lastFrame) / 10e9;
                 updater.update(dt);
                 inputManager.handleInput(dt);

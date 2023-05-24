@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class ClientReceivedState {
-    private Queue<String> queue;
+ public class ClientReceivedState {
+    private volatile Queue<String> queue;
 
     public ClientReceivedState() {
         queue = new LinkedList<>();

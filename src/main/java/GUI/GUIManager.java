@@ -18,6 +18,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import network.udp.client.ClientController;
+import network.udp.client.ClientControllerSingleton;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -84,7 +85,7 @@ public class GUIManager {
         });
 
         multiPlayerButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-            //connect to server
+            renderLevels();
         });
 
         pane.getChildren().addAll(gameTypeBox, logBox);

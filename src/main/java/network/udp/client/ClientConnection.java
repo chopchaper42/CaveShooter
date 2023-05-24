@@ -3,7 +3,6 @@ package network.udp.client;
 import java.net.*;
 import java.util.Scanner;
 
-import Engine.CaveShooter;
 import Logs.*;
 
 import network.udp.IPManager;
@@ -19,17 +18,23 @@ public class ClientConnection
 
         Scanner scr = new Scanner(System.in);
         Logger.log("Type the server's IP address:\n");
+        System.out.println("Type the server's IP address:\n");
         String serverIP = scr.next();
 
         if (!ipManager.checkIP(serverIP))
         {
             Logger.log("Invalid IP address");
+            System.out.println("Invalid IP address");
             Logger.log("--------------------\n");
+            System.out.println("--------------------\n");
             return;
         }
 
         Logger.log("--------------------\n");
+        System.out.println("--------------------\n");
         Logger.log("Client is running...");
+        System.out.println("Client is running...");
+        System.out.println("--------------------\n");
         Logger.log("--------------------\n");
 
         var clientSocket = new ClientSocket(serverIP, ipManager);
@@ -38,11 +43,11 @@ public class ClientConnection
 
         Logger.log("Message sent");
         Logger.log("--------------------\n");
+        System.out.println("--------------------\n");
+        System.out.println("Message sent");
+        System.out.println("--------------------\n");
+        Logger.log("--------------------\n");
 
         ClientControllerSingleton.setController(new ClientController(clientSocket));
-        var clientController = ClientControllerSingleton.getInstance();
-        clientController.run();
-        // clientConnection --> Engine.CaveShooter --> GUI --> Game -->  Updater --> Updater.update.. <
-        CaveShooter.main(new String[] {});
     }
 }
