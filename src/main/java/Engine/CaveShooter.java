@@ -1,9 +1,13 @@
+package Engine;
+
 import Engine.InventoryManager;
 import Engine.Level.LevelManager;
 import GUI.GUIManager;
 import Utility.Window;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import network.udp.client.ClientConnection;
+import network.udp.client.ClientController;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,9 +15,14 @@ import java.io.IOException;
 
 public class CaveShooter extends Application
 {
+    private ClientController controller;
     public static void main(String[] args)
     {
         launch(args);
+    }
+
+    public CaveShooter(ClientController controller) {
+        this.controller = controller;
     }
     @Override
     public void start(Stage stage)
@@ -41,7 +50,7 @@ public class CaveShooter extends Application
 
         LevelManager levelManager = new LevelManager(new File("./src/main/levels"));
         InventoryManager.readInventory("./src/main/inventory/inventory.txt");
-        GUIManager guiManager = new GUIManager(window, stage, levelManager);
+        GUIManager guiManager = new GUIManager(window, stage, levelManager, controller);
 
         guiManager.renderMainWindow();
         stage.show();

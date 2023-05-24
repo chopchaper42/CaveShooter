@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import network.udp.client.ClientController;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,15 +29,13 @@ public class GUIManager {
     private Stage stage;
     private LevelManager levelManager;
     private GameSettings settings;
+    private ClientController controller;
 
-    public GUIManager(Window window, Stage stage, LevelManager levelManager) {
-        if (stage == null) {
-            throw new IllegalArgumentException("Null stage was given.");
-
-        }
+    public GUIManager(Window window, Stage stage, LevelManager levelManager, ClientController controller) {
         this.window = window;
         this.stage = stage;
         this.levelManager = levelManager;
+        this.controller = controller;
         this.settings = new GameSettings();
     }
 
@@ -122,7 +121,7 @@ public class GUIManager {
         levels.forEach((level) -> {
             Button levelButton = new Button(level.getName());
             levelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-                new Game(window, this, stage, level, InventoryManager.getInventory()).run();
+                new Game(window, this, stage, level, InventoryManager.getInventory(), controller).run();
             });
             levelsPane.getChildren().add(levelButton);
         });

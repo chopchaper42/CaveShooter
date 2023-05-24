@@ -1,6 +1,5 @@
 package Engine;
 
-//import Engine.Entity.Items.Ammo;
 import Engine.Level.Level;
 import Engine.Entity.Player;
 import GUI.GUIManager;
@@ -14,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import network.udp.client.ClientController;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -38,7 +38,7 @@ public class Game
     /**
      * Constructs a new Game object with a stage and a level
      */
-    public Game(Window window, GUIManager guiManager, Stage stage, File level, Inventory inventory) {
+    public Game(Window window, GUIManager guiManager, Stage stage, File level, Inventory inventory, ClientController controller) {
         this.window = window;
         this.stage = stage;
         this.level = new Level(window, level);
@@ -56,7 +56,7 @@ public class Game
                 new Font("Verdana", 40)
         );
         this.guiManager = guiManager;
-        this.updater = new Updater(this.level, this.player, this.uiManager, this.guiManager);
+        this.updater = new Updater(this.level, this.player, this.uiManager, this.guiManager, controller);
     }
 
 

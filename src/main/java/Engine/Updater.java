@@ -23,15 +23,14 @@ public class Updater {
     private Player player;
     private UIManager uiManager;
     private GUIManager guiManager;
-
     private ClientController client;
 
-    public Updater(Level level, Player player, UIManager uiManager, GUIManager guiManager) {
+    public Updater(Level level, Player player, UIManager uiManager, GUIManager guiManager, ClientController controller) {
         this.level = level;
         this.player = player;
         this.uiManager = uiManager;
         this.guiManager = guiManager;
-//        this.client = ...
+        this.client = controller;
     }
 
     public void update(double dt) {
