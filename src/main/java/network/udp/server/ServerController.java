@@ -1,6 +1,6 @@
 package network.udp.server;
 
-import network.udp.JSONManager;
+import network.udp.client.JSONManager;
 
 import java.net.DatagramPacket;
 

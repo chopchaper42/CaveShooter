@@ -1,8 +1,9 @@
 package network.udp.client;
 
 import java.net.*;
-import java.util.Arrays;
 import java.util.Scanner;
+
+import Logs.*;
 
 import network.udp.IPManager;
 
@@ -16,41 +17,28 @@ public class ClientConnection
         var ipManager = new IPManager();
 
         Scanner scr = new Scanner(System.in);
-        System.out.println("Type the server's IP address:\n");
+        Logger.log("Type the server's IP address:\n");
         String serverIP = scr.next();
 
         if (!ipManager.checkIP(serverIP))
         {
-            System.out.println("Invalid IP address");
-            System.out.println("--------------------\n");
+            Logger.log("Invalid IP address");
+            Logger.log("--------------------\n");
             return;
         }
 
-        System.out.println("--------------------\n");
-        System.out.println("Client is running...");
-        System.out.println("--------------------\n");
+        Logger.log("--------------------\n");
+        Logger.log("Client is running...");
+        Logger.log("--------------------\n");
 
         var clientSocket = new ClientSocket(serverIP, ipManager);
 
         clientSocket.send("Hello, server!", clientSocket.getTargets()[0]);
 
-        System.out.println("Message sent");
-        System.out.println("--------------------\n");
+        Logger.log("Message sent");
+        Logger.log("--------------------\n");
 
-
-        while (true)
-        {
-            //
-            String levelFromJson = Arrays.toString(clientSocket.listen().getData());
-
-            if (message.equals("exit"))
-            {
-                System.out.println("Client is closing...");
-                break;
-            }
-
-            System.out.println("Message received: " + message);
-            System.out.println("--------------------\n");
-        }
+        var clientController = new ClientController(clientSocket);
+        clientController.run();
     }
 }
