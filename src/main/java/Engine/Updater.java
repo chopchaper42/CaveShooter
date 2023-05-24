@@ -11,6 +11,7 @@ import Logs.Logger;
 import Utility.Collisions;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
+import network.udp.client.ClientController;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -23,14 +24,21 @@ public class Updater {
     private UIManager uiManager;
     private GUIManager guiManager;
 
+    private ClientController client;
+
     public Updater(Level level, Player player, UIManager uiManager, GUIManager guiManager) {
         this.level = level;
         this.player = player;
         this.uiManager = uiManager;
         this.guiManager = guiManager;
+//        this.client = ...
     }
 
     public void update(double dt) {
+//        var client = new ClientController();
+//       res = client.checkQueue()
+//        if (res)
+//            updateArrays
         redrawEntities(level, level.canvas());
 
         //redraw UI
@@ -108,6 +116,8 @@ public class Updater {
             toRemove.add(player);
             guiManager.renderLose();
         }
+        // makeObject --> make json
+//        client.send(json)
     }
 
     private void redrawEntities(Level level, Canvas canvas) {

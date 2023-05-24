@@ -40,5 +40,7 @@ public class ClientConnection
 
         var clientController = new ClientController(clientSocket);
         clientController.run();
+        // clientController --> CaveShooter --> GUI --> Game -->  Updater --> Updater.update.. <
+
     }
 }

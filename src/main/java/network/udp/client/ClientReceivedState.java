@@ -32,6 +32,6 @@ public class ClientReceivedState {
     }
 
     private String extractJson(byte[] bytes) {
-        return Arrays.toString(package);
+        return Arrays.toString(bytes);
     }
 }

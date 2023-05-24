@@ -36,4 +36,11 @@ public class ClientController
 //            System.out.println("--------------------\n");
         }
     }
+
+    public void send(String newState) {
+        // send the new state to the server
+        clientSocket.send(newState, clientSocket.getTargets()[0]);
+    }
+
+//    public void checkQueue()
 }
