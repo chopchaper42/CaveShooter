@@ -3,21 +3,26 @@ package network.udp.client;
 public class UpdatedState
 {
     private String jsonProperty;
-    private double[] position;
-    private double[] direction;
+    private double posX;
+    private double posY;
+    private double bulletSpeedComponentX;
+    private double bulletSpeedComponentY;
 
 
     public UpdatedState(String jsonProperty, double x, double y)
     {
         this.jsonProperty = jsonProperty;
-        this.position = new double[] {x, y};
+        this.posX = x;
+        this.posY = y;
     }
 
     public UpdatedState(String jsonProperty, double x, double y, double dx, double dy)
     {
         this.jsonProperty = jsonProperty;
-        this.position = new double[] {x, y};
-        this.direction = new double[] {dx, dy};
+        this.posX = x;
+        this.posY = y;
+        this.bulletSpeedComponentX = dx;
+        this.bulletSpeedComponentY = dy;
     }
 
     // Getters and setters
@@ -31,23 +36,43 @@ public class UpdatedState
         this.jsonProperty = jsonProperty;
     }
 
-    public double[] getPosition()
+    public double getPosX()
     {
-        return position;
+        return posX;
     }
 
-    public void setPosition(double[] position)
+    public double getPosY()
     {
-        this.position = position;
+        return posY;
     }
 
-    public double[] getDirection()
+    public double getBulletSpeedComponentX()
     {
-        return direction;
+        return bulletSpeedComponentX;
     }
 
-    public void setDirection(double[] direction)
+    public double getBulletSpeedComponentY()
     {
-        this.direction = direction;
+        return bulletSpeedComponentY;
+    }
+
+    public void setPosX(double posX)
+    {
+        this.posX = posX;
+    }
+
+    public void setPosY(double posY)
+    {
+        this.posY = posY;
+    }
+
+    public void setBulletSpeedComponentX(double bulletSpeedComponentX)
+    {
+        this.bulletSpeedComponentX = bulletSpeedComponentX;
+    }
+
+    public void setBulletSpeedComponentY(double bulletSpeedComponentY)
+    {
+        this.bulletSpeedComponentY = bulletSpeedComponentY;
     }
 }

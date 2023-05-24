@@ -25,6 +25,13 @@ public class Bullet extends MovingEntity
         this.speed = new Speed(source.getPosition(), target, speed);
     }
 
+    public Bullet(double x, double y, double dx, double dy)
+    {
+        super(image, x, y);
+        this.speed = new Speed(x, y);
+    }
+
+
     /**
      * Moves a bullet
      * @param dt time elapsed since the last frame

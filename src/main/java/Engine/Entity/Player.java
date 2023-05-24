@@ -119,7 +119,7 @@ public class Player extends LivingEntity
             );
             Bullet bullet = new Bullet(this, direction, 6500);
             bullets.add(bullet);
-            ClientControllerSingleton.getInstance().send("bullet" bullet.getX(), bullet.getY(),
+            ClientControllerSingleton.getInstance().send("bullet", bullet.getX(), bullet.getY(),
                     bullet.getSpeedX(), bullet.getSpeedY());
             decreaseItem(Type.AMMO);
         }

@@ -138,12 +138,18 @@ public class Updater {
     {
         switch (updatedState.getJsonProperty())
         {
-//            case "player":
-//                player = updatedState.getPlayer();
-//                break;
-//            case "enemies":
-//
-//                break;
+            case "playerPosition":
+                break;
+
+            case "bullet":
+
+                var bullet = new Bullet (
+                    updatedState.getPosX(), updatedState.getPosY(),
+                        updatedState.getBulletSpeedComponentX(), updatedState.getBulletSpeedComponentY()
+                );
+                level.bullets().add(bullet);
+
+                break;
 
         }
         // update all necessary entities

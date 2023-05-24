@@ -59,7 +59,7 @@ public class Enemy extends LivingEntity {
                 Point2D direction = new Point2D(player.center().getX(), player.center().getY());
                 Bullet bullet = new Bullet(this, direction, 2500);
                 bullets.add(bullet);
-                ClientControllerSingleton.getInstance().send("bullet" bullet.getX(), bullet.getY(),
+                ClientControllerSingleton.getInstance().send("bullet", bullet.getX(), bullet.getY(),
                         bullet.getSpeedX(), bullet.getSpeedY());
                 Logger.log(this + "'s shot");
                 timeSinceLastShot = 0;
