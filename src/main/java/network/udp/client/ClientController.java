@@ -7,7 +7,7 @@ public class ClientController
 {
     private ClientSocket clientSocket;
 
-    public ClientController(ClientSocket clientSocket)
+    ClientController(ClientSocket clientSocket)
     {
         this.clientSocket = clientSocket;
     }

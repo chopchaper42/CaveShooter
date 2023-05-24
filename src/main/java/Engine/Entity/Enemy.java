@@ -9,6 +9,7 @@ import Utility.Collisions;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import network.udp.client.ClientControllerSingleton;
 
 import java.io.File;
 import java.util.List;

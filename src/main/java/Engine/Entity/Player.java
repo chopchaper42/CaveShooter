@@ -44,7 +44,7 @@ public class Player extends LivingEntity
      * @param x x coordinate
      * @param y y coordinate
      */
-    public Player(Window window, double x, double y, Inventory inventory) { //
+    public Player(Window window, double x, double y, Inventory inventory) {
         super(alivePlayer, x, y, 100);
         canvas = new Canvas(window.width(), window.height());
         setBoundaries(getX(), getY(), alivePlayer.getWidth(), alivePlayer.getHeight());

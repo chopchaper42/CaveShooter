@@ -50,7 +50,7 @@ public class CaveShooter extends Application
 
         LevelManager levelManager = new LevelManager(new File("./src/main/levels"));
         InventoryManager.readInventory("./src/main/inventory/inventory.txt");
-        GUIManager guiManager = new GUIManager(window, stage, levelManager, controller);
+        GUIManager guiManager = new GUIManager(window, stage, levelManager);
 
         guiManager.renderMainWindow();
         stage.show();

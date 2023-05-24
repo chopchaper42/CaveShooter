@@ -13,32 +13,37 @@ public class Item extends Entity
     private int amount;
     private final Type type;
 
-    /**
-     * Creates an entity
-     *
-     * @param image entity's image
-     * @param x     x coordinate
-     * @param y     y coordinate
-     */
     protected Item(Image image, double x, double y, int amount, Type type) {
         super(image, x, y);
         this.amount = amount;
         this.type = type;
     }
 
-    public Item(Type type, int amount) {
+    protected Item(Type type, int amount) {
         super(null, 0, 0);
         this.type = type;
         this.amount = amount;
     }
 
+    /**
+     * @return item's amount
+     */
     public int getAmount() {
         return amount;
     }
+
+    /**
+     * @return item's type
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * @param x
+     * @param y
+     * @return
+     */
     public static Point2D getCoordinatesForCenter(double x, double y) {
         return new Point2D(
                 x + (Tile.TILE_SIZE - ITEM_SIZE) / 2f,

@@ -39,7 +39,8 @@ public class ClientConnection
         Logger.log("Message sent");
         Logger.log("--------------------\n");
 
-        var clientController = new ClientController(clientSocket);
+        ClientControllerSingleton.setController(new ClientController(clientSocket));
+        var clientController = ClientControllerSingleton.getInstance();
         clientController.run();
         // clientConnection --> Engine.CaveShooter --> GUI --> Game -->  Updater --> Updater.update.. <
         CaveShooter.main(new String[] {});

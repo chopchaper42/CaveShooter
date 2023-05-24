@@ -25,19 +25,17 @@ public class Updater {
     private GUIManager guiManager;
     private ClientController client;
 
-    public Updater(Level level, Player player, UIManager uiManager, GUIManager guiManager, ClientController controller) {
+    public Updater(Level level, Player player, UIManager uiManager, GUIManager guiManager) {
         this.level = level;
         this.player = player;
         this.uiManager = uiManager;
         this.guiManager = guiManager;
-        this.client = controller;
     }
 
     public void update(double dt) {
-//        var client = new ClientController();
-//       res = client.checkQueue()
+//        res = client.checkQueue()
 //        if (res)
-//            updateArrays
+//            updateArrays()
         redrawEntities(level, level.canvas());
 
         //redraw UI
