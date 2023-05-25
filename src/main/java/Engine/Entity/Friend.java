@@ -10,7 +10,7 @@ import java.io.File;
 public class Friend extends LivingEntity{
     private static Image image = new Image(
             new File("./src/main/assets/player2.png").toURI().toString(),
-            Player.SIZE, Player.SIZE,
+            30, 30,
             false,
             false);
 

@@ -74,23 +74,38 @@ public class Game
             @Override
             public void handle(long now)
             {
-                var controller = ClientControllerSingleton.getInstance();
-                controller.run();
-
                 double dt = (now - lastFrame) / 10e9;
                 updater.update(dt);
                 inputManager.handleInput(dt);
                 lastFrame = now;
-
+                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+                long threadId = Thread.currentThread().getId();
+                System.out.println("Current Thread ID AnimationTimer: " + threadId);
+                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
                 if (!player.alive() || level.completed()) {
                     this.stop();
 
                     Logger.log("Game ended.");
                     // send to the serve "game over"
                 }
+
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
         loop.start();
+
+        Thread socketThread = new Thread(() -> {
+            ClientControllerSingleton.getInstance().run();
+        });
+
+        socketThread.start();
+
+//        var controller = ClientControllerSingleton.getInstance();
+//        controller.run();
     }
 
     private void startGame() {

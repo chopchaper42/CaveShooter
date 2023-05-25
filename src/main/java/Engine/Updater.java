@@ -33,11 +33,14 @@ public class Updater {
 
     public void update(double dt) {
 
-        UpdatedState updatedState = ClientControllerSingleton.getInstance().checkUpdatesFromAnotherClient();
+        controller = ClientControllerSingleton.getInstance();
+
+        UpdatedState updatedState = controller.checkUpdatesFromAnotherClient();
         if (updatedState != null)
         {
             updateAllNecessaryEntities(updatedState);
         }
+
 
         redrawEntities(level, level.canvas());
 
@@ -127,6 +130,7 @@ public class Updater {
         draw(level.items(), canvas);
         draw(level.bullets(), canvas);
         draw(level.enemies(), canvas);
+        draw(level.getFriends(), canvas);
     }
 
     private <T extends Entity> void draw(List<T> entities, Canvas canvas) {
@@ -143,7 +147,9 @@ public class Updater {
                 var friend = new Friend(
                         updatedState.getPosX(), updatedState.getPosY(), 100
                 );
-                level.setFriend(friend);
+                ArrayList<Friend> friends = new ArrayList<>();
+                friends.add(friend);
+                level.setFriends(friends);
                 break;
 
             case "bullet":

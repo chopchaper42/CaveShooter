@@ -3,7 +3,7 @@ package network.udp.client;
 import java.util.Arrays;
 import Logs.*;
 
-public class ClientController implements Runnable
+public class ClientController/* extends Thread*/
 {
     private ClientSocket clientSocket;
 
@@ -17,20 +17,37 @@ public class ClientController implements Runnable
      */
     public void run()
     {
-        byte[] data = clientSocket.listen().getData();
         var clientReceivedState = new ClientReceivedState();
+        while(true) {
+            byte[] data = clientSocket.listen().getData();
+//            try {
+                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+            long threadId = Thread.currentThread().getId();
+            System.out.println("Current Thread ID Controller: " + threadId);
+            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+//                Thread.sleep(100);
+//            break;
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
-        clientReceivedState.enqueue(data);
-
-        if (Arrays.toString(data).equals("game over"))
-        {
-            Logger.log("Game over");
-            Logger.log("--------------------\n");
-            Logger.log("Client is closing...");
-            send("game over", 0, 0);
+//            } catch (Exception e) {
+//                System.out.println("Sleep is interrupted");
+//            }
         }
+//        clientReceivedState.enqueue(data);
+//
+//        if (Arrays.toString(data).equals("game over"))
+//        {
+//            Logger.log("Game over");
+//            Logger.log("--------------------\n");
+//            Logger.log("Client is closing...");
+//            send("game over", 0, 0);
+//        }
     }
-
+//
     public void send(String jsonProperty, double x, double y)
     {
         var newState = new UpdatedState(jsonProperty, x, y);
