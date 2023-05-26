@@ -50,12 +50,13 @@ public class Updater {
         }
 
         // show vision fields
-        if (GameSettings.getShowFields()) {
-            level.enemies().forEach(enemy -> {
-                enemy.move(level.tiles(), dt);
-                enemy.visionField().draw(level.canvas(), Color.YELLOWGREEN);
-            });
-        }
+        level.enemies().forEach(enemy -> {
+            enemy.move(level.tiles(), dt);
+                if (GameSettings.getShowFields()) {
+
+                    enemy.visionField().draw(level.canvas(), Color.YELLOWGREEN);
+                }
+        });
 
 
         // mark bullets "to remove" if they intersect with a wall
