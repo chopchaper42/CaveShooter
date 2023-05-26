@@ -23,11 +23,22 @@ public class InputManager {
     boolean DOWN = false;
     boolean RIGHT = false;
 
+    /**
+     * Creates an input manager
+     *
+     * @param player player
+     * @param level level
+     */
     public InputManager(Player player, Level level) {
         this.player = player;
         this.level = level;
     }
 
+    /**
+     * Handles user input
+     *
+     * @param dt time elapsed since the last frame
+     */
     public void handleInput(double dt) {
         double dx = 0;
         double dy = 0;

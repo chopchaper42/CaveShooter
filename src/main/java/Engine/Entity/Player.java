@@ -81,6 +81,11 @@ public class Player extends LivingEntity
         inventory.add(type, x);
     }
 
+    /**
+     * Takes items, if the player intersects with them
+     *
+     * @param items items
+     */
     public void takeItems(List<Item> items) {
         items.forEach(item -> {
             if (item.getType() != Type.HEAL) {
@@ -98,6 +103,11 @@ public class Player extends LivingEntity
         });
     }
 
+    /**
+     * Tries to open a door
+     *
+     * @param tiles tiles
+     */
     public void tryOpenDoor(List<Tile> tiles) {
         actionField.updateToMatchCoordinates();
 
@@ -117,6 +127,12 @@ public class Player extends LivingEntity
         }
     }
 
+    /**
+     * Shoots in the direction of mouse click
+     *
+     * @param event mouse click event
+     * @param bullets bullets
+     */
     public void shoot(MouseEvent event, List<Bullet> bullets) {
         if (getItemAmount(Type.AMMO) > 0) {
             Point2D direction = new Point2D(
@@ -131,6 +147,10 @@ public class Player extends LivingEntity
         }
     }
 
+    /**
+     * Draws the player
+     * @param image image
+     */
     public void draw(Image image) {
         canvas.getGraphicsContext2D().drawImage(image, screenPositionX, screenPositionY);
     }
@@ -153,10 +173,13 @@ public class Player extends LivingEntity
         return actionField;
     }
 
+    /**
+     * Kills the player
+     */
     public void kill() {
         alive = false;
         setImage(deadPlayer);
         draw(getImage());
-        decreaseHealth(1000);
+        decreaseHealth(1000000);
     }
 }

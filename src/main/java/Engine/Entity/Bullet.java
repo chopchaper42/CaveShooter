@@ -25,6 +25,14 @@ public class Bullet extends MovingEntity
         this.speed = new Speed(source.getPosition(), target, speed);
     }
 
+    /**
+     * Creates a bullet
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param dx speed along the x-axis
+     * @param dy speed along the y-axis
+     */
     public Bullet(double x, double y, double dx, double dy)
     {
         super(image, x, y);

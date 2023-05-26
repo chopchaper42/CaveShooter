@@ -24,11 +24,21 @@ public class Friend extends LivingEntity{
     public Friend(double x, double y, int health) {
         super(image, x, y, health);
     }
+    /**
+     * Creates a living entity
+     *
+     * @param position Point2D position
+     * @param health health
+     */
     public Friend(Point2D position, int health) {
         super(image, position.getX(), position.getY(), health);
     }
 
 
+    /**
+     * Draws a friend
+     * @param canvas canvas
+     */
     public void draw(Canvas canvas) {
         canvas.getGraphicsContext2D().drawImage(image, getX(), getY());
     }

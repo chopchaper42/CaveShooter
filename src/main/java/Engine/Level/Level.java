@@ -43,6 +43,12 @@ public final class Level
         this.canvas = createCanvas(map.width(), map.height());
     }
 
+    /**
+     * Moves the level's canvas
+     *
+     * @param dx a value to move on along the x-axis
+     * @param dy a value to move on along the y-axis
+     */
     public void moveCanvas(double dx, double dy) {
         initialCanvasPosition = new Point2D(
                 initialCanvasPosition.getX() - dx,

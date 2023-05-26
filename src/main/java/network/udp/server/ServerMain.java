@@ -13,17 +13,6 @@ public class ServerMain
     {
         try
         {
-            Enumeration e = NetworkInterface.getNetworkInterfaces();
-            while(e.hasMoreElements())
-            {
-                NetworkInterface n = (NetworkInterface) e.nextElement();
-                Enumeration ee = n.getInetAddresses();
-                while (ee.hasMoreElements())
-                {
-                    InetAddress i = (InetAddress) ee.nextElement();
-                    System.out.println(i.getHostAddress());
-                }
-            }
             ServerPlayersConnection server = null;
             server = new ServerPlayersConnection();
             server.start();

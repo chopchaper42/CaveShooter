@@ -40,9 +40,9 @@ public class Item extends Entity
     }
 
     /**
-     * @param x
-     * @param y
-     * @return
+     * @param x tile's x coordinate
+     * @param y tile's y coordinate
+     * @return point, in which the item will be centered
      */
     public static Point2D getCoordinatesForCenter(double x, double y) {
         return new Point2D(

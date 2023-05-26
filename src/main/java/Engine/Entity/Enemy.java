@@ -52,6 +52,13 @@ public class Enemy extends LivingEntity {
         shootingRate = new Random().nextDouble(0.1, 0.6);
     }
 
+    /**
+     * Shoot in player
+     *
+     * @param player player
+     * @param bullets bullets
+     * @param dt time elapsed since the last frame
+     */
     public void shoot(Player player, List<Bullet> bullets, double dt) {
         if (seeingPlayer) {
             addTimeToLastShot(dt);
@@ -66,12 +73,22 @@ public class Enemy extends LivingEntity {
             }
         }
     }
+
+    /**
+     * Calculates a point where to go
+     */
     public void calculateDestination() {
         destination = pickWhereToGo();
         speed = new Speed(this.getPosition(), destination, SPEED);
         newDestinationCalculated = true;
     }
 
+    /**
+     * moves enemy
+     *
+     * @param tiles tiles
+     * @param dt elapsed time since the last frame
+     */
     public void move(List<Tile> tiles, double dt) {
         setRushMode();
         if (elapsedTime > movementRate) {
