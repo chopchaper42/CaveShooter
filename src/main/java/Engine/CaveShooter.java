@@ -1,3 +1,5 @@
+package Engine;
+
 import Engine.InventoryManager;
 import Engine.Level.LevelManager;
 import GUI.GUIManager;

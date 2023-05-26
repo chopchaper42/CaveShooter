@@ -8,20 +8,6 @@
     <artifactId>PJV_Project</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version>
-                <configuration>
-                    <mainClass></mainClass>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -30,16 +16,6 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>21-ea+5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>21-ea+17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
             <version>21-ea+5</version>
         </dependency>
 
@@ -78,6 +54,7 @@
             <scope>test</scope>
         </dependency>
 
+
         <!-- PowerMock dependencies -->
         <dependency>
             <groupId>org.powermock</groupId>
@@ -92,7 +69,19 @@
             <scope>test</scope>
         </dependency>
 
-
-
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>Engine.CaveShooter</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
