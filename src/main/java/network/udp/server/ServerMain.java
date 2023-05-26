@@ -1,5 +1,9 @@
 package network.udp.server;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
+
 public class ServerMain
 {
     /**
@@ -7,10 +11,10 @@ public class ServerMain
      */
     public static void main(String[] args)
     {
-        ServerUDP server = null;
         try
         {
-            server = new ServerUDP();
+            ServerPlayersConnection server = null;
+            server = new ServerPlayersConnection();
             server.start();
 
         }

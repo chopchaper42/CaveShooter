@@ -12,6 +12,12 @@ public class ActionField {
     private double radiusInPixels;
     private Rectangle2D bounds;
 
+    /**
+     * Creates an action field
+     *
+     * @param radiusInTiles the radius of the action field in tiles
+     * @param entity the entity, that will have this action field
+     */
     public ActionField(double radiusInTiles, Entity entity) {
         this.entity = entity;
         this.radiusInPixels = radiusInTiles * Tile.TILE_SIZE;
@@ -22,6 +28,9 @@ public class ActionField {
         return bounds;
     }
 
+    /**
+     * Updates field's coordinates to match entity's coordinates
+     */
     public void updateToMatchCoordinates() {
         Point2D entityCenter = entity.center();
         this.bounds = new Rectangle2D(
@@ -32,6 +41,12 @@ public class ActionField {
         );
     }
 
+    /**
+     * Draws an action field
+     *
+     * @param canvas canvas
+     * @param color color
+     */
     public void draw(Canvas canvas, Color color) {
         canvas.getGraphicsContext2D().setStroke(color);
         canvas.getGraphicsContext2D().strokeRect(

@@ -42,16 +42,4 @@ public class IPManager
             return false;
         }
     }
-
-    /**
-     * Extracts the IP address from the DatagramPacket.
-     * @param receivePacket the DatagramPacket that contains the IP address.
-     * @return the IP address of the client.
-     */
-    public String extractIP(DatagramPacket receivePacket)
-    {
-        String ip = receivePacket.getAddress().toString();
-        ip = ip.substring(1);
-        return ip;
-    }
 }

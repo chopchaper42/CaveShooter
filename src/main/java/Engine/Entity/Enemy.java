@@ -9,6 +9,7 @@ import Utility.Collisions;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import network.udp.client.ClientControllerSingleton;
 
 import java.io.File;
 import java.util.List;
@@ -51,6 +52,13 @@ public class Enemy extends LivingEntity {
         shootingRate = new Random().nextDouble(0.1, 0.6);
     }
 
+    /**
+     * Shoot in player
+     *
+     * @param player player
+     * @param bullets bullets
+     * @param dt time elapsed since the last frame
+     */
     public void shoot(Player player, List<Bullet> bullets, double dt) {
         if (seeingPlayer) {
             addTimeToLastShot(dt);
@@ -58,17 +66,29 @@ public class Enemy extends LivingEntity {
                 Point2D direction = new Point2D(player.center().getX(), player.center().getY());
                 Bullet bullet = new Bullet(this, direction, 2500);
                 bullets.add(bullet);
+                ClientControllerSingleton.getInstance().send("bullet", bullet.getX(), bullet.getY(),
+                        bullet.getSpeedX(), bullet.getSpeedY());
                 Logger.log(this + "'s shot");
                 timeSinceLastShot = 0;
             }
         }
     }
+
+    /**
+     * Calculates a point where to go
+     */
     public void calculateDestination() {
         destination = pickWhereToGo();
         speed = new Speed(this.getPosition(), destination, SPEED);
         newDestinationCalculated = true;
     }
 
+    /**
+     * moves enemy
+     *
+     * @param tiles tiles
+     * @param dt elapsed time since the last frame
+     */
     public void move(List<Tile> tiles, double dt) {
         setRushMode();
         if (elapsedTime > movementRate) {
@@ -90,6 +110,7 @@ public class Enemy extends LivingEntity {
             }
 
             move(speed.xComponent() * dt, speed.yComponent() * dt);
+            ClientControllerSingleton.getInstance().send("enemy", getX(), getY());
             updateFields();
         } else {
             elapsedTime += dt;

@@ -13,4 +13,4 @@ import java.util.List;
  * @param height
  * @param width
  */
-public record LevelInfo(List<Tile> tiles, List<Item> items, List<Enemy> enemies, Point2D playerPosition, int height, int width) {}
+public record LevelInfo(List<Tile> tiles, List<Item> items, List<Enemy> enemies, Point2D playerPosition, Point2D friendPosition, int height, int width) {}

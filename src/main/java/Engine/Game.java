@@ -13,6 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import network.udp.client.ClientController;
+import network.udp.client.ClientControllerSingleton;
 
 import java.io.File;
 
@@ -72,21 +74,37 @@ public class Game
             public void handle(long now)
             {
                 double dt = (now - lastFrame) / 10e9;
-                //receiveData();
                 updater.update(dt);
                 inputManager.handleInput(dt);
                 lastFrame = now;
-
+                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+                long threadId = Thread.currentThread().getId();
+                System.out.println("Current Thread ID AnimationTimer: " + threadId);
+                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
                 if (!player.alive() || level.completed()) {
                     this.stop();
 
                     Logger.log("Game ended.");
+                    // send to the serve "game over"
                 }
 
-                //sendData();
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
         loop.start();
+
+        Thread socketThread = new Thread(() -> {
+            ClientControllerSingleton.getInstance().run();
+        });
+
+        socketThread.start();
+
+//        var controller = ClientControllerSingleton.getInstance();
+//        controller.run();
     }
 
     private void startGame() {
@@ -108,6 +126,4 @@ public class Game
             player.shoot(event, level.bullets());
         });
     }
-
-
 }

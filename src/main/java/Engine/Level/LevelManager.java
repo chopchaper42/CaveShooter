@@ -8,6 +8,10 @@ public class LevelManager {
     List<File> levels;
     File levelsFolder;
 
+    /**
+     * Creates a level manager
+     * @param levelsFolder the folder with levels
+     */
     public LevelManager(File levelsFolder) {
         if (!levelsFolder.isDirectory()) {
             throw new IllegalArgumentException("File: " + levelsFolder.getName() + " - is not a folder");
@@ -16,6 +20,9 @@ public class LevelManager {
         this.levelsFolder = levelsFolder;
     }
 
+    /**
+     * @return levels
+     */
     public List<File> getLevels() {
         if (levels == null)
             parseLevels(levelsFolder);
@@ -31,5 +38,4 @@ public class LevelManager {
                 levels.add(file);
         }
     }
-
 }

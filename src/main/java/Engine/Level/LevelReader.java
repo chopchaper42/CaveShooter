@@ -36,14 +36,6 @@ public class LevelReader
         }
         return null;
     }
-
-    /*
-     * Level editor will always generate a "rectangular" text file,
-     * so on each row the width of the level is constant.
-     *
-     * What if the Level editor will make a list of Tiles from the user's input and serialize it to JSON,
-     * so here we will only deserialize it
-     */
     private static LevelInfo parseLevel(BufferedReader reader) throws IOException
     {
         String currentLine;
@@ -51,6 +43,7 @@ public class LevelReader
         List<Item> items = new ArrayList<>();
         List<Enemy> enemies = new ArrayList<>();
         Point2D playerPosition = null;
+        Point2D friendPosition = null;
         int levelWidth = 0;
         int levelHeight = 0;
         int rowNumber = 0;
@@ -85,9 +78,13 @@ public class LevelReader
                         tiles.add(new Floor(posX, posY));
                         enemies.add(new Enemy(posX, posY));
                     }
-                    case "P" -> {
+                    case "F" -> {
                         tiles.add(new Floor(posX, posY));
                         playerPosition = new Point2D(posX, posY);
+                    }
+                    case "P" -> {
+                        tiles.add(new Floor(posX, posY));
+                        friendPosition = new Point2D(posX, posY);
                     }
                     default -> {
                         tiles.add(new Floor(posX, posY));
@@ -101,6 +98,6 @@ public class LevelReader
             }
             rowNumber++;
         }
-        return new LevelInfo(tiles, items, enemies, playerPosition, levelHeight, levelWidth);
+        return new LevelInfo(tiles, items, enemies, playerPosition, friendPosition, levelHeight, levelWidth);
     }
 }

@@ -11,6 +11,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import network.udp.client.ClientControllerSingleton;
 
 import java.io.File;
 import java.util.List;
@@ -29,12 +30,12 @@ public class Player extends LivingEntity
     private final ActionField actionField;
     private boolean alive = true;
     private final static Image alivePlayer = new Image(
-            new File("./src/main/assets/player.png").toURI().toString(),
+            new File("./src/main/assets/player1.png").toURI().toString(),
             SIZE, SIZE,
             false,
             false);
     private final static Image deadPlayer = new Image(
-            new File("./src/main/assets/dead_player.png").toURI().toString(),
+            new File("./src/main/assets/dead_player1.png").toURI().toString(),
             SIZE, SIZE,
             false,
             false);
@@ -44,7 +45,7 @@ public class Player extends LivingEntity
      * @param x x coordinate
      * @param y y coordinate
      */
-    public Player(Window window, double x, double y, Inventory inventory) { //
+    public Player(Window window, double x, double y, Inventory inventory) {
         super(alivePlayer, x, y, 100);
         canvas = new Canvas(window.width(), window.height());
         setBoundaries(getX(), getY(), alivePlayer.getWidth(), alivePlayer.getHeight());
@@ -52,6 +53,17 @@ public class Player extends LivingEntity
         screenPositionY = (window.height() - SIZE) / 2;
         this.inventory = inventory;
         this.actionField = new ActionField(0.5, this);
+    }
+
+    // Empty constructor for testing
+    public Player(Image image)
+    {
+        super(image, 0, 0, 100);
+        canvas = null;
+        screenPositionX = 0;
+        screenPositionY = 0;
+        this.inventory = null;
+        this.actionField = null;
     }
 
     /**
@@ -80,6 +92,11 @@ public class Player extends LivingEntity
         inventory.add(type, x);
     }
 
+    /**
+     * Takes items, if the player intersects with them
+     *
+     * @param items items
+     */
     public void takeItems(List<Item> items) {
         items.forEach(item -> {
             if (item.getType() != Type.HEAL) {
@@ -89,9 +106,19 @@ public class Player extends LivingEntity
                 increaseHealth(item.getAmount());
                 Logger.log("+" + item.getAmount() + " " + item.getType().name() + ". Health: " + getHealth());
             }
+
+            ClientControllerSingleton.getInstance().send("item",
+                    item.getX(),
+                    item.getY()
+            );
         });
     }
 
+    /**
+     * Tries to open a door
+     *
+     * @param tiles tiles
+     */
     public void tryOpenDoor(List<Tile> tiles) {
         actionField.updateToMatchCoordinates();
 
@@ -105,11 +132,18 @@ public class Player extends LivingEntity
                 if (actionField.bounds().intersects(door.getBoundaries())) {
                     inventory.use(Type.KEY);
                     door.open();
+                    ClientControllerSingleton.getInstance().send("door", door.getX(), door.getY());
                 }
             }
         }
     }
 
+    /**
+     * Shoots in the direction of mouse click
+     *
+     * @param event mouse click event
+     * @param bullets bullets
+     */
     public void shoot(MouseEvent event, List<Bullet> bullets) {
         if (getItemAmount(Type.AMMO) > 0) {
             Point2D direction = new Point2D(
@@ -118,10 +152,16 @@ public class Player extends LivingEntity
             );
             Bullet bullet = new Bullet(this, direction, 6500);
             bullets.add(bullet);
+            ClientControllerSingleton.getInstance().send("bullet", bullet.getX(), bullet.getY(),
+                    bullet.getSpeedX(), bullet.getSpeedY());
             decreaseItem(Type.AMMO);
         }
     }
 
+    /**
+     * Draws the player
+     * @param image image
+     */
     public void draw(Image image) {
         canvas.getGraphicsContext2D().drawImage(image, screenPositionX, screenPositionY);
     }
@@ -144,10 +184,13 @@ public class Player extends LivingEntity
         return actionField;
     }
 
+    /**
+     * Kills the player
+     */
     public void kill() {
         alive = false;
         setImage(deadPlayer);
         draw(getImage());
-        decreaseHealth(1000);
+        decreaseHealth(1000000);
     }
 }

@@ -26,6 +26,21 @@ public class Bullet extends MovingEntity
     }
 
     /**
+     * Creates a bullet
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param dx speed along the x-axis
+     * @param dy speed along the y-axis
+     */
+    public Bullet(double x, double y, double dx, double dy)
+    {
+        super(image, x, y);
+        this.speed = new Speed(x, y);
+    }
+
+
+    /**
      * Moves a bullet
      * @param dt time elapsed since the last frame
      */
@@ -38,5 +53,12 @@ public class Bullet extends MovingEntity
     }
     public Entity source() {
         return source;
+    }
+
+    public double getSpeedX() {
+        return speed.xComponent();
+    }
+    public double getSpeedY() {
+        return speed.yComponent();
     }
 }

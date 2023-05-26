@@ -2,6 +2,7 @@ package Engine.Level;
 
 import Engine.Entity.Bullet;
 import Engine.Entity.Enemy;
+import Engine.Entity.Friend;
 import Engine.Entity.Items.Item;
 import Engine.Entity.Player;
 import Engine.Entity.Tile.Tile;
@@ -18,9 +19,11 @@ public final class Level
     private LevelInfo map;
     private Point2D initialCanvasPosition;
     private Point2D initialPlayerPosition;
+    private Point2D initialFriendPosition;
     private final List<Item> items;
     private final List<Bullet> bullets = new ArrayList<>();
     private final List<Enemy> enemies;
+    private List<Friend> friends = new ArrayList<>();
     private Canvas canvas;
     private Window window;
     private boolean completed = false;
@@ -34,11 +37,18 @@ public final class Level
         this.window = window;
         this.items = map.items();
         this.enemies = map.enemies();
+        this.friends.add(new Friend(map.friendPosition(), 100));
         this.initialPlayerPosition = map.playerPosition();
         this.initialCanvasPosition = canvasPosition();
         this.canvas = createCanvas(map.width(), map.height());
     }
 
+    /**
+     * Moves the level's canvas
+     *
+     * @param dx a value to move on along the x-axis
+     * @param dy a value to move on along the y-axis
+     */
     public void moveCanvas(double dx, double dy) {
         initialCanvasPosition = new Point2D(
                 initialCanvasPosition.getX() - dx,
@@ -98,6 +108,15 @@ public final class Level
     public List<Enemy> enemies() {
         return enemies;
     }
+
+    public List<Friend> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<Friend> friends) {
+        this.friends = friends;
+    }
+
     public boolean completed() {
         return enemies.isEmpty();
     }

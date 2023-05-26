@@ -17,6 +17,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import network.udp.client.ClientController;
+import network.udp.client.ClientControllerSingleton;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,10 +32,6 @@ public class GUIManager {
     private GameSettings settings;
 
     public GUIManager(Window window, Stage stage, LevelManager levelManager) {
-        if (stage == null) {
-            throw new IllegalArgumentException("Null stage was given.");
-
-        }
         this.window = window;
         this.stage = stage;
         this.levelManager = levelManager;
@@ -87,7 +85,7 @@ public class GUIManager {
         });
 
         multiPlayerButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-            //connect to server
+            renderLevels();
         });
 
         pane.getChildren().addAll(gameTypeBox, logBox);

@@ -11,6 +11,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import network.udp.client.ClientControllerSingleton;
 
 import java.util.List;
 
@@ -22,11 +23,22 @@ public class InputManager {
     boolean DOWN = false;
     boolean RIGHT = false;
 
+    /**
+     * Creates an input manager
+     *
+     * @param player player
+     * @param level level
+     */
     public InputManager(Player player, Level level) {
         this.player = player;
         this.level = level;
     }
 
+    /**
+     * Handles user input
+     *
+     * @param dt time elapsed since the last frame
+     */
     public void handleInput(double dt) {
         double dx = 0;
         double dy = 0;
@@ -81,6 +93,7 @@ public class InputManager {
         }
 
         player.setBoundaries(player.getX(), player.getY(), Player.SIZE);
+        ClientControllerSingleton.getInstance().send("playerPosition", player.getX(), player.getY());
     }
 
     public void release(KeyEvent event)
@@ -107,7 +120,6 @@ public class InputManager {
                 if (pressed)
                     GameSettings.toggleShowFields();
             }
-
         }
     }
 }

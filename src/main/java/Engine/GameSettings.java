@@ -9,6 +9,9 @@ public class GameSettings {
         return showFields;
     }
 
+    /**
+     * Turns fields visibility on/off
+     */
     public static void toggleShowFields() {
         if (showFields) {
             showFields = false;

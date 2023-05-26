@@ -1,12 +1,13 @@
 package network.udp.client;
 
 import java.net.*;
-import java.util.Arrays;
 import java.util.Scanner;
+
+import Logs.*;
 
 import network.udp.IPManager;
 
-public class ClientUDP
+public class ClientConnection
 {
     /**
      * Runs the client
@@ -16,47 +17,37 @@ public class ClientUDP
         var ipManager = new IPManager();
 
         Scanner scr = new Scanner(System.in);
+        Logger.log("Type the server's IP address:\n");
         System.out.println("Type the server's IP address:\n");
         String serverIP = scr.next();
 
         if (!ipManager.checkIP(serverIP))
         {
+            Logger.log("Invalid IP address");
             System.out.println("Invalid IP address");
+            Logger.log("--------------------\n");
             System.out.println("--------------------\n");
             return;
         }
 
+        Logger.log("--------------------\n");
         System.out.println("--------------------\n");
+        Logger.log("Client is running...");
         System.out.println("Client is running...");
         System.out.println("--------------------\n");
+        Logger.log("--------------------\n");
 
         var clientSocket = new ClientSocket(serverIP, ipManager);
 
-        clientSocket.send("Hello, server!");
+        clientSocket.send("Hello, server!", clientSocket.getTargets()[0]);
 
+        Logger.log("Message sent");
+        Logger.log("--------------------\n");
+        System.out.println("--------------------\n");
         System.out.println("Message sent");
         System.out.println("--------------------\n");
+        Logger.log("--------------------\n");
 
-
-        // @TO-DO: need to refactor a bit to make ClientUDP the start point
-        // CaveShooter.main() right now is the start point;
-
-
-        while (true)
-        {
-            String message = Arrays.toString(clientSocket.listen().getData());
-
-            if (message.equals("exit"))
-            {
-                System.out.println("Client is closing...");
-                break;
-            }
-
-            System.out.println("Message received: " + message);
-            System.out.println("--------------------\n");
-
-            // Change the state according to the message
-            // @TO-DO: implement sending messages to the server
-        }
+        ClientControllerSingleton.setController(new ClientController(clientSocket));
     }
 }

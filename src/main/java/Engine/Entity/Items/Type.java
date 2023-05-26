@@ -5,6 +5,10 @@ public enum Type {
     AMMO,
     HEAL;
 
+    /**
+     * @param name Item's name
+     * @return item's Type
+     */
     public static Type getTypeByName(String name) {
         switch (name) {
             case "KEY" -> {
