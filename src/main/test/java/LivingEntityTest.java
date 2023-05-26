@@ -1,15 +1,8 @@
 import Engine.Entity.LivingEntity;
-import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
-import java.util.*;
-
-import Engine.Entity.Player;
-import Engine.Inventory;
-import Utility.Window;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -17,10 +10,6 @@ import static org.mockito.Mockito.when;
 
 public class LivingEntityTest
 {
-    @Mock
-    LivingEntity livingEntity;
-    
-
     @Test
     void checkHealthDecrease()
     {

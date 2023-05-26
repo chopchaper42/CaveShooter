@@ -55,6 +55,17 @@ public class Player extends LivingEntity
         this.actionField = new ActionField(0.5, this);
     }
 
+    // Empty constructor for testing
+    public Player(Image image)
+    {
+        super(image, 0, 0, 100);
+        canvas = null;
+        screenPositionX = 0;
+        screenPositionY = 0;
+        this.inventory = null;
+        this.actionField = null;
+    }
+
     /**
      * @return the player's speed per second
      */
