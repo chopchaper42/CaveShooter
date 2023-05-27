@@ -66,10 +66,6 @@ public class Updater {
         level.enemies().forEach(enemy -> {
             enemy.move(level.tiles(), dt);
                 if (GameSettings.getShowFields()) {
-<<<<<<< HEAD
-
-=======
->>>>>>> ServerSide
                     enemy.visionField().draw(level.canvas(), Color.YELLOWGREEN);
                 }
         });

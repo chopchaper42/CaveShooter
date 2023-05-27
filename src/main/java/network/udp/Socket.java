@@ -71,7 +71,7 @@ public abstract class Socket
     }
 
     /**
-     * Returns the targets that the socket will send data to.
+     * Returns targets that the socket will send data to.
      */
     public InetAddress[] getTargets()
     {
