@@ -6,6 +6,8 @@ import GUI.GUIManager;
 import Logs.Logger;
 import Utility.Window;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -13,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import network.udp.client.ClientControllerSingleton;
 //import network.udp.client.ClientController;
 //import network.udp.client.ClientControllerSingleton;
@@ -71,35 +74,52 @@ public class Game
         startGame();
         Logger.log(player.getInventory().toString());
 
-        AnimationTimer loop = new AnimationTimer()
-        {
-            long lastFrame;
-            @Override
-            public void handle(long now)
-            {
-                double dt = (now - lastFrame) / 10e9;
-                updater.update(dt);
-                inputManager.handleInput(dt);
-                lastFrame = now;
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), event -> {
+//            long now = System.nanoTime();
+            double dt = 0.02;/*(now - lastFrame) / 10e9;*/
+            updater.update(dt);
+            inputManager.handleInput(dt);
+//            lastFrame = now;
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
 
-//                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-//                long threadId = Thread.currentThread().getId();
-//                System.out.println("Current Thread ID Controller: " + threadId);
-//                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+        Thread socketThread = new Thread(() -> {
+            ClientControllerSingleton.getInstance().run();
+        });
 
-                if (!player.alive() || level.completed()) {
-                    this.stop();
+        socketThread.start();
 
-                    Logger.log("Game ended.");
-                }
+        timeline.play();
 
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        };
+//        AnimationTimer loop = new AnimationTimer()
+//        {
+//            long lastFrame;
+//            @Override
+//            public void handle(long now)
+//            {
+//                double dt = (now - lastFrame) / 10e9;
+//                updater.update(dt);
+//                inputManager.handleInput(dt);
+//                lastFrame = now;
+//
+////                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+////                long threadId = Thread.currentThread().getId();
+////                System.out.println("Current Thread ID Controller: " + threadId);
+////                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+//
+//                if (!player.alive() || level.completed()) {
+//                    this.stop();
+//
+//                    Logger.log("Game ended.");
+//                }
+//
+////                try {
+////                    Thread.sleep(10);
+////                } catch (InterruptedException e) {
+////                    throw new RuntimeException(e);
+////                }
+//            }
+//        };
 
         Thread socketThread = new Thread(() -> {
             ClientControllerSingleton.getInstance().run();
