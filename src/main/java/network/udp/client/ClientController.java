@@ -25,14 +25,14 @@ public class ClientController/* extends Thread*/
         {
             byte[] data = clientSocket.listen().getData();
             clientReceivedState.enqueue(data);
+            System.out.println("Client received: " + Arrays.toString(data));
+            System.out.println("ClientReceivedState size: " + clientReceivedState.size());
 
-//            try {
-            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-            long threadId = Thread.currentThread().getId();
-            System.out.println("Current Thread ID Controller: " + threadId);
-            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-//                Thread.sleep(100);
-//            break;
+//            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+//            long threadId = Thread.currentThread().getId();
+//            System.out.println("Current Thread ID Controller: " + threadId);
+//            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
