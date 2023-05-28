@@ -25,6 +25,7 @@ public class ConnectingClient
         socket.setTarget(InetAddress.getByName(serverIP));
         socket.send(IPManager.getMyIP().toString());
         System.out.println("Connected to " + serverIP);
+
     }
 
     public File receiveLevel()

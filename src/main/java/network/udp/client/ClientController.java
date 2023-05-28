@@ -22,7 +22,7 @@ public class ClientController/* extends Thread*/
         while(true) {
             byte[] data = clientSocket.listen().getData();
 //            try {
-                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
             long threadId = Thread.currentThread().getId();
             System.out.println("Current Thread ID Controller: " + threadId);
             System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
