@@ -65,8 +65,8 @@ public class ClientPlayersConnection
             ClientControllerSingleton.setController(clientController);
             System.out.println("Client Controller set");
             // run the game
+            System.out.println("Cave shooter is starting now:");
             CaveShooter.main(new String[]{}); // run the game
-            System.out.println("Cave shooter started");
         }
 
     }

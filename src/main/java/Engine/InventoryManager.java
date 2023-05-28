@@ -13,7 +13,6 @@ public class InventoryManager {
 
     public static void readInventory() {
         try {
-            System.out.println("blah bra");
             File file = new File(inventoryPath);
             BufferedReader reader = new BufferedReader(new FileReader(file));
             parseInventory(reader);
@@ -25,14 +24,12 @@ public class InventoryManager {
     }
 
     private static void parseInventory(BufferedReader reader) throws IOException {
-        System.out.println("parsing");
         String currentLine;
         while((currentLine = reader.readLine()) != null) {
             String[] parts = currentLine.split(" ");
             if (parts.length != 2)
                 continue;
             try {
-                System.out.println("Trying to parse");
                 switch (parts[0]) {
                     case "KEY" -> inventory.add(Type.KEY, Integer.parseInt(parts[1]));
                     case "AMMO" -> inventory.add(Type.AMMO, Integer.parseInt(parts[1]));

@@ -20,9 +20,6 @@ public class CaveShooter extends Application
     @Override
     public void start(Stage stage)
     {
-
-
-
         try {
             startGame(stage);
 
