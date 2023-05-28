@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import Logs.*;
 import network.udp.Socket;
+import Utility.ConsoleWriter;
 
 public class ClientController/* extends Thread*/
 {
@@ -35,7 +36,7 @@ public class ClientController/* extends Thread*/
 //            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 
             try {
-                Thread.sleep(10);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -69,7 +70,9 @@ public class ClientController/* extends Thread*/
         }
 
         var newStateJson = queue.dequeue();
-        System.out.println(newStateJson);
+        ConsoleWriter.write("queue size: " + queue.size());
+        ConsoleWriter.write("newStateJson:" + newStateJson);
+//        System.out.println(newStateJson);
         return JSONManager.convertJsonToObject(newStateJson);
     }
 }
