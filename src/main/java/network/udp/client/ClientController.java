@@ -26,8 +26,8 @@ public class ClientController/* extends Thread*/
         {
             byte[] data = clientSocket.listen().getData();
             clientReceivedState.enqueue(data);
-            System.out.println("Client received: " + new String(data, StandardCharsets.UTF_8));
-            System.out.println("ClientReceivedState size: " + clientReceivedState.size());
+//            System.out.println("Client received: " + new String(data, StandardCharsets.UTF_8));
+//            System.out.println("ClientReceivedState size: " + clientReceivedState.size());
 
 //            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 //            long threadId = Thread.currentThread().getId();
@@ -69,6 +69,7 @@ public class ClientController/* extends Thread*/
         }
 
         var newStateJson = queue.dequeue();
+        System.out.println(newStateJson);
         return JSONManager.convertJsonToObject(newStateJson);
     }
 }

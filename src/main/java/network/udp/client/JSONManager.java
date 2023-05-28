@@ -15,5 +15,4 @@ public class JSONManager
         Gson gson = new Gson();
         return gson.fromJson(json, UpdatedState.class);
     }
-
 }
