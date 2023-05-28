@@ -3,12 +3,13 @@ package network.udp.client;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
  public class ClientReceivedState {
-    private volatile Queue<String> queue;
+    private ConcurrentLinkedQueue<String> queue;
 
     public ClientReceivedState() {
-        queue = new LinkedList<>();
+        queue = new ConcurrentLinkedQueue<>();
     }
 
     public void enqueue(byte[] data) {

@@ -1,5 +1,6 @@
 package network.udp.client;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import Logs.*;
 import network.udp.Socket;
@@ -19,8 +20,12 @@ public class ClientController/* extends Thread*/
     public void run()
     {
         var clientReceivedState = new ClientReceivedState();
-        while(true) {
+
+        while(true)
+        {
             byte[] data = clientSocket.listen().getData();
+            clientReceivedState.enqueue(data);
+
 //            try {
             System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
             long threadId = Thread.currentThread().getId();
