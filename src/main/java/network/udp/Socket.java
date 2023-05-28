@@ -54,28 +54,24 @@ public class Socket
      * Sends a message to the targets.
      * @param message The message that is sent.
      */
-    public void send(String message, InetAddress target)
+    public void send(String message)
     {
         sendBuffer = message.getBytes(StandardCharsets.UTF_8);
+        try
+        {
+            DatagramPacket sendingPacket = new DatagramPacket(
+                    sendBuffer,
+                    sendBuffer.length,
+                    socketTarget,
+                    SEND_TO_PORT
+            );
 
-            if (target != null)
-            {
-                try
-                {
-                    DatagramPacket sendingPacket = new DatagramPacket(
-                            sendBuffer,
-                            sendBuffer.length,
-                            target,
-                            SEND_TO_PORT
-                    );
-
-                    socket.send(sendingPacket);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
+            socket.send(sendingPacket);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void setTarget(InetAddress target)

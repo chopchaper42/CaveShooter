@@ -9,11 +9,12 @@ import java.util.HashMap;
 public class InventoryManager {
 
     private static Inventory inventory = new Inventory();
+    private static String inventoryPath = "./src/main/inventory/inventory.txt";
 
-    public static void readInventory(String path) throws IOException {
+    public static void readInventory() {
         try {
             System.out.println("blah bra");
-            File file = new File(path);
+            File file = new File(inventoryPath);
             BufferedReader reader = new BufferedReader(new FileReader(file));
             parseInventory(reader);
         } catch (Exception e) {
@@ -44,7 +45,7 @@ public class InventoryManager {
     }
 
     public static void saveInventory() {
-        File file = new File("./src/main/inventory/inventory.txt");
+        File file = new File(inventoryPath);
         try (PrintWriter writer = new PrintWriter(file)) {
             inventory.getInventory().forEach((type, amount) -> {
                 writer.println(type.name() + " " + amount);
@@ -55,6 +56,8 @@ public class InventoryManager {
     }
 
     public static Inventory getInventory() {
+        if (inventory == null)
+            readInventory();
         return inventory;
     }
 }

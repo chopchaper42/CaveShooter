@@ -18,8 +18,11 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import network.udp.ConnectingClient;
 import network.udp.HostingClient;
 import network.udp.IPManager;
+import network.udp.client.ClientController;
+import network.udp.client.ClientControllerSingleton;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -85,17 +88,12 @@ public class GUIManager {
         });
 
         createGameButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-            //------------------Game Type------------------
             renderLevels();
-//            renderWaitingMenu();
 
         });
 
         connectButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-            //------------------Game Type------------------
-            // connectingClient();
-//            renderConnectMenu();
-//            renderLevels();
+            renderConnectMenu();
         });
 
         pane.getChildren().addAll(gameTypeBox, logBox);
@@ -118,8 +116,24 @@ public class GUIManager {
 
         connectBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
 
-            if (IPManager.checkIP(input.getText())) {
-                //connect
+            String severIP = input.getText();
+            if (IPManager.checkIP(severIP)) {
+                try
+                {
+                    ConnectingClient connectingClient = new ConnectingClient();
+
+                    connectingClient.connect(severIP);
+                    // create the controller
+                    ClientController clientController = new ClientController(connectingClient.getSocket());
+                    ClientControllerSingleton.setController(clientController);
+                    // run the game
+                    File levelFile = connectingClient.receiveLevel();
+                    Game game = new Game(window, this, stage, levelFile, InventoryManager.getInventory());
+                    game.run();
+
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             } else {
                 displayErrorMessage("Error!", "Invalid IP address!");
             }
@@ -162,8 +176,14 @@ public class GUIManager {
 
                 try
                 {
-                    var hostingClient = new HostingClient(this);
+                    var hostingClient = new HostingClient();
                     hostingClient.waitForConnection();
+
+                    // create the controller
+                    ClientController clientController = new ClientController(hostingClient.getSocket());
+                    ClientControllerSingleton.setController(clientController);
+                    // run the game
+                    GameSettings.game().run();
 
                 } catch (SocketException | UnknownHostException e)
                 {
@@ -233,11 +253,5 @@ public class GUIManager {
 
         pane.getChildren().addAll(text, goToLevels);
         stage.setScene(new Scene(pane));
-    }
-
-    private void waitingForConnection()
-    {
-
-
     }
 }
