@@ -27,22 +27,12 @@ public class CaveShooter extends Application
     @Override
     public void start(Stage stage)
     {
+
+
+
         try {
-
-            Enumeration e = NetworkInterface.getNetworkInterfaces();
-            while(e.hasMoreElements())
-            {
-                NetworkInterface n = (NetworkInterface) e.nextElement();
-                Enumeration ee = n.getInetAddresses();
-                while (ee.hasMoreElements())
-                {
-                    InetAddress i = (InetAddress) ee.nextElement();
-                    System.out.println(i.getHostAddress());
-                }
-            }
-
-            var clientUDP = new ClientConnection();
-            clientUDP.run();
+//            var clientUDP = new ClientConnection();
+//            clientUDP.run();
 //
             startGame(stage);
 
