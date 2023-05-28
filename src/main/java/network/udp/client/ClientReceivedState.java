@@ -1,5 +1,6 @@
 package network.udp.client;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -34,7 +35,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
         return queue.size();
     }
 
-    private String extractJson(byte[] bytes) {
-        return Arrays.toString(bytes);
+    private String extractJson(byte[] bytes)
+    {
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 }
