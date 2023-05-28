@@ -1,6 +1,7 @@
 package network.udp.client;
 
 import java.lang.reflect.Array;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import Logs.*;
 import network.udp.Socket;
@@ -25,7 +26,7 @@ public class ClientController/* extends Thread*/
         {
             byte[] data = clientSocket.listen().getData();
             clientReceivedState.enqueue(data);
-            System.out.println("Client received: " + Arrays.toString(data));
+            System.out.println("Client received: " + new String(data, StandardCharsets.UTF_8));
             System.out.println("ClientReceivedState size: " + clientReceivedState.size());
 
 //            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
