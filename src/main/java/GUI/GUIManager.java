@@ -171,24 +171,29 @@ public class GUIManager {
         levels.forEach((level) -> {
             Button levelButton = new Button(level.getName());
             levelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+                boolean clientConnected = false;
                 GameSettings.setGame(new Game(window, this, stage, level, InventoryManager.getInventory()));
+
                 renderWaitingMenu();
 
-                try
-                {
-                    var hostingClient = new HostingClient();
-                    hostingClient.waitForConnection();
+                Thread thread = new Thread(() -> {
+                    try
+                    {
+                        var hostingClient = new HostingClient();
+                        hostingClient.waitForConnection();
 
-                    // create the controller
-                    ClientController clientController = new ClientController(hostingClient.getSocket());
-                    ClientControllerSingleton.setController(clientController);
-                    // run the game
-                    GameSettings.game().run();
+                        // create the controller
+                        ClientController clientController = new ClientController(hostingClient.getSocket());
+                        ClientControllerSingleton.setController(clientController);
+                        // run the game
+                        GameSettings.game().run();
 
-                } catch (SocketException | UnknownHostException e)
-                {
-                    throw new RuntimeException(e);
-                }
+                    } catch (SocketException | UnknownHostException e)
+                    {
+                        throw new RuntimeException(e);
+                    }
+                });
+                thread.start();
 
             });
 
