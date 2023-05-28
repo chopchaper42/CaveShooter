@@ -117,23 +117,29 @@ public class GUIManager {
         connectBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
 
             String severIP = input.getText();
-            if (IPManager.checkIP(severIP)) {
-                try
-                {
-                    ConnectingClient connectingClient = new ConnectingClient();
 
-                    connectingClient.connect(severIP);
-                    // create the controller
-                    ClientController clientController = new ClientController(connectingClient.getSocket());
-                    ClientControllerSingleton.setController(clientController);
-                    // run the game
-                    File levelFile = connectingClient.receiveLevel();
-                    Game game = new Game(window, this, stage, levelFile, InventoryManager.getInventory());
-                    game.run();
+            if (IPManager.checkIP(severIP))
+            {
 
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
+                Thread thread = new Thread(() -> {
+                    try {
+                        ConnectingClient connectingClient = new ConnectingClient();
+
+                        connectingClient.connect(severIP);
+                        // create the controller
+                        ClientController clientController = new ClientController(connectingClient.getSocket());
+                        ClientControllerSingleton.setController(clientController);
+                        // run the game
+                        File levelFile = connectingClient.receiveLevel();
+                        Game game = new Game(window, this, stage, levelFile, InventoryManager.getInventory());
+                        game.run();
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println(e.getMessage());
+                    }
+                });
+
             } else {
                 displayErrorMessage("Error!", "Invalid IP address!");
             }
