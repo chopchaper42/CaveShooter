@@ -17,14 +17,17 @@ public class HostingClient {
 
     public void waitForConnection()
     {
+        System.out.println("Waiting for connection...");
         // wait for connection
         DatagramPacket receivePacket = socket.listen();
 
         // set target
         socket.setTarget(receivePacket.getAddress());
+        System.out.println("Connected to " + receivePacket.getAddress());
 
         // send confirmation
-        socket.send(GameSettings.game().levelFile());
+        socket.send(".src/main/levels/level1ForTwoPlayers.txt");
+        System.out.println("Level sent");
     }
 
     public Socket getSocket() {
