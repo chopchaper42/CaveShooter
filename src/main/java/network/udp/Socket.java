@@ -39,15 +39,16 @@ public class Socket
     {
         if (isHostingServer)
         {
-            SEND_TO_PORT = 10020;
-            LISTEN_ON_PORT = 10010;
+            SEND_TO_PORT = 12345;
+            LISTEN_ON_PORT = 12346;
+            socket = new DatagramSocket(LISTEN_ON_PORT);
         }
         else
         {
-            SEND_TO_PORT = 10010;
-            LISTEN_ON_PORT = 10020;
+            SEND_TO_PORT = 12346;
+            LISTEN_ON_PORT = 12345;
+            socket = new DatagramSocket(LISTEN_ON_PORT);
         }
-        socket = new DatagramSocket(LISTEN_ON_PORT, IPManager.getMyIP());
     }
 
     /**

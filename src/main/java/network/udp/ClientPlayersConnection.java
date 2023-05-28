@@ -53,10 +53,11 @@ public class ClientPlayersConnection
             ConnectingClient connectingClient = new ConnectingClient();
 
             System.out.println("Enter the IP of the server: ");
-            String serverIP = scanner.nextLine();
+            String serverIP = scanner.next();
 
 
             connectingClient.connect(serverIP);
+            connectingClient.receiveLevel();
             // create the controller
             ClientController clientController = new ClientController(connectingClient.getSocket());
             ClientControllerSingleton.setController(clientController);
