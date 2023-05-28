@@ -38,14 +38,25 @@ import java.util.concurrent.ConcurrentLinkedQueue;
     private String extractJson(byte[] bytes)
     {
         String jsonString = new String(bytes).trim();
-        System.out.println("HERE THIS SHIT BREAKING OUR CODE MF" + jsonString);
+        ConsoleWriter.write("------------------------------------------");
+        ConsoleWriter.write("HERE THIS SHIT BREAKING OUR CODE MF" + jsonString);
         // Find the index of the first zero character (null termination)
         int indexOfZero = jsonString.indexOf('\0');
         // Extract the JSON part by substring from the beginning to the first zero
         if (indexOfZero >= 0) {
             jsonString = jsonString.substring(0, indexOfZero);
         }
-        System.out.println("HERE WE BROKE THIS SHIT" + jsonString);
+        ConsoleWriter.write("------------------------------------------");
+        ConsoleWriter.write("HERE WE BROKE THIS SHIT" + jsonString);
+        ConsoleWriter.write("------------------------------------------");
         return jsonString;
     }
+
+     public class ConsoleWriter
+     {
+         public static synchronized void write(String message)
+         {
+             System.out.println(message);
+         }
+     }
 }
