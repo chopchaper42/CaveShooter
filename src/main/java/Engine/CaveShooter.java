@@ -1,24 +1,17 @@
 package Engine;
 
-import Engine.InventoryManager;
 import Engine.Level.LevelManager;
 import GUI.GUIManager;
 import Utility.Window;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import network.udp.client.ClientConnection;
-import network.udp.client.ClientController;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
 
 
 public class CaveShooter extends Application
 {
-    private ClientController controller;
     public static void main(String[] args)
     {
         launch(args);
@@ -31,9 +24,6 @@ public class CaveShooter extends Application
 
 
         try {
-//            var clientUDP = new ClientConnection();
-//            clientUDP.run();
-//
             startGame(stage);
 
         } catch (Exception exception) {
@@ -44,7 +34,6 @@ public class CaveShooter extends Application
 
     private void startGame(Stage stage) throws IOException {
 
-        // Client requests the server for the necessary parameters to start the game.
 
         Window window = new Window(
                 "Cave Shooter",

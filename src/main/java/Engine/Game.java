@@ -13,8 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import network.udp.client.ClientController;
-import network.udp.client.ClientControllerSingleton;
+//import network.udp.client.ClientController;
+//import network.udp.client.ClientControllerSingleton;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -27,6 +27,7 @@ public class Game
 {
     private final Window window;
     private final Level level;
+    private final String levelFile;
     private final Stage stage;
     private final Player player;
     private final InputManager inputManager;
@@ -58,6 +59,7 @@ public class Game
         );
         this.guiManager = guiManager;
         this.updater = new Updater(this.level, this.player, this.uiManager, this.guiManager);
+        this.levelFile = level.getName();
     }
 
 
@@ -98,11 +100,11 @@ public class Game
         };
         loop.start();
 
-        Thread socketThread = new Thread(() -> {
-            ClientControllerSingleton.getInstance().run();
-        });
+//        Thread socketThread = new Thread(() -> {
+//            ClientControllerSingleton.getInstance().run();
+//        });
 
-        socketThread.start();
+//        socketThread.start();
 
 //        var controller = ClientControllerSingleton.getInstance();
 //        controller.run();
@@ -126,5 +128,10 @@ public class Game
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
             player.shoot(event, level.bullets());
         });
+    }
+
+    public String levelFile()
+    {
+        return levelFile;
     }
 }

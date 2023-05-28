@@ -18,13 +18,13 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import network.udp.HostingClient;
 import network.udp.IPManager;
-import network.udp.client.ClientController;
-import network.udp.client.ClientControllerSingleton;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.List;
 
@@ -49,6 +49,7 @@ public class GUIManager {
         VBox gameTypeBox = new VBox();
         gameTypeBox.setSpacing(10);
         gameTypeBox.setAlignment(Pos.CENTER);
+
         Button createGameButton = new Button("Create Game");
         Button connectButton = new Button("Connect to the Game");
 
@@ -84,12 +85,17 @@ public class GUIManager {
         });
 
         createGameButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+            //------------------Game Type------------------
             renderLevels();
+//            renderWaitingMenu();
+
         });
 
         connectButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+            //------------------Game Type------------------
+            // connectingClient();
+//            renderConnectMenu();
 //            renderLevels();
-            renderConnectMenu();
         });
 
         pane.getChildren().addAll(gameTypeBox, logBox);
@@ -111,15 +117,11 @@ public class GUIManager {
         error.setVisible(false);
 
         connectBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-            try {
-                IPManager manager = new IPManager();
-                if (manager.checkIP(input.getText())) {
-                    //connect
-                } else {
-                    displayErrorMessage("Error!", "Invalid IP address!");
-                }
-            } catch (UnknownHostException e) {
-                throw new RuntimeException(e);
+
+            if (IPManager.checkIP(input.getText())) {
+                //connect
+            } else {
+                displayErrorMessage("Error!", "Invalid IP address!");
             }
 
         });
@@ -155,8 +157,21 @@ public class GUIManager {
         levels.forEach((level) -> {
             Button levelButton = new Button(level.getName());
             levelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-                new Game(window, this, stage, level, InventoryManager.getInventory()).run();
+                GameSettings.setGame(new Game(window, this, stage, level, InventoryManager.getInventory()));
+                renderWaitingMenu();
+
+                try
+                {
+                    var hostingClient = new HostingClient(this);
+                    hostingClient.waitForConnection();
+
+                } catch (SocketException | UnknownHostException e)
+                {
+                    throw new RuntimeException(e);
+                }
+
             });
+
             levelsPane.getChildren().add(levelButton);
         });
 
@@ -172,7 +187,7 @@ public class GUIManager {
         Button goToLevels = new Button("Go to Levels");
 
         goToLevels.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            renderLevels();
+//            renderLevels();
         });
 
         pane.getChildren().addAll(text, goToLevels);
@@ -188,7 +203,7 @@ public class GUIManager {
         Button goToLevels = new Button("Go to Levels");
 
         goToLevels.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            renderLevels();
+//            renderLevels();
         });
 
         pane.getChildren().addAll(text, goToLevels);
@@ -201,5 +216,28 @@ public class GUIManager {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void renderWaitingMenu()
+    {
+        VBox pane = new VBox();
+        pane.setSpacing(10);
+        pane.setAlignment(Pos.CENTER);
+
+        Label text = new Label("Waiting for other players...");
+        Button goToLevels = new Button("Go to Levels");
+
+        goToLevels.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            renderLevels();
+        });
+
+        pane.getChildren().addAll(text, goToLevels);
+        stage.setScene(new Scene(pane));
+    }
+
+    private void waitingForConnection()
+    {
+
+
     }
 }
