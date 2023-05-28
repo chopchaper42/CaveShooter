@@ -59,11 +59,14 @@ public class ClientPlayersConnection
 
             connectingClient.connect(serverIP);
             connectingClient.receiveLevel();
+            System.out.println("Level received");
             // create the controller
             ClientController clientController = new ClientController(connectingClient.getSocket());
             ClientControllerSingleton.setController(clientController);
+            System.out.println("Client Controller set");
             // run the game
             CaveShooter.main(new String[]{}); // run the game
+            System.out.println("Cave shooter started");
         }
 
     }

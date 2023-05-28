@@ -47,7 +47,7 @@ public class Socket
         {
             SEND_TO_PORT = 12346;
             LISTEN_ON_PORT = 12345;
-            socket = new DatagramSocket();
+            socket = new DatagramSocket(LISTEN_ON_PORT);
         }
 //        socket = new DatagramSocket(LISTEN_ON_PORT/*, IPManager.getMyIP()*/);
     }
