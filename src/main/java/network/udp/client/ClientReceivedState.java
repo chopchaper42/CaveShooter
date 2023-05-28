@@ -5,10 +5,12 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
- public class ClientReceivedState {
+ public class ClientReceivedState
+ {
     private ConcurrentLinkedQueue<String> queue;
 
-    public ClientReceivedState() {
+    public ClientReceivedState()
+    {
         queue = new ConcurrentLinkedQueue<>();
     }
 

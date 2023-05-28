@@ -20,7 +20,7 @@ public class ClientController/* extends Thread*/
      */
     public void run()
     {
-        var clientReceivedState = new ClientReceivedState();
+        var clientReceivedState = ClientReceivedStateSingleton.getInstance();
 
         while(true)
         {
@@ -62,7 +62,7 @@ public class ClientController/* extends Thread*/
 
     public UpdatedState checkUpdatesFromAnotherClient()
     {
-        var queue = new ClientReceivedState();
+        var queue = ClientReceivedStateSingleton.getInstance();
         if (queue.isEmpty())
         {
             return null;
