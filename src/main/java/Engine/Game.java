@@ -76,7 +76,7 @@ public class Game
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), event -> {
 //            long now = System.nanoTime();
-            double dt = 0.02;/*(now - lastFrame) / 10e9;*/
+            double dt = 0.002;/*(now - lastFrame) / 10e9;*/
             updater.update(dt);
             inputManager.handleInput(dt);
 //            lastFrame = now;
@@ -121,12 +121,12 @@ public class Game
 //            }
 //        };
 
-        Thread socketThread = new Thread(() -> {
-            ClientControllerSingleton.getInstance().run();
-        });
-
-        socketThread.start();
-        loop.start();
+//        Thread socketThread = new Thread(() -> {
+//            ClientControllerSingleton.getInstance().run();
+//        });
+//
+//        socketThread.start();
+//        loop.start();
     }
 
     private void startGame() {
