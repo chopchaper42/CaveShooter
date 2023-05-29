@@ -74,9 +74,9 @@ public class Game
         startGame();
         Logger.log(player.getInventory().toString());
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), event -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(15), event -> {
 //            long now = System.nanoTime();
-            double dt = 0.002;/*(now - lastFrame) / 10e9;*/
+            double dt = 0.001;/*(now - lastFrame) / 10e9;*/
             updater.update(dt);
             inputManager.handleInput(dt);
 //            lastFrame = now;

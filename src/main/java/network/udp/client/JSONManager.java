@@ -14,9 +14,12 @@ public class JSONManager
     {
         try {
             Gson gson = new Gson();
-            return gson.fromJson(json, UpdatedState.class);
+            var parsedJSON = gson.fromJson(json, UpdatedState.class);
+            System.out.println("------------ SUCCESS ON ------------\n " + json + "\n------------------ END --------------------");
+            return parsedJSON;
         } catch (Exception e) {
-            System.out.println("------------ FAILED ON ------------\n + " + json + "\n------------------ END --------------------");
+            System.out.println("------------ FAILED ON ------------\n " + json + "\n------------------ END --------------------");
         }
+        return null;
     }
 }
