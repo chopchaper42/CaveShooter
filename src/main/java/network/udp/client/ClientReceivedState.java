@@ -8,11 +8,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
  public class ClientReceivedState
  {
-    private ConcurrentLinkedQueue<String> queue;
+    private Queue<String> queue;
 
     public ClientReceivedState()
     {
-        queue = new ConcurrentLinkedQueue<>();
+        queue = new LinkedList<>();
     }
 
     public void enqueue(byte[] data) {
