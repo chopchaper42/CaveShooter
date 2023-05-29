@@ -56,7 +56,10 @@ public class Updater {
             List<Item> itemsInRange = Collisions.checkItemCollision(player, level.items());
             player.takeItems(itemsInRange);
 
+            List<Item> itemsInFriendRange = Collisions.checkItemCollision(level.getFriends().get(0), level.items());
+
             toRemove.addAll(itemsInRange);
+            toRemove.addAll(itemsInFriendRange);
 
             // check if player is in enemies vision zone
             Collisions.checkEnemiesVisionZoneIntersection(player, level.enemies());
@@ -171,7 +174,7 @@ public class Updater {
                 level.enemies().add(enemy);
                 break;
 
-            case "item":
+            /*case "item": // It'll be better to check if Friend collides with some items.
 
                 Item itemToRemove = null;
 
@@ -183,7 +186,7 @@ public class Updater {
                     }
                 }
                 level.items().remove(itemToRemove);
-                break;
+                break;*/
 
             case "door":
                 level.tiles().forEach(tile -> {
