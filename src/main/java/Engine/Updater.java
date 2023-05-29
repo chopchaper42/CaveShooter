@@ -156,6 +156,13 @@ public class Updater {
                 break;
 
             case "bullet":
+                System.out.println("bullet:");
+                System.out.println("--------------------------");
+                System.out.println("updatedState.getPosX():" + updatedState.getPosX() + "\n" +
+                                "updatedState.getPosY()" + updatedState.getPosY() + "\n" +
+                        "updatedState.getBulletSpeedComponentX()" + updatedState.getBulletSpeedComponentX() + "\n" +
+                        "updatedState.getBulletSpeedComponentY()" + updatedState.getBulletSpeedComponentY());
+                System.out.println("--------------------------");
 
                 var bullet = new Bullet (
                     updatedState.getPosX(), updatedState.getPosY(),

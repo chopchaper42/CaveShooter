@@ -55,7 +55,7 @@ public class ClientController/* extends Thread*/
 
     public void send(String jsonProperty, double x, double y, double dx, double dy)
     {
-        var newState = new UpdatedState(jsonProperty, x, y);
+        var newState = new UpdatedState(jsonProperty, x, y, dx, dy);
         String newStateJSON = JSONManager.convertObjectToJson(newState);
         // send the new state to the server
         clientSocket.send(newStateJSON);
