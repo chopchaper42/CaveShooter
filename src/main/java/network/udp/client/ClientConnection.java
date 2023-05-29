@@ -37,9 +37,9 @@ public class ClientConnection
         System.out.println("--------------------\n");
         Logger.log("--------------------\n");
 
-        var clientSocket = new ClientSocket(serverIP, ipManager);
+//        var clientSocket = new ClientSocket(serverIP, ipManager);
 
-        clientSocket.send("Hello, server!", clientSocket.getTargets()[0]);
+//        clientSocket.send("Hello, server!", clientSocket.getTargets()[0]);
 
         Logger.log("Message sent");
         Logger.log("--------------------\n");
@@ -48,6 +48,6 @@ public class ClientConnection
         System.out.println("--------------------\n");
         Logger.log("--------------------\n");
 
-        ClientControllerSingleton.setController(new ClientController(clientSocket));
+//        ClientControllerSingleton.setController(new ClientController(clientSocket));
     }
 }

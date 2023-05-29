@@ -56,7 +56,10 @@ public class Updater {
             List<Item> itemsInRange = Collisions.checkItemCollision(player, level.items());
             player.takeItems(itemsInRange);
 
+            List<Item> itemsInFriendRange = Collisions.checkItemCollision(level.getFriends().get(0), level.items());
+
             toRemove.addAll(itemsInRange);
+            toRemove.addAll(itemsInFriendRange);
 
             // check if player is in enemies vision zone
             Collisions.checkEnemiesVisionZoneIntersection(player, level.enemies());
@@ -141,23 +144,34 @@ public class Updater {
 
     private void updateAllNecessaryEntities(UpdatedState updatedState)
     {
+
         switch (updatedState.getJsonProperty())
         {
+
             case "playerPosition":
-                var friend = new Friend(
-                        updatedState.getPosX(), updatedState.getPosY(), 100
-                );
-                ArrayList<Friend> friends = new ArrayList<>();
-                friends.add(friend);
-                level.setFriends(friends);
+//                var friend = new Friend(
+//                        updatedState.getPosX(), updatedState.getPosY(), 100
+//                );
+                level.getFriends().get(0).setX(updatedState.getPosX());
+                level.getFriends().get(0).setY(updatedState.getPosY());
+//                level.setFriends(friends);
                 break;
 
             case "bullet":
+                System.out.println("bullet:");
+                System.out.println("--------------------------");
+                System.out.println("updatedState.getPosX():" + updatedState.getPosX() + "\n" +
+                                "updatedState.getPosY()" + updatedState.getPosY() + "\n" +
+                        "updatedState.getBulletSpeedComponentX()" + updatedState.getBulletSpeedComponentX() + "\n" +
+                        "updatedState.getBulletSpeedComponentY()" + updatedState.getBulletSpeedComponentY());
+                System.out.println("--------------------------");
 
                 var bullet = new Bullet (
                     updatedState.getPosX(), updatedState.getPosY(),
                         updatedState.getBulletSpeedComponentX(), updatedState.getBulletSpeedComponentY()
                 );
+                System.out.println("Bullet X component: " + bullet.getSpeedX());
+                System.out.println("Bullet Y component: " + bullet.getSpeedY());
                 level.bullets().add(bullet);
 
                 break;
@@ -171,7 +185,13 @@ public class Updater {
                 level.enemies().add(enemy);
                 break;
 
-            case "item":
+            case "fellowIsDead":
+                if (level.getFriends().size() > 0) {
+                    level.getFriends().get(0).kill();
+                }
+                break;
+
+            /*case "item": // It'll be better to check if Friend collides with some items.
 
                 Item itemToRemove = null;
 
@@ -183,7 +203,7 @@ public class Updater {
                     }
                 }
                 level.items().remove(itemToRemove);
-                break;
+                break;*/
 
             case "door":
                 level.tiles().forEach(tile -> {

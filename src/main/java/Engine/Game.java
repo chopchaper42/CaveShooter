@@ -6,6 +6,8 @@ import GUI.GUIManager;
 import Logs.Logger;
 import Utility.Window;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -13,8 +15,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import network.udp.client.ClientController;
+import javafx.util.Duration;
 import network.udp.client.ClientControllerSingleton;
+//import network.udp.client.ClientController;
+//import network.udp.client.ClientControllerSingleton;
 
 import java.io.File;
 
@@ -26,6 +30,7 @@ public class Game
 {
     private final Window window;
     private final Level level;
+    private final String levelFile;
     private final Stage stage;
     private final Player player;
     private final InputManager inputManager;
@@ -57,6 +62,7 @@ public class Game
         );
         this.guiManager = guiManager;
         this.updater = new Updater(this.level, this.player, this.uiManager, this.guiManager);
+        this.levelFile = level.getName();
     }
 
 
@@ -77,34 +83,29 @@ public class Game
                 updater.update(dt);
                 inputManager.handleInput(dt);
                 lastFrame = now;
-                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-                long threadId = Thread.currentThread().getId();
-                System.out.println("Current Thread ID AnimationTimer: " + threadId);
-                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+
                 if (!player.alive() || level.completed()) {
                     this.stop();
 
+                    ClientControllerSingleton.getInstance().send("fellowIsDead", 0, 0);
+
                     Logger.log("Game ended.");
-                    // send to the serve "game over"
                 }
 
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+//                try {
+//                    Thread.sleep(10);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
             }
         };
-        loop.start();
 
         Thread socketThread = new Thread(() -> {
             ClientControllerSingleton.getInstance().run();
         });
 
         socketThread.start();
-
-//        var controller = ClientControllerSingleton.getInstance();
-//        controller.run();
+        loop.start();
     }
 
     private void startGame() {
@@ -125,5 +126,10 @@ public class Game
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
             player.shoot(event, level.bullets());
         });
+    }
+
+    public String levelFile()
+    {
+        return levelFile;
     }
 }

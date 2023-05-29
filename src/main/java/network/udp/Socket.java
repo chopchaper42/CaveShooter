@@ -2,9 +2,8 @@ package network.udp;
 
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
-public abstract class Socket
+public class Socket
 {
     /**
      * The socket that is used to send and receive data.
@@ -14,14 +13,13 @@ public abstract class Socket
     /**
      * The default port that is used to send and receive data.
      */
-    private final int DEFAULT_PORT = 10421;
+    private final int SEND_TO_PORT;
+    private final int LISTEN_ON_PORT;
 
     /**
-     * The targets that the socket will send data to.
-     * The two targets are used to send data from the server to the clients
-     * In the case of the client, only the first target is used.
+     * The target that the socket will send data to.
      */
-    protected InetAddress[] socketTargets = new InetAddress[2];
+    protected InetAddress socketTarget = null;
 
     /**
      * The buffer that is used to receive data.
@@ -35,58 +33,54 @@ public abstract class Socket
 
     /**
      * Creates a new socket.
-     * @param ipManager The IPManager that is used to get the IP address of the local machine.
+     * The static class IPManager that is used to get the IP address of the local machine.
      */
-    public Socket(IPManager ipManager) throws UnknownHostException, SocketException
+    public Socket(boolean isHostingServer) throws UnknownHostException, SocketException
     {
-        socket = new DatagramSocket(DEFAULT_PORT, ipManager.getMyIP());
+        if (isHostingServer)
+        {
+            SEND_TO_PORT = 12345;
+            LISTEN_ON_PORT = 12346;
+            socket = new DatagramSocket(LISTEN_ON_PORT);
+        }
+        else
+        {
+            SEND_TO_PORT = 12346;
+            LISTEN_ON_PORT = 12345;
+            socket = new DatagramSocket(LISTEN_ON_PORT);
+        }
     }
 
     /**
      * Sends a message to the targets.
      * @param message The message that is sent.
      */
-    public void send(String message, InetAddress target)
+    public void send(String message)
     {
         sendBuffer = message.getBytes(StandardCharsets.UTF_8);
-
-            if (target != null)
-            {
-                try
-                {
-                    DatagramPacket sendingPacket = new DatagramPacket(
-                            sendBuffer,
-                            sendBuffer.length,
-                            target,
-                            DEFAULT_PORT
-                    );
-
-                    socket.send(sendingPacket);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-    }
-
-    /**
-     * Returns targets that the socket will send data to.
-     */
-    public InetAddress[] getTargets()
-    {
-        return socketTargets;
-    }
-
-    public int getID(InetAddress target)
-    {
-        for (int i = 0; i < socketTargets.length; i++)
+        try
         {
-            if (socketTargets[i].equals(target))
-                return i;
+            DatagramPacket sendingPacket = new DatagramPacket(
+                    sendBuffer,
+                    sendBuffer.length,
+                    socketTarget,
+                    SEND_TO_PORT
+            );
+
+            socket.send(sendingPacket);
         }
-        return -1;
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
+
+    public void setTarget(InetAddress target)
+    {
+        socketTarget = target;
+    }
+
+
 
     /**
      * Listens for incoming messages.
@@ -94,6 +88,7 @@ public abstract class Socket
      */
     public DatagramPacket listen()
     {
+        receiveBuffer = new byte[256];
         DatagramPacket receivePacket = new DatagramPacket(receiveBuffer,
                 receiveBuffer.length);
 

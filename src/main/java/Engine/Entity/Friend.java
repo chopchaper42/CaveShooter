@@ -42,4 +42,14 @@ public class Friend extends LivingEntity{
     public void draw(Canvas canvas) {
         canvas.getGraphicsContext2D().drawImage(image, getX(), getY());
     }
+
+    public void kill()
+    {
+        setImage(
+                new Image(new File("./src/main/assets/player2.png").toURI().toString(),
+                30, 30,
+                false,
+                false)
+        );
+    }
 }

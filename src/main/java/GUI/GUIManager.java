@@ -16,13 +16,19 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import network.udp.ConnectingClient;
+import network.udp.HostingClient;
+import network.udp.IPManager;
 import network.udp.client.ClientController;
 import network.udp.client.ClientControllerSingleton;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.List;
 
 public class GUIManager {
@@ -38,96 +44,6 @@ public class GUIManager {
         this.settings = new GameSettings();
     }
 
-    public void renderMainWindow() throws FileNotFoundException {
-        VBox pane = new VBox();
-        pane.setSpacing(5);
-        pane.setAlignment(Pos.CENTER);
-
-        VBox gameTypeBox = new VBox();
-        gameTypeBox.setSpacing(10);
-        gameTypeBox.setAlignment(Pos.CENTER);
-        Button singlePlayerButton = new Button("Single Player");
-        Button multiPlayerButton = new Button("Multiplayer");
-
-        gameTypeBox.getChildren().addAll(singlePlayerButton, multiPlayerButton);
-
-        VBox logBox = new VBox();
-        logBox.setPrefWidth(120);
-        logBox.setSpacing(0);
-        logBox.setAlignment(Pos.CENTER);
-
-        CheckBox enableLogging = new CheckBox("Enable logger");
-        ToggleGroup logGroup = new ToggleGroup();
-        RadioButton logToConsole = new RadioButton("Log to console");
-        logToConsole.setSelected(true);
-        logToConsole.setId(LogTo.CONSOLE.name());
-        RadioButton logToFile = new RadioButton("Log to file");
-        logToFile.setId(LogTo.FILE.name());
-        logToConsole.setToggleGroup(logGroup);
-        logToFile.setToggleGroup(logGroup);
-
-        logBox.getChildren().addAll(enableLogging, logToConsole, logToFile);
-
-        enableLogging.addEventHandler(ActionEvent.ACTION, (ActionEvent e) -> {
-            Logger.setEnabled(enableLogging.isSelected());
-        });
-
-        logToFile.addEventHandler(ActionEvent.ACTION, (ActionEvent e) -> {
-            try {
-                Logger.setOutput(new PrintStream("./src/main/logs/log.txt"));
-            } catch (FileNotFoundException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-
-        singlePlayerButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-            renderLevels();
-        });
-
-        multiPlayerButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-            renderLevels();
-        });
-
-        pane.getChildren().addAll(gameTypeBox, logBox);
-
-        Scene mainScene = new Scene(pane, 0, 0);
-
-        stage.setScene(mainScene);
-    }
-
-    public void renderLevels() {
-
-        FlowPane levelsPane = new FlowPane(Orientation.HORIZONTAL);
-        levelsPane.setPadding(new Insets(5, 5, 5, 5));
-        levelsPane.setHgap(5);
-        levelsPane.setVgap(3);
-
-        Scene levelsScene = new Scene(levelsPane);
-        List<File> levels = levelManager.getLevels();
-
-        Button backToMenu = new Button("<- Back");
-        backToMenu.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-            try {
-                renderMainWindow();
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        levelsPane.getChildren().add(
-                backToMenu
-        );
-
-        levels.forEach((level) -> {
-            Button levelButton = new Button(level.getName());
-            levelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-                new Game(window, this, stage, level, InventoryManager.getInventory()).run();
-            });
-            levelsPane.getChildren().add(levelButton);
-        });
-
-        stage.setScene(levelsScene);
-    }
-
     public void renderWin() {
         VBox pane = new VBox();
         pane.setSpacing(10);
@@ -137,7 +53,7 @@ public class GUIManager {
         Button goToLevels = new Button("Go to Levels");
 
         goToLevels.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            renderLevels();
+//            renderLevels();
         });
 
         pane.getChildren().addAll(text, goToLevels);
@@ -153,10 +69,18 @@ public class GUIManager {
         Button goToLevels = new Button("Go to Levels");
 
         goToLevels.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            renderLevels();
+//            renderLevels();
         });
 
         pane.getChildren().addAll(text, goToLevels);
         stage.setScene(new Scene(pane));
+    }
+
+    private void displayErrorMessage(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

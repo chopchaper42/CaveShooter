@@ -39,7 +39,7 @@ public abstract class Entity
     public double getX() {
         return x;
     }
-    void setX(double x) {
+    public void setX(double x) {
         this.x = x;
     }
 
@@ -50,7 +50,7 @@ public abstract class Entity
     public double getY() {
         return y;
     }
-    void setY(double y) {
+    public void setY(double y) {
         this.y = y;
     }
 

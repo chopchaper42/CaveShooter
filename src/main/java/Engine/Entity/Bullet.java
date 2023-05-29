@@ -36,7 +36,7 @@ public class Bullet extends MovingEntity
     public Bullet(double x, double y, double dx, double dy)
     {
         super(image, x, y);
-        this.speed = new Speed(x, y);
+        this.speed = new Speed(dx, dy);
     }
 
 
