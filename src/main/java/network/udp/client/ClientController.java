@@ -30,16 +30,16 @@ public class ClientController/* extends Thread*/
 //            System.out.println("Client received: " + new String(data, StandardCharsets.UTF_8));
 //            System.out.println("ClientReceivedState size: " + clientReceivedState.size());
 
-//            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-//            long threadId = Thread.currentThread().getId();
-//            System.out.println("Current Thread ID Controller: " + threadId);
-//            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+            long threadId = Thread.currentThread().getId();
+            System.out.println("Current Thread ID Controller within ClientController.run(): " + threadId);
+            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+//            try {
+//                Thread.sleep(5);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
 
 
         }

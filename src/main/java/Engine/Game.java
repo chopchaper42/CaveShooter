@@ -74,12 +74,18 @@ public class Game
         startGame();
         Logger.log(player.getInventory().toString());
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), event -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), event -> {
 //            long now = System.nanoTime();
             double dt = 0.002;/*(now - lastFrame) / 10e9;*/
             updater.update(dt);
             inputManager.handleInput(dt);
 //            lastFrame = now;
+
+            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+            long threadId = Thread.currentThread().getId();
+            System.out.println("Current Thread ID Controller within Timeline: " + threadId);
+            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
 
@@ -102,10 +108,10 @@ public class Game
 //                inputManager.handleInput(dt);
 //                lastFrame = now;
 //
-////                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-////                long threadId = Thread.currentThread().getId();
-////                System.out.println("Current Thread ID Controller: " + threadId);
-////                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+//                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+//                long threadId = Thread.currentThread().getId();
+//                System.out.println("Current Thread ID Controller: " + threadId);
+//                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 //
 //                if (!player.alive() || level.completed()) {
 //                    this.stop();
