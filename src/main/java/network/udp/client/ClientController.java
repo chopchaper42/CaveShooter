@@ -30,10 +30,10 @@ public class ClientController/* extends Thread*/
 //            System.out.println("Client received: " + new String(data, StandardCharsets.UTF_8));
 //            System.out.println("ClientReceivedState size: " + clientReceivedState.size());
 
-            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-            long threadId = Thread.currentThread().getId();
-            System.out.println("Current Thread ID Controller within ClientController.run(): " + threadId);
-            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+//            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+//            long threadId = Thread.currentThread().getId();
+//            System.out.println("Current Thread ID Controller within ClientController.run(): " + threadId);
+//            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 
 //            try {
 //                Thread.sleep(5);
@@ -57,6 +57,9 @@ public class ClientController/* extends Thread*/
     {
         var newState = new UpdatedState(jsonProperty, x, y, dx, dy);
         String newStateJSON = JSONManager.convertObjectToJson(newState);
+        System.out.println("---------------Bullet new state -------------");
+        System.out.println(newStateJSON);
+        System.out.println("---------------------------------------------");
         // send the new state to the server
         clientSocket.send(newStateJSON);
     }

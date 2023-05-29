@@ -108,10 +108,10 @@ public class Game
                 inputManager.handleInput(dt);
                 lastFrame = now;
 
-                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-                long threadId = Thread.currentThread().getId();
-                System.out.println("Current Thread ID Controller: " + threadId);
-                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+//                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+//                long threadId = Thread.currentThread().getId();
+//                System.out.println("Current Thread ID Controller: " + threadId);
+//                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 
                 if (!player.alive() || level.completed()) {
                     this.stop();
