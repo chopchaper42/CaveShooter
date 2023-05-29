@@ -70,8 +70,8 @@ public class ClientController/* extends Thread*/
         }
 
         var newStateJson = queue.dequeue();
-        ConsoleWriter.write("queue size: " + queue.size());
-        ConsoleWriter.write("newStateJson:" + newStateJson);
+//        ConsoleWriter.write("queue size: " + queue.size());
+//        ConsoleWriter.write("newStateJson:" + newStateJson);
 //        System.out.println(newStateJson);
         return JSONManager.convertJsonToObject(newStateJson);
     }
