@@ -5,35 +5,45 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicReference;
 
  public class ClientReceivedState
  {
-    private Queue<String> queue;
+//    private Queue<String> queue;
 
-    public ClientReceivedState()
-    {
-        queue = new LinkedList<>();
-    }
+     private AtomicReference<String> synchronizedString;
+
+//    public ClientReceivedState()
+//    {
+//        queue = new LinkedList<>();
+//    }
+
+     public ClientReceivedState() {
+         synchronizedString = new AtomicReference<>();
+     }
 
     public void enqueue(byte[] data) {
         String json = extractJson(data);
-        queue.offer(json);
+        synchronizedString.set(json);
+//        queue.offer(json);
     }
 
     public String dequeue() {
         if (!isEmpty()) {
-            return queue.poll();
+//            return queue.poll();
+            return synchronizedString.get();
         }
         return null;
     }
 
     public boolean isEmpty() {
-        return queue.isEmpty();
+//         return queue.isEmpty();
+         return synchronizedString.get() == null;
     }
 
-    public int size() {
-        return queue.size();
-    }
+//    public int size() {
+//        return queue.size();
+//    }
 
     private String extractJson(byte[] bytes)
     {

@@ -63,31 +63,16 @@ public class ClientController/* extends Thread*/
 
     public UpdatedState checkUpdatesFromAnotherClient()
     {
-        var clientReceivedState = ClientReceivedStateSingleton.getInstance();
-        byte[] data = clientSocket.listen().getData();
-//        clientReceivedState.enqueue(data);
-
-//        var queue = ClientReceivedStateSingleton.getInstance();
-//        if (queue.isEmpty())
-//        {
-//            return null;
-//        }
-
-//        var newStateJson = queue.dequeue();
-//        ConsoleWriter.write("queue size: " + queue.size());
-//        ConsoleWriter.write("newStateJson:" + newStateJson);
-//        System.out.println(newStateJson);
-
-        String jsonString = new String(data).trim();
-//        ConsoleWriter.write("------------------------------------------");
-//        ConsoleWriter.write("HERE THIS SHIT BREAKING OUR CODE MF" + jsonString);
-        // Find the index of the first zero character (null termination)
-        int indexOfZero = jsonString.indexOf('\0');
-        // Extract the JSON part by substring from the beginning to the first zero
-        if (indexOfZero >= 0) {
-            jsonString = jsonString.substring(0, indexOfZero);
+        var queue = ClientReceivedStateSingleton.getInstance();
+        if (queue.isEmpty())
+        {
+            return null;
         }
 
-        return JSONManager.convertJsonToObject(jsonString);
+        var newStateJson = queue.dequeue();
+        ConsoleWriter.write("queue size: " + queue.size());
+        ConsoleWriter.write("newStateJson:" + newStateJson);
+//        System.out.println(newStateJson);
+        return JSONManager.convertJsonToObject(newStateJson);
     }
 }
