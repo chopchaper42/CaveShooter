@@ -12,7 +12,11 @@ public class JSONManager
 
     public static UpdatedState convertJsonToObject(String json)
     {
-        Gson gson = new Gson();
-        return gson.fromJson(json, UpdatedState.class);
+        try {
+            Gson gson = new Gson();
+            return gson.fromJson(json, UpdatedState.class);
+        } catch (Exception e) {
+            System.out.println("------------ FAILED ON ------------\n + " + json + "\n------------------ END --------------------");
+        }
     }
 }
