@@ -168,6 +168,8 @@ public class Updater {
                     updatedState.getPosX(), updatedState.getPosY(),
                         updatedState.getBulletSpeedComponentX(), updatedState.getBulletSpeedComponentY()
                 );
+                System.out.println("Bullet X component: " + bullet.getSpeedX());
+                System.out.println("Bullet Y component: " + bullet.getSpeedY());
                 level.bullets().add(bullet);
 
                 break;
