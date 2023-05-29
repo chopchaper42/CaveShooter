@@ -144,13 +144,15 @@ public class Updater {
 
     private void updateAllNecessaryEntities(UpdatedState updatedState)
     {
+        ArrayList<Friend> friends = new ArrayList<>();
+
         switch (updatedState.getJsonProperty())
         {
+
             case "playerPosition":
                 var friend = new Friend(
                         updatedState.getPosX(), updatedState.getPosY(), 100
                 );
-                ArrayList<Friend> friends = new ArrayList<>();
                 friends.add(friend);
                 level.setFriends(friends);
                 break;
@@ -181,6 +183,10 @@ public class Updater {
                         updatedState.getPosX(), updatedState.getPosY()
                 );
                 level.enemies().add(enemy);
+                break;
+
+            case "fellowIsDead":
+                friends.get(0).kill();
                 break;
 
             /*case "item": // It'll be better to check if Friend collides with some items.
