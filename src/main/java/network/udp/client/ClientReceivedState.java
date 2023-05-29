@@ -11,8 +11,7 @@ import java.util.concurrent.atomic.AtomicReference;
  {
 //    private Queue<String> queue;
 
-//     private AtomicReference<String> synchronizedString;
-     private String string;
+     private AtomicReference<String> synchronizedString;
 
 //    public ClientReceivedState()
 //    {
@@ -20,29 +19,26 @@ import java.util.concurrent.atomic.AtomicReference;
 //    }
 
      public ClientReceivedState() {
-         string = new String();
+        synchronizedString = new AtomicReference<>();
      }
 
     public void enqueue(byte[] data) {
         String json = extractJson(data);
-//        synchronizedString.set(json);
-        string = json;
+        synchronizedString.set(json);
 //        queue.offer(json);
     }
 
     public String dequeue() {
         if (!isEmpty()) {
 //            return queue.poll();
-//            return synchronizedString.get();
-            return string;
+            return synchronizedString.get();
         }
         return null;
     }
 
     public boolean isEmpty() {
 //         return queue.isEmpty();
-//         return synchronizedString.get() == null;
-        return string == null;
+         return synchronizedString.get() == null;
     }
 
 //    public int size() {
