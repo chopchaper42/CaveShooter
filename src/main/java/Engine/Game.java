@@ -74,65 +74,65 @@ public class Game
         startGame();
         Logger.log(player.getInventory().toString());
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(15), event -> {
-//            long now = System.nanoTime();
-            double dt = 0.001;/*(now - lastFrame) / 10e9;*/
-            updater.update(dt);
-            inputManager.handleInput(dt);
-//            lastFrame = now;
+//        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(15), event -> {
+////            long now = System.nanoTime();
+//            double dt = 0.001;/*(now - lastFrame) / 10e9;*/
+//            updater.update(dt);
+//            inputManager.handleInput(dt);
+////            lastFrame = now;
+//
+//            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+//            long threadId = Thread.currentThread().getId();
+//            System.out.println("Current Thread ID Controller within Timeline: " + threadId);
+//            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+//
+//        }));
+//        timeline.setCycleCount(Timeline.INDEFINITE);
+//
+//        Thread socketThread = new Thread(() -> {
+//            ClientControllerSingleton.getInstance().run();
+//        });
+//
+//        socketThread.start();
+//
+//        timeline.play();
 
-            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-            long threadId = Thread.currentThread().getId();
-            System.out.println("Current Thread ID Controller within Timeline: " + threadId);
-            System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+        AnimationTimer loop = new AnimationTimer()
+        {
+            long lastFrame;
+            @Override
+            public void handle(long now)
+            {
+                double dt = (now - lastFrame) / 10e9;
+                updater.update(dt);
+                inputManager.handleInput(dt);
+                lastFrame = now;
 
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
+                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+                long threadId = Thread.currentThread().getId();
+                System.out.println("Current Thread ID Controller: " + threadId);
+                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+
+                if (!player.alive() || level.completed()) {
+                    this.stop();
+
+                    Logger.log("Game ended.");
+                }
+
+//                try {
+//                    Thread.sleep(10);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+            }
+        };
 
         Thread socketThread = new Thread(() -> {
             ClientControllerSingleton.getInstance().run();
         });
 
         socketThread.start();
-
-        timeline.play();
-
-//        AnimationTimer loop = new AnimationTimer()
-//        {
-//            long lastFrame;
-//            @Override
-//            public void handle(long now)
-//            {
-//                double dt = (now - lastFrame) / 10e9;
-//                updater.update(dt);
-//                inputManager.handleInput(dt);
-//                lastFrame = now;
-//
-//                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-//                long threadId = Thread.currentThread().getId();
-//                System.out.println("Current Thread ID Controller: " + threadId);
-//                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-//
-//                if (!player.alive() || level.completed()) {
-//                    this.stop();
-//
-//                    Logger.log("Game ended.");
-//                }
-//
-////                try {
-////                    Thread.sleep(10);
-////                } catch (InterruptedException e) {
-////                    throw new RuntimeException(e);
-////                }
-//            }
-//        };
-
-//        Thread socketThread = new Thread(() -> {
-//            ClientControllerSingleton.getInstance().run();
-//        });
-//
-//        socketThread.start();
-//        loop.start();
+        loop.start();
     }
 
     private void startGame() {

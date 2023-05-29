@@ -88,6 +88,7 @@ public class Socket
      */
     public DatagramPacket listen()
     {
+        receiveBuffer = new byte[256];
         DatagramPacket receivePacket = new DatagramPacket(receiveBuffer,
                 receiveBuffer.length);
 
